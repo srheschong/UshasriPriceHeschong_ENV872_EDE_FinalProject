@@ -1,0 +1,30 @@
+---
+title: "Final Project"
+author: "Fiona Price"
+date: "2024-11-11"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+library(dplyr)
+library(ggplot2)
+library(here)
+library(tidyverse)
+library(readxl)
+```
+
+```{r}
+#Check file path
+here()
+#Load in data. Only looking at the fourth sheet.
+energy_data <- read_excel(here("./Data/Raw/egrid2022_data.xlsx"), sheet = 4)
+#Our table has sub-headers, which we don't need, so we can get rid of that row.
+energy_data <- energy_data[-1, ]
+```
+
+```{r}
+nc_energy <- energy_data %>% 
+  filter(energy_data$`Plant state abbreviation` == "NC")
+```
