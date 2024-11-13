@@ -1,0 +1,73 @@
+\newpage
+\tableofcontents 
+\newpage
+\listoftables 
+\newpage
+\listoffigures 
+\newpage
+
+```{r setup, include=FALSE}
+# Set your working directory
+
+# Load your packages
+
+# Set your ggplot theme
+
+# Load your datasets
+
+author: "Asreeta Ushasri"
+
+
+#view(energy_data)
+#view(nc_energy)
+#view(nc_counties)
+#view(nc_plants)
+
+nc_energy_numeric <- nc_energy %>%
+  mutate(`Plant_Cap` = as.numeric(`Plant nameplate capacity (MW)`)) %>% 
+  drop_na()
+
+
+```
+
+```
+
+
+# Rationale and Research Questions
+
+
+
+\newpage
+
+# Dataset Information
+
+
+
+\newpage
+
+# Exploratory Analysis 
+
+
+
+\newpage
+
+# Analysis
+
+
+
+## Question 1: <insert specific question here and add additional subsections for additional questions below, if needed>
+
+## Question 2: 
+
+
+
+
+\newpage
+
+# Summary and Conclusions
+
+
+\newpage
+
+# References
+<add references here if relevant, otherwise delete this section> 
