@@ -1,0 +1,94 @@
+---
+title: "Messing around with data"
+author: "Summer Heschong"
+date: "2024-11-13"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(dplyr)
+library(ggplot2)
+library(here)
+library(tidyverse)
+library(readxl)
+library(sf)
+library(mapview)
+#install.packages('tigris')
+library(tigris)
+```
+
+
+
+```{r load in data}
+#check working directory
+here()
+
+#load spatial census data
+nc_tracts <- tracts(state = 'NC', year = 2020) %>%
+  select(GEOID, COUNTYFP, NAME)
+
+#load EJ data
+CEJST.data <- read.csv(here('Data/Raw/CEJST_data.csv'))
+
+#load Fiona's processed plant data
+nc_plants <- st_read(here('Data/Processed/nc_plants.gpkg'))
+
+```
+
+
+
+```{r wrangle data and join to spatial data}
+#filter CEJST data for NC
+EJ.NC_data <- filter(CEJST.data, State.Territory == 'North Carolina')
+
+#Change spatial columns to factors in both datasets 
+EJ.NC_data$Census.tract.2010.ID <- as.factor(EJ.NC_data$Census.tract.2010.ID)
+nc_tracts$GEOID <- as.factor(nc_tracts$GEOID)
+
+#Join CEJST data to census spatial data
+EJ.NC_sf <- nc_tracts %>%
+  left_join(EJ.NC_data, by = c('GEOID'= 'Census.tract.2010.ID')) %>%
+  st_as_sf()
+
+```
+
+```{r map data}
+#map which counties are classified as disadvantaged
+
+mapview(EJ.NC_sf, zcol = 'Identified.as.disadvantaged',
+        layer.name = 'County Disadvantaged Status')
+
+```
+
+```{r add in powerplant locations}
+#join nc plant locations and CEJST data and select relevant columns
+
+EJ.NC_plus_plants <- st_join(EJ.NC_sf, nc_plants, join = st_intersects) %>%
+  select(Identified.as.disadvantaged, 
+         County.Name, 
+         Plant.FIPS.county.code, 
+         COUNTYFP, 
+         Plant.name)
+
+``` 
+
+```{r are plant locations significant?}
+#run a Chi-square test
+observed <- table(EJ.NC_plus_plants$Identified.as.disadvantaged)
+expected <- table(EJ.NC_sf$Identified.as.disadvantaged)
+
+chisq_test <- chisq.test(observed, p = expected / sum(expected))
+chisq_test
+
+
+```
+
+
+
+```{r map data 2.0}
+#Map plants and counties together
+mapview(EJ.NC_sf, zcol = 'Identified.as.disadvantaged',
+        layer.name = 'County Disadvantaged Status') +
+  mapview(nc_plants)
+
+```
