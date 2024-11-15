@@ -68,7 +68,15 @@ EJ.NC_plus_plants <- st_join(EJ.NC_sf, nc_plants, join = st_intersects) %>%
          Plant.FIPS.county.code, 
          COUNTYFP, 
          Plant.name,
-         Plant.primary.fuel.category)
+         Plant.primary.fuel.category,
+         Percent.Black.or.African.American.alone,
+         Percent.American.Indian...Alaska.Native,
+         Percent.Asian,
+         Percent.Native.Hawaiian.or.Pacific,
+         Percent.two.or.more.races,
+         Percent.Hispanic.or.Latino,
+         Percent.other.races,
+         Percent.White)
 
 ``` 
 
@@ -101,5 +109,21 @@ chisq_test
 mapview(EJ.NC_sf, zcol = 'Identified.as.disadvantaged',
         layer.name = 'County Disadvantaged Status') +
   mapview(nc_plants)
+
+```
+
+
+```{r try to calculate disproportionality ratio}
+# find counties with highest number of powerplants
+Plant_counties <- na.omit(nc_unhealthy_plants)
+
+# percent poc in powerplant counties
+
+
+# percent poc in NC
+
+# calculate disproportionality ratio
+
+#perform Wilcoxon Rank-sum test
 
 ```
