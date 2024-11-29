@@ -100,6 +100,21 @@ NC_Plant_Cap_Plot <- ggplot(data = nc_energy_total_cap) +
 
 print(NC_Plant_Cap_Plot)
 
+nc_energy_emissions <- nc_energy %>%
+  group_by(`Plant primary fuel category`) %>% summarise(total_CO2e = sum(as.numeric(`Plant annual CO2 equivalent total output emission rate (lb/MWh)`)))
+
+NC_Plant_CO2e_Plot <- ggplot(data = nc_energy_emissions) +
+  geom_bar(aes(x = `Plant primary fuel category`,
+               y = `total_CO2e`), fill = 'darkred',
+           stat = "identity") +
+  labs(title = "CO2 Equivalent Emissions from
+       Electricity Fuel Type in North Carolina",
+       subtitle = "Asreeta Ushasri",
+       x = "Plant Primary Fuel Category",
+       y = "CO2 Equivalent Emissions")
+
+print(NC_Plant_CO2e_Plot)
+
 ```
 
 ```
