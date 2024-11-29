@@ -6,8 +6,8 @@
 \listoffigures 
 \newpage
 
-title: "Final Project"
-author: "Fiona Price"
+title: "Examining Plant Capacity"
+author: "Asreeta Ushasri"
 date: "2024-11-11"
 output: html_document
 editor_options: 
@@ -16,6 +16,9 @@ editor_options:
 ---
 
 ```{r setup, include=FALSE}
+
+#Load packages
+
 library(dplyr)
 library(ggplot2)
 library(here)
@@ -23,24 +26,37 @@ library(tidyverse)
 library(readxl)
 library(sf)
 library(mapview)
+
+#Check working directory
+
+getwd()
+here()
+
+
 ```
 
 ```{r}
-#Check file path
-here()
-#Load in data. Only looking at the fourth sheet.
+#Load in the power plants data, code by Fiona Price
+
 energy_data <- read_excel(here("./Data/Raw/egrid2022_data.xlsx"), sheet = 4)
-#Our table has sub-headers, which we don't need, so we can get rid of that row.
+
+#Remove subheaders
+
 energy_data <- energy_data[-1, ]
 
 #Load in spatial data
+
 nc_counties <- st_read(
   here("./Data/Spatial/North_Carolina_State_and_County_Boundary_Polygons.shp")) 
 #Reveal the CRS
 st_crs(nc_counties)$epsg
+
 ```
 
 ```{r}
+# Set up NC datasets
+# Code written by Fiona Price
+
 nc_energy <- energy_data %>% 
   filter(energy_data$`Plant state abbreviation` == "NC")
 
@@ -49,56 +65,35 @@ nc_plants<- nc_energy %>%
              crs=4269) 
 
 nc_plants$`Plant nameplate capacity (MW)` <- as.numeric(nc_plants$`Plant nameplate capacity (MW)`)
+
 class(nc_plants$`Plant nameplate capacity (MW)` )
-
-#Color by fuel category
-ggplot() +
-  geom_sf(data = nc_counties, fill = "grey") +
-  geom_sf(data = nc_plants, aes(color = nc_plants$`Plant primary fuel category`)) +
-  labs(color = "Fuel Category")
-#Mapview option
-mapview(nc_plants, zcol = "Plant primary fuel category") +
-  mapview(nc_counties, col.regions = "grey")
-
-
-#Size by capacity
-#Ggplot option
-ggplot() +
-  geom_sf(data = nc_counties, fill = "grey") +
-  geom_sf(data = nc_plants, aes(size = nc_plants$`Plant nameplate capacity (MW)`)) + 
-  theme(legend.position = "none")
-#Mapview option
-mapview(nc_plants, cex = "Plant nameplate capacity (MW)",
-        zcol = "Plant nameplate capacity (MW)") +
-  mapview(nc_counties, col.regions = "grey")
-
-# Set your working directory
-
-# Load your packages
-
-# Set your ggplot theme
-
-# Load your datasets
 
 #author: "Asreeta Ushasri"
 
+view(energy_data)
+view(nc_energy)
+view(nc_counties)
+view(nc_plants)
 
-#view(energy_data)
-#view(nc_energy)
-#view(nc_counties)
-#view(nc_plants)
+nc_energy_total_cap <- nc_energy %>%
+  group_by(`Plant primary fuel category`) %>%
+  summarise(total_capacity = sum(as.numeric(`Plant nameplate capacity (MW)`)))
 
-nc_energy_numeric <- nc_energy %>%
-  mutate(`Plant_Cap` = as.numeric(`Plant nameplate capacity (MW)`)) %>% 
-  drop_na()
+view(nc_energy_total_cap)
 
+ggplot(data = nc_energy_total_cap) +
+  geom_bar(aes(x = `Plant primary fuel category`, 
+                             y = `total_capacity`), stat = "identity") +
+  theme_light() + labs(title = "Power Plant Capacity in NC",
+                         x = "Plant Primary Fuel Category",
+                         y = "Nameplate Capacity (MW)")
 
 ```
 
 ```
 
 
-# Rationale and Research Questions
+author: "Asreeta Ushasri"
 
 
 
@@ -106,7 +101,7 @@ nc_energy_numeric <- nc_energy %>%
 
 # Dataset Information
 
-The EGRID 2022 data set provides information on electricity generation in the United States. The National Renewable Energy Labratory publishes this data to describe capacity and geographic distribution of different energy resources. The 2022 data is the most recent data (published in 2024), because it requires time to process and handle previous data in a workbook.
+The Annual Technology Baseline data set provides information on electricity generation in the United States. The National Renewable Energy Labratory publishes this data to describe capacity and geographic distribution of different energy resources. The 2022 data is the most recent data (published in 2024), because it requires time to process and handle previous data in a workbook.
 
 This project primary utilizes the Plant 2022 and the Generator 2022 data sheets. The Plant 2022 data sheet describes the capacity, location, and primary fuel source in each power plant. The Generator 2022 worksheet focuses on individual generators. Power plants often have multiple generators of various fuel types, (such as natural gas combined cycle plants), leading to two separate data sheets to describe this informaiton.
 
