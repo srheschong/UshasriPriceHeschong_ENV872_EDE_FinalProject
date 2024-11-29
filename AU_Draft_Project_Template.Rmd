@@ -8,7 +8,7 @@
 
 title: "Examining Plant Capacity"
 author: "Asreeta Ushasri"
-date: "2024-11-11"
+date: "2024-11-12"
 output: html_document
 editor_options: 
   chunk_output_type: console
@@ -113,7 +113,7 @@ author: "Asreeta Ushasri"
 
 # Dataset Information
 
-The Annual Technology Baseline data set provides information on electricity generation in the United States. The National Renewable Energy Labratory publishes this data to describe capacity and geographic distribution of different energy resources. The 2022 data is the most recent data (published in 2024), because it requires time to process and handle previous data in a workbook.
+The eGRID 2022 data set provides information on electricity generation in the United States. The U.S. EPA publishes this data to describe capacity and geographic distribution of different energy resources. The 2022 data is the most recent data (published in 2024), because it requires time to process and handle previous data in a workbook.
 
 This project primary utilizes the Plant 2022 and the Generator 2022 data sheets. The Plant 2022 data sheet describes the capacity, location, and primary fuel source in each power plant. The Generator 2022 worksheet focuses on individual generators. Power plants often have multiple generators of various fuel types, (such as natural gas combined cycle plants), leading to two separate data sheets to describe this informaiton.
 
