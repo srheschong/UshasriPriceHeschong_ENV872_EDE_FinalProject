@@ -89,7 +89,7 @@ nc_energy_total_cap <- nc_energy %>%
 
 view(nc_energy_total_cap)
 
-ggplot(data = nc_energy_total_cap) +
+NC_Plant_Cap_Plot <- ggplot(data = nc_energy_total_cap) +
   geom_bar(aes(x = `Plant primary fuel category`,
                y = `total_capacity`), fill = 'darkblue',
            stat = "identity") +
@@ -97,6 +97,8 @@ ggplot(data = nc_energy_total_cap) +
        subtitle = "Asreeta Ushasri",
        x = "Plant Primary Fuel Category",
        y = "Nameplate Capacity (MW)")
+
+print(NC_Plant_Cap_Plot)
 
 ```
 
