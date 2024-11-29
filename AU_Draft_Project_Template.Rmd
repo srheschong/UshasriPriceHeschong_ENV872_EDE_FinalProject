@@ -100,8 +100,15 @@ NC_Plant_Cap_Plot <- ggplot(data = nc_energy_total_cap) +
 
 print(NC_Plant_Cap_Plot)
 
+
+
+
+```
+```{r}
 nc_energy_emissions <- nc_energy %>%
-  group_by(`Plant primary fuel category`) %>% summarise(total_CO2e = sum(as.numeric(`Plant annual CO2 equivalent total output emission rate (lb/MWh)`)))
+  group_by(`Plant primary fuel category`) %>% summarise(total_CO2e = sum(as.numeric(`Plant annual CO2 equivalent emissions (tons)`)))
+
+view(nc_energy_emissions)
 
 NC_Plant_CO2e_Plot <- ggplot(data = nc_energy_emissions) +
   geom_bar(aes(x = `Plant primary fuel category`,
@@ -111,10 +118,18 @@ NC_Plant_CO2e_Plot <- ggplot(data = nc_energy_emissions) +
        Electricity Fuel Type in North Carolina",
        subtitle = "Asreeta Ushasri",
        x = "Plant Primary Fuel Category",
-       y = "CO2 Equivalent Emissions")
+       y = "CO2 Equivalent Emissions (Tons)")
 
 print(NC_Plant_CO2e_Plot)
+```
 
+```{r}
+colnames(nc_plants)
+
+#Create map on CO2 Equivalent Emissions by Fuel Type
+
+mapview(nc_plants, cex = "Plant.annual.CO2.equivalent.emissions..tons.", zcol = "Plant.primary.fuel.category", layer.name = "CO2 Equivalent Emissions (Tons)") +
+  mapview(nc_counties, col.regions = "grey", layer.name = "Counties")
 ```
 
 ```
