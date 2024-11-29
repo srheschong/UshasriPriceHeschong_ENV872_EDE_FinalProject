@@ -70,6 +70,14 @@ class(nc_plants$`Plant nameplate capacity (MW)` )
 
 #author: "Asreeta Ushasri"
 
+default_theme <- theme_light() +
+  theme(panel.background = element_rect(color = "white"),
+  legend.key = element_rect(color = "white"),
+    legend.position = 'right',
+    complete = TRUE)
+
+theme_set(default_theme)
+
 view(energy_data)
 view(nc_energy)
 view(nc_counties)
@@ -82,11 +90,13 @@ nc_energy_total_cap <- nc_energy %>%
 view(nc_energy_total_cap)
 
 ggplot(data = nc_energy_total_cap) +
-  geom_bar(aes(x = `Plant primary fuel category`, 
-                             y = `total_capacity`), stat = "identity") +
-  theme_light() + labs(title = "Power Plant Capacity in NC",
-                         x = "Plant Primary Fuel Category",
-                         y = "Nameplate Capacity (MW)")
+  geom_bar(aes(x = `Plant primary fuel category`,
+               y = `total_capacity`), fill = 'darkblue',
+           stat = "identity") +
+  labs(title = "Power Plant Capacity in North Carolina",
+       subtitle = "Asreeta Ushasri",
+       x = "Plant Primary Fuel Category",
+       y = "Nameplate Capacity (MW)")
 
 ```
 
