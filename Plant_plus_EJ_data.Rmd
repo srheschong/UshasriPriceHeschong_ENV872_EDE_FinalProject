@@ -20,7 +20,6 @@ library(tigris)
 ```
 
 
-
 ```{r load in data}
 #check working directory
 here()
@@ -30,10 +29,10 @@ nc_tracts <- tracts(state = 'NC', year = 2020) %>%
   select(GEOID, COUNTYFP, NAME)
 
 #load EJ data
-CEJST.data <- read.csv(here('Data/Raw/CEJST_data.csv'))
+CEJST.data <- read.csv('Data/Raw/CEJST_data.csv')
 
 #load Fiona's processed plant data
-nc_plants <- st_read(here('Data/Processed/nc_plants.gpkg'))
+nc_plants <- st_read('Data/Processed/nc_plants.gpkg')
 
 ```
 
@@ -70,13 +69,25 @@ EJ.NC_plus_plants <- st_join(EJ.NC_sf, nc_plants, join = st_intersects) %>%
          County.Name, 
          Plant.FIPS.county.code, 
          COUNTYFP, 
-         Plant.name)
+         Plant.name,
+         Plant.primary.fuel.category)
 
 ``` 
 
 ```{r are plant locations significant?}
 #run a Chi-square test
 observed <- table(EJ.NC_plus_plants$Identified.as.disadvantaged)
+expected <- table(EJ.NC_sf$Identified.as.disadvantaged)
+
+chisq_test <- chisq.test(observed, p = expected / sum(expected))
+chisq_test
+
+#filter nc_plants data set for the type of energy that is the worst for human health 
+nc_unhealthy_plants <- EJ.NC_plus_plants %>%
+  filter(Plant.primary.fuel.category== 'OIL' | Plant.primary.fuel.category == 'GAS' | Plant.primary.fuel.category== 'COAL' | Plant.primary.fuel.category=='NUCLEAR' |Plant.primary.fuel.category=='BIOMASS')
+
+#Perform Chi-square test for worst types of energy to live by
+observed <- table(nc_unhealthy_plants$Identified.as.disadvantaged)
 expected <- table(EJ.NC_sf$Identified.as.disadvantaged)
 
 chisq_test <- chisq.test(observed, p = expected / sum(expected))

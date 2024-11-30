@@ -6,40 +6,147 @@
 \listoffigures 
 \newpage
 
+title: "Examining Plant Capacity"
+author: "Asreeta Ushasri"
+date: "2024-11-12"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+  
+---
+
 ```{r setup, include=FALSE}
-# Set your working directory
 
-# Load your packages
+#Load packages
 
-# Set your ggplot theme
+library(dplyr)
+library(ggplot2)
+library(here)
+library(tidyverse)
+library(readxl)
+library(sf)
+library(mapview)
 
-# Load your datasets
+#Check working directory
+
+getwd()
+here()
+
+
+```
+
+```{r}
+#Load in the power plants data, code by Fiona Price
+
+energy_data <- read_excel(here("./Data/Raw/egrid2022_data.xlsx"), sheet = 4)
+
+#Remove subheaders
+
+energy_data <- energy_data[-1, ]
+
+#Load in spatial data
+
+nc_counties <- st_read(
+  here("./Data/Spatial/North_Carolina_State_and_County_Boundary_Polygons.shp")) 
+#Reveal the CRS
+st_crs(nc_counties)$epsg
+
+```
+
+```{r}
+# Set up NC datasets
+# Code written by Fiona Price
+
+nc_energy <- energy_data %>% 
+  filter(energy_data$`Plant state abbreviation` == "NC")
+
+nc_plants<- nc_energy %>% 
+    st_as_sf(coords = c("Plant longitude","Plant latitude"), 
+             crs=4269) 
+
+nc_plants$`Plant nameplate capacity (MW)` <- as.numeric(nc_plants$`Plant nameplate capacity (MW)`)
+
+class(nc_plants$`Plant nameplate capacity (MW)` )
+
+#author: "Asreeta Ushasri"
+
+default_theme <- theme_light() +
+  theme(panel.background = element_rect(color = "white"),
+  legend.key = element_rect(color = "white"),
+    legend.position = 'right',
+    complete = TRUE)
+
+theme_set(default_theme)
+
+view(energy_data)
+view(nc_energy)
+view(nc_counties)
+view(nc_plants)
+
+nc_energy_total_cap <- nc_energy %>%
+  group_by(`Plant primary fuel category`) %>%
+  summarise(total_capacity = sum(as.numeric(`Plant nameplate capacity (MW)`)))
+
+view(nc_energy_total_cap)
+
+NC_Plant_Cap_Plot <- ggplot(data = nc_energy_total_cap) +
+  geom_bar(aes(x = `Plant primary fuel category`,
+               y = `total_capacity`), fill = 'darkblue',
+           stat = "identity") +
+  labs(title = "Power Plant Capacity in North Carolina",
+       subtitle = "Asreeta Ushasri",
+       x = "Plant Primary Fuel Category",
+       y = "Nameplate Capacity (MW)")
+
+print(NC_Plant_Cap_Plot)
+
+
+
+
+```
+```{r}
+nc_energy_emissions <- nc_energy %>%
+  group_by(`Plant primary fuel category`) %>% summarise(total_CO2e = sum(as.numeric(`Plant annual CO2 equivalent emissions (tons)`)))
+
+view(nc_energy_emissions)
+
+NC_Plant_CO2e_Plot <- ggplot(data = nc_energy_emissions) +
+  geom_bar(aes(x = `Plant primary fuel category`,
+               y = `total_CO2e`), fill = 'darkred',
+           stat = "identity") +
+  labs(title = "CO2 Equivalent Emissions from
+       Electricity Fuel Type in North Carolina",
+       subtitle = "Asreeta Ushasri",
+       x = "Plant Primary Fuel Category",
+       y = "CO2 Equivalent Emissions (Tons)")
+
+print(NC_Plant_CO2e_Plot)
+```
+
+```{r}
+colnames(nc_plants)
+
+#Create map on CO2 Equivalent Emissions by Fuel Type
+
+mapview(nc_plants, cex = "Plant.annual.CO2.equivalent.emissions..tons.", zcol = "Plant.primary.fuel.category", layer.name = "CO2 Equivalent Emissions (Tons)") +
+  mapview(nc_counties, col.regions = "grey", layer.name = "Counties")
+```
+
+```
+
 
 author: "Asreeta Ushasri"
-
-
-#view(energy_data)
-#view(nc_energy)
-#view(nc_counties)
-#view(nc_plants)
-
-nc_energy_numeric <- nc_energy %>%
-  mutate(`Plant_Cap` = as.numeric(`Plant nameplate capacity (MW)`)) %>% 
-  drop_na()
-
-
-```
-
-```
-
-
-# Rationale and Research Questions
 
 
 
 \newpage
 
 # Dataset Information
+
+The eGRID 2022 data set provides information on electricity generation in the United States. The U.S. EPA publishes this data to describe capacity and geographic distribution of different energy resources. The 2022 data is the most recent data (published in 2024), because it requires time to process and handle previous data in a workbook.
+
+This project primary utilizes the Plant 2022 and the Generator 2022 data sheets. The Plant 2022 data sheet describes the capacity, location, and primary fuel source in each power plant. The Generator 2022 worksheet focuses on individual generators. Power plants often have multiple generators of various fuel types, (such as natural gas combined cycle plants), leading to two separate data sheets to describe this informaiton.
+
 
 
 
