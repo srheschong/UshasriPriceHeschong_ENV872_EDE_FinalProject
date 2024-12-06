@@ -26,15 +26,11 @@ EGRID 2022: The U.S. Environmental Protection Agency publishes data on the statu
 ## Folder structure, file formats, and naming conventions
 This repository contains a folder with the relevant data, including Raw, Processed and Spatial. The Data Wrangling and Processing RMD file depicts how the raw data sets were compiled for the analysis.
 
-<describe the folders contained in the repository, including what type of files
-they contain>
-<describe the formats of files for the various purposes contained in the
-repository>
-<describe your file naming conventions>
 ## Metadata
 <For each data file in the repository, describe the data contained in each column.
 Include the column name, a description of the information, the class of data, and
 any units associated with the data. Create a list or table for each data file.>
+
 ## Scripts and code
 <list any software scripts/code contained in the repository and a description of
 their purpose.>
