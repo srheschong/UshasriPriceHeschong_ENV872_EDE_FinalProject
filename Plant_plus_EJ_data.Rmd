@@ -32,7 +32,7 @@ nc_tracts <- tracts(state = 'NC', year = 2020) %>%
 CEJST.data <- read.csv('Data/Raw/CEJST_data.csv')
 
 #load Fiona's processed plant data
-nc_plants <- st_read('Data/Processed/nc_plants.gpkg')
+nc_plants <- st_read(here('Data/Processed/nc_plants.gpkg'))
 
 ```
 
@@ -78,7 +78,8 @@ EJ.NC_plus_plants <- st_join(EJ.NC_sf, nc_plants, join = st_intersects) %>%
          Percent.two.or.more.races,
          Percent.Hispanic.or.Latino,
          Percent.other.races,
-         Percent.White)
+         Percent.White,
+         Total.population)
 
 ``` 
 
@@ -120,12 +121,34 @@ mapview(EJ.NC_sf, zcol = 'Identified.as.disadvantaged',
 Plant_counties <- na.omit(nc_unhealthy_plants)
 
 # percent poc in powerplant counties
+Plant_counties$percent.poc <- 1 - Plant_counties$Percent.White
 
+percent_poc_plant_counties <- Plant_counties %>%
+  filter(Total.population > 0) %>%
+  mutate(weighted_poc = percent.poc * Total.population) %>%
+  summarize(
+    total_poc = sum(weighted_poc),
+    total_population = sum(Total.population)
+  ) %>%
+  mutate(total_percent_poc = (total_poc / total_population) * 100) %>%
+  print(percent_poc_plant_counties)
 
 # percent poc in NC
+EJ.NC_data$percent.poc <- 1 - EJ.NC_data$Percent.White
+
+percent_poc_NC <- EJ.NC_data %>%
+  filter(Total.population > 0) %>%
+  mutate(weighted_poc = percent.poc * Total.population) %>%
+  summarize(
+    total_poc = sum(weighted_poc),
+    total_population = sum(Total.population)
+  ) %>%
+  mutate(total_percent_poc = (total_poc / total_population) * 100) %>%
+  print(percent_poc_NC)
 
 # calculate disproportionality ratio
+disproportionality_ratio <- percent_poc_plant_counties$total_percent_poc / percent_poc_NC$total_percent_poc
 
 #perform Wilcoxon Rank-sum test
-
+wilcox.test(percent_poc_NC$total_percent_poc, percent_poc_plant_counties$total_percent_poc)
 ```
