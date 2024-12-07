@@ -87,6 +87,9 @@ nc_energy_total_cap <- nc_energy %>%
   group_by(`Plant primary fuel category`) %>%
   summarise(total_capacity = sum(as.numeric(`Plant nameplate capacity (MW)`)))
 
+write.csv(nc_energy_total_cap, row.names = FALSE, 
+         file = "./Data/Processed/NC_Total_Capacity.csv")
+
 view(nc_energy_total_cap)
 
 NC_Plant_Cap_Plot <- ggplot(data = nc_energy_total_cap) +
@@ -107,6 +110,9 @@ print(NC_Plant_Cap_Plot)
 ```{r}
 nc_energy_emissions <- nc_energy %>%
   group_by(`Plant primary fuel category`) %>% summarise(total_CO2e = sum(as.numeric(`Plant annual CO2 equivalent emissions (tons)`)))
+
+write.csv(nc_energy_emissions, row.names = FALSE, 
+         file = "./Data/Processed/NC_Energy_Emissions.csv")
 
 view(nc_energy_emissions)
 
