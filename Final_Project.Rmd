@@ -18,9 +18,8 @@ library(mapview)
 ```
 
 ```{r}
-#Check file path
-here()
-#Load in data. Only looking at the fourth sheet.
+
+#Load in Processed Data
 energy_data <- read_excel(here("./Data/Raw/egrid2022_data.xlsx"), sheet = 4)
 #Our table has sub-headers, which we don't need, so we can get rid of that row.
 energy_data <- energy_data[-1, ]
@@ -33,8 +32,7 @@ st_crs(nc_counties)$epsg
 ```
 
 ```{r}
-nc_energy <- energy_data %>% 
-  filter(energy_data$`Plant state abbreviation` == "NC")
+nc_energy <- NC_Pow
 
 nc_plants<- nc_energy %>% 
     st_as_sf(coords = c("Plant longitude","Plant latitude"), 
@@ -42,6 +40,8 @@ nc_plants<- nc_energy %>%
 
 nc_plants$`Plant nameplate capacity (MW)` <- as.numeric(nc_plants$`Plant nameplate capacity (MW)`)
 class(nc_plants$`Plant nameplate capacity (MW)` )
+
+view(NC_joined)
 
 #Color by fuel category
 ggplot() +
