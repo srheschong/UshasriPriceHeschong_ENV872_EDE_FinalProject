@@ -134,3 +134,16 @@ nc_energy_emissions <- NC_energy %>%
 write.csv(nc_energy_emissions, row.names = FALSE, 
          file = "./Data/Processed/NC_Energy_Emissions.csv")
 ```
+
+##6. Saving Processed North Carolina Power Plant Data
+
+```{r}
+
+write.csv(NC_energy, row.names = FALSE, 
+         file = "./Data/Processed/NC_PowerPlants.csv")
+
+```
+
+
+```
+
