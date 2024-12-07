@@ -1,0 +1,149 @@
+---
+title: "Data Wrangling/Processing"
+author: "Fiona Price, Asreeta Ushasri, Summer Heschong"
+date: "2024-11-30"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+\tableofcontents
+
+
+```{r setup, include=FALSE}
+library(dplyr)
+library(ggplot2)
+library(here)
+library(tidyverse)
+library(readxl)
+library(sf)
+
+```
+
+#1. Energy Data
+
+##A. Load in Raw EGRID 2022 Data
+
+```{r }
+#Check file path
+here()
+#Load in data. Only looking at the fourth sheet.
+energy_data <- read_excel(here("./Data/Raw/egrid2022_data.xlsx"), sheet = 4)
+#Our table has sub-headers, which we don't need, so we can get rid of that row.
+energy_data <- energy_data[-1, ]
+
+```
+
+##B. Select Columns Related to State, Location, Primary Fuel Category, Capacity, and Emissions
+
+```{r}
+#Find list of all columns
+colnames(energy_data)
+#Select only the relevant columns
+energy_data_selected <- energy_data %>% 
+  select('Data Year', 'Plant state abbreviation', 'Plant name', 'Utility name', 
+         'Plant county name', 'Plant latitude', 'Plant longitude', 'Number of units',
+         'Number of generators', 'Plant primary fuel category', 
+         'Plant nameplate capacity (MW)', 'Plant annual net generation (MWh)',
+         'Plant annual NOx emissions (tons)', 'Plant annual SO2 emissions (tons)',
+         'Plant annual CO2 emissions (tons)', 'Plant annual CH4 emissions (lbs)',
+         'Plant annual N2O emissions (lbs)')
+```
+
+##C. Filter for North Carolina, the focus of this project
+
+```{r}
+#Select for only NC
+NC_energy <- energy_data_selected %>% 
+  filter(energy_data_selected$`Plant state abbreviation` == "NC")
+```
+
+##D. Adjusting Date Columns
+
+```{r}
+#Check class of year column
+class(NC_energy$`Data Year`)
+#Currently a character. Change to date.
+NC_energy$`Data Year` <-  as.Date(NC_energy$`Data Year`, format = "%Y")
+
+```
+
+#2. Environmental Justice Community Data
+##A. Uploading Raw Environmental Justice Data, summarizing percentages
+
+```{r} 
+#Load in CEJST data
+cejst_data <- read.csv(here("./Data/Raw/CEJST_data.csv"))
+#Filter for NC
+NC_cejst <- cejst_data %>% 
+  filter(cejst_data$State.Territory == "North Carolina")
+#Remove the word "County" from the county column
+NC_cejst$County.Name <- gsub("\\s*[Cc]ounty", "", NC_cejst$County.Name)
+#Find a total county average for relevant columns
+counties_summarized <- NC_cejst %>% 
+  group_by(County.Name) %>% 
+  summarise(percent_black = mean(Percent.Black.or.African.American.alone),
+            percent_na = mean(Percent.American.Indian...Alaska.Native),
+            percent_asian = mean(Percent.Asian),
+            percent_hawaiian = mean(Percent.Native.Hawaiian.or.Pacific),
+            percent_two = mean(Percent.two.or.more.races),
+            percent_white = mean(Percent.White),
+            percent_hispanic = mean(Percent.Hispanic.or.Latino),
+            disadvantaged = mean(Percentage.of.tract.that.is.disadvantaged.by.area),
+            population = sum(Total.population),
+            percent_poverty = mean(Percent.of.individuals.below.200..Federal.Poverty.Line..percentile.),
+            PM2.5 = mean(PM2.5.in.the.air))
+
+```
+
+##B. Joining County Data into Environmental Justice Data
+
+```{r}
+#Rename the county column name in the energy df to match the CEJST df
+NC_energy <- NC_energy %>% 
+  rename("County.Name" = "Plant county name")
+#Join CEJST and energy data by county name
+NC_joined <- merge(NC_energy, counties_summarized, by = "County.Name", all = FALSE)
+```
+
+##3. Saving Processed Environmental Justice Data
+
+```{r}
+#Save joined data as a file in the processed data folder.
+write.csv(NC_joined, row.names = FALSE, 
+         file = "./Data/Processed/NC_joined.csv")
+```
+
+##4. Saving Processed Energy Capacity Data
+
+```{r}
+nc_energy_total_cap <- NC_energy %>%
+  group_by(`Plant primary fuel category`) %>%
+  summarise(total_capacity = sum(as.numeric(`Plant nameplate capacity (MW)`)))
+
+write.csv(nc_energy_total_cap, row.names = FALSE, 
+         file = "./Data/Processed/NC_Total_Capacity.csv")
+```
+
+##5. Saving Processed Energy Emissions Data
+
+```{r}
+nc_energy_emissions <- NC_energy %>%
+  group_by(`Plant primary fuel category`) %>% summarise(total_CO2e = sum(as.numeric(`Plant annual CO2 equivalent emissions (tons)`)))
+
+write.csv(nc_energy_emissions, row.names = FALSE, 
+         file = "./Data/Processed/NC_Energy_Emissions.csv")
+```
+
+##6. Saving Processed North Carolina Power Plant Data
+
+```{r}
+
+write.csv(NC_energy, row.names = FALSE, 
+         file = "./Data/Processed/NC_PowerPlants.csv")
+
+```
+
+
+```
+

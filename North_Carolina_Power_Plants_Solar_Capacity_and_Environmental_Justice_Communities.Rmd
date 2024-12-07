@@ -1,0 +1,271 @@
+\newpage
+\tableofcontents 
+\newpage
+\listoftables 
+\newpage
+\listoffigures 
+\newpage
+
+```{r setup, include=FALSE}
+# Set your working directory
+
+getwd()
+here()
+
+# Load your packages
+
+library(dplyr)
+library(ggplot2)
+library(here)
+library(tidyverse)
+library(readxl)
+library(sf)
+library(mapview)
+
+# Set your ggplot theme
+
+default_theme <- theme_light() +
+  theme(panel.background = element_rect(color = "white"),
+  legend.key = element_rect(color = "white"),
+    legend.position = 'right',
+    complete = TRUE)
+
+theme_set(default_theme)
+
+# Load your datasets
+
+energy_data <- read_excel(here("./Data/Raw/egrid2022_data.xlsx"), sheet = 4)
+
+#Remove sub-headers
+energy_data <- energy_data[-1, ]
+
+#Load in spatial data
+nc_counties <- st_read(
+  here("./Data/Spatial/North_Carolina_State_and_County_Boundary_Polygons.shp")) 
+
+#Reveal the CRS
+st_crs(nc_counties)$epsg
+
+
+
+```
+
+
+# Rationale and Research Questions
+
+
+
+\newpage
+
+# Dataset Information
+
+The eGRID 2022 data set provides information on electricity generation in the United States. The U.S. EPA publishes this data to describe capacity and geographic distribution of different energy resources. The 2022 data is the most recent data (published in 2024), because it requires time to process and handle previous data in a workbook.
+
+This project primary utilizes the Plant 2022 and the Generator 2022 data sheets. The Plant 2022 data sheet describes the capacity, location, and primary fuel source in each power plant. The Generator 2022 worksheet focuses on individual generators. Power plants often have multiple generators of various fuel types, (such as natural gas combined cycle plants), leading to two separate data sheets to describe this informaiton.
+
+
+
+\newpage
+
+# Exploratory Analysis 
+
+
+
+\newpage
+
+# Analysis
+
+
+
+## Question 1: <insert specific question here and add additional subsections for additional questions below, if needed>
+
+```{r}
+nc_energy_total_cap <- nc_energy %>%
+  group_by(`Plant primary fuel category`) %>%
+  summarise(total_capacity = sum(as.numeric(`Plant nameplate capacity (MW)`)))
+
+write.csv(nc_energy_total_cap, row.names = FALSE, 
+         file = "./Data/Processed/NC_Total_Capacity.csv")
+
+view(nc_energy_total_cap)
+
+NC_Plant_Cap_Plot <- ggplot(data = nc_energy_total_cap) +
+  geom_bar(aes(x = `Plant primary fuel category`,
+               y = `total_capacity`), fill = 'darkblue',
+           stat = "identity") +
+  labs(title = "Power Plant Capacity in North Carolina",
+       subtitle = "Asreeta Ushasri",
+       x = "Plant Primary Fuel Category",
+       y = "Nameplate Capacity (MW)")
+
+print(NC_Plant_Cap_Plot)
+
+colnames(nc_plants)
+
+#Examine emissions by fuelt type in North Carolina
+
+nc_energy_emissions <- nc_energy %>%
+  group_by(`Plant primary fuel category`) %>% summarise(total_CO2e = sum(as.numeric(`Plant annual CO2 equivalent emissions (tons)`)))
+
+write.csv(nc_energy_emissions, row.names = FALSE, 
+         file = "./Data/Processed/NC_Energy_Emissions.csv")
+
+view(nc_energy_emissions)
+
+NC_Plant_CO2e_Plot <- ggplot(data = nc_energy_emissions) +
+  geom_bar(aes(x = `Plant primary fuel category`,
+               y = `total_CO2e`), fill = 'darkred',
+           stat = "identity") +
+  labs(title = "CO2 Equivalent Emissions from
+       Electricity Fuel Type in North Carolina",
+       subtitle = "Asreeta Ushasri",
+       x = "Plant Primary Fuel Category",
+       y = "CO2 Equivalent Emissions (Tons)")
+
+print(NC_Plant_CO2e_Plot)
+
+
+#Create map on CO2 Equivalent Emissions by Fuel Type
+
+mapview(nc_plants, cex = "Plant.annual.CO2.equivalent.emissions..tons.", zcol = "Plant.primary.fuel.category", layer.name = "CO2 Equivalent Emissions (Tons)") +
+  mapview(nc_counties, col.regions = "grey", layer.name = "Counties")
+
+
+```
+
+
+## Question 2:
+
+```{r}
+
+
+#Load in Data
+energy_data <- read_excel(here("./Data/Raw/egrid2022_data.xlsx"), sheet = 4)
+#Our table has sub-headers, which we don't need, so we can get rid of that row.
+energy_data <- energy_data[-1, ]
+
+#Load in spatial data
+nc_counties <- st_read(
+  here("./Data/Spatial/North_Carolina_State_and_County_Boundary_Polygons.shp")) 
+#Reveal the CRS
+st_crs(nc_counties)$epsg
+```
+
+```{r}
+nc_energy <- NC_Pow
+
+nc_plants<- nc_energy %>% 
+    st_as_sf(coords = c("Plant longitude","Plant latitude"), 
+             crs=4269) 
+
+nc_plants$`Plant nameplate capacity (MW)` <- as.numeric(nc_plants$`Plant nameplate capacity (MW)`)
+class(nc_plants$`Plant nameplate capacity (MW)` )
+
+view(NC_joined)
+
+#Color by fuel category
+ggplot() +
+  geom_sf(data = nc_counties, fill = "grey") +
+  geom_sf(data = nc_plants, aes(color = nc_plants$`Plant primary fuel category`)) +
+  labs(color = "Fuel Category")
+#Mapview option
+mapview(nc_plants, zcol = "Plant primary fuel category") +
+  mapview(nc_counties, col.regions = "grey")
+
+
+#Size by capacity
+#Ggplot option
+ggplot() +
+  geom_sf(data = nc_counties, fill = "grey") +
+  geom_sf(data = nc_plants, aes(size = nc_plants$`Plant nameplate capacity (MW)`)) + 
+  theme(legend.position = "none")
+#Mapview option
+mapview(nc_plants, cex = "Plant nameplate capacity (MW)") +
+  mapview(nc_counties, col.regions = "grey")
+
+
+```
+
+
+## Question 3:
+
+```{r}
+nc_tracts <- tracts(state = 'NC', year = 2020) %>%
+  select(GEOID, COUNTYFP, NAME)
+
+#load EJ data
+CEJST.data <- read.csv('Data/Raw/CEJST_data.csv')
+
+#load Fiona's processed plant data
+nc_plants <- st_read('Data/Processed/nc_plants.gpkg')
+
+#filter CEJST data for NC
+EJ.NC_data <- filter(CEJST.data, State.Territory == 'North Carolina')
+
+#Change spatial columns to factors in both datasets 
+EJ.NC_data$Census.tract.2010.ID <- as.factor(EJ.NC_data$Census.tract.2010.ID)
+nc_tracts$GEOID <- as.factor(nc_tracts$GEOID)
+
+#Join CEJST data to census spatial data
+EJ.NC_sf <- nc_tracts %>%
+  left_join(EJ.NC_data, by = c('GEOID'= 'Census.tract.2010.ID')) %>%
+  st_as_sf()
+
+#map which counties are classified as disadvantaged
+
+mapview(EJ.NC_sf, zcol = 'Identified.as.disadvantaged',
+        layer.name = 'County Disadvantaged Status')
+```
+
+```{r}
+#join nc plant locations and CEJST data and select relevant columns
+
+EJ.NC_plus_plants <- st_join(EJ.NC_sf, nc_plants, join = st_intersects) %>%
+  select(Identified.as.disadvantaged, 
+         County.Name, 
+         Plant.FIPS.county.code, 
+         COUNTYFP, 
+         Plant.name,
+         Plant.primary.fuel.category)
+```
+
+
+```{r are plant locations significant?}
+#run a Chi-square test
+observed <- table(EJ.NC_plus_plants$Identified.as.disadvantaged)
+expected <- table(EJ.NC_sf$Identified.as.disadvantaged)
+
+chisq_test <- chisq.test(observed, p = expected / sum(expected))
+chisq_test
+
+#filter nc_plants data set for the type of energy that is the worst for human health 
+nc_unhealthy_plants <- EJ.NC_plus_plants %>%
+  filter(Plant.primary.fuel.category== 'OIL' | Plant.primary.fuel.category == 'GAS' | Plant.primary.fuel.category== 'COAL' | Plant.primary.fuel.category=='NUCLEAR' |Plant.primary.fuel.category=='BIOMASS')
+
+#Perform Chi-square test for worst types of energy to live by
+observed <- table(nc_unhealthy_plants$Identified.as.disadvantaged)
+expected <- table(EJ.NC_sf$Identified.as.disadvantaged)
+
+chisq_test <- chisq.test(observed, p = expected / sum(expected))
+chisq_test
+
+
+```
+
+```{r}
+#Map plants and counties together
+mapview(EJ.NC_sf, zcol = 'Identified.as.disadvantaged',
+        layer.name = 'County Disadvantaged Status') +
+  mapview(nc_plants)
+```
+
+
+\newpage
+
+# Summary and Conclusions
+
+
+\newpage
+
+# References
+<add references here if relevant, otherwise delete this section> 

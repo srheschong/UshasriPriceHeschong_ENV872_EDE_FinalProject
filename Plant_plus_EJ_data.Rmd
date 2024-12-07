@@ -3,6 +3,8 @@ title: "Messing around with data"
 author: "Summer Heschong"
 date: "2024-11-13"
 output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
