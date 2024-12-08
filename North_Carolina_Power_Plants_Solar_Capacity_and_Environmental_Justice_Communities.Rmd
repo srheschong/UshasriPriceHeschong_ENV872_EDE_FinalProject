@@ -81,6 +81,8 @@ The eGRID 2022 data set provides information on electricity generation in the Un
 
 This project utilizes the Plant 2022 and the Generator 2022 data sheets. The Plant 2022 data sheet describes the capacity, location, and primary fuel source of every power plant in the United States. The Generator 2022 worksheet focuses on individual generators. Power plants often have multiple generators of various fuel types, (such as natural gas combined cycle plants). For this reason, the U.S. EPA includes a separate worksheet for generators specifically.
 
+
+
 \newpage
 
 # Exploratory Analysis 
@@ -91,7 +93,7 @@ This project utilizes the Plant 2022 and the Generator 2022 data sheets. The Pla
 
 # Analysis
 
-## Question 1: <insert specific question here and add additional subsections for additional questions below, if needed>
+## Question 1: What is the distribution and capacity of Power Plants generating electricity in North Carolina?
 
 ```{r}
 
@@ -109,72 +111,47 @@ NC_Plant_Cap_Plot <- ggplot(data = nc_energy_total_cap) +
 
 print(NC_Plant_Cap_Plot)
 
-#Examine emissions by fuel type in North Carolina
-
-#view(nc_energy_emissions)
-
-NC_Plant_CO2e_Plot <- ggplot(data = nc_energy_emissions) +
-  geom_bar(aes(x = `Plant primary fuel category`,
-               y = `total_CO2e`), fill = 'darkred',
-           stat = "identity") +
-  labs(title = "CO2 Equivalent Emissions from
-       Electricity Fuel Type in North Carolina",
-       subtitle = "Asreeta Ushasri",
-       x = "Plant Primary Fuel Category",
-       y = "CO2 Equivalent Emissions (Tons)")
-
-print(NC_Plant_CO2e_Plot)
-
-#Create map on CO2 Equivalent Emissions by Fuel Type
-
-#view(nc_plants)
-
-mapview(nc_plants, cex = "Plant annual CO2 equivalent emissions (tons)", zcol = "Plant primary fuel category", layer.name = "CO2 Equivalent Emissions (Tons)") +
-  mapview(nc_counties, col.regions = "grey", layer.name = "Counties")
-
-
 ```
 
 
-## Question 2:
-
-
 ```{r}
-
 #Mapping capacity of electricity generation in NC
 
-nc_plants$`Plant nameplate capacity (MW)` <- as.numeric(nc_plants$`Plant nameplate capacity (MW)`)
+nc_plants$`Plant nameplate capacity (MW)` <-
+  as.numeric(nc_plants$`Plant nameplate capacity (MW)`)
 class(nc_plants$`Plant nameplate capacity (MW)` )
 
-view(NC_joined)
+#view(NC_joined)
 
 #Color by fuel category
 ggplot() +
   geom_sf(data = nc_counties, fill = "grey") +
   geom_sf(data = nc_plants, aes(color = nc_plants$`Plant primary fuel category`)) +
   labs(color = "Fuel Category")
+  
 
 #Mapview option
 mapview(nc_plants, zcol = "Plant primary fuel category") +
   mapview(nc_counties, col.regions = "grey")
 
-
-#Size by capacity
-#Ggplot option
-ggplot() +
-  geom_sf(data = nc_counties, fill = "grey") +
-  geom_sf(data = nc_plants, aes(size = nc_plants$`Plant nameplate capacity (MW)`)) + 
-  theme(legend.position = "none")
-
-#Mapview option
-mapview(nc_plants, cex = "Plant nameplate capacity (MW)", zcol = "Plant primary fuel category") +
-  mapview(nc_counties, col.regions = "grey")
-
-
 ```
 
 
-## Question 3:
+```{r}
+#Size by capacity
+#Ggplot option
+ggplot() +
+  geom_sf(data = nc_counties, fill = "grey", layer.name = 'Counties') +
+  geom_sf(data = nc_plants, aes(size = nc_plants$`Plant nameplate capacity (MW)`), layer.name = 'Plant Primary Fuel Category') + 
+  theme(legend.position = "none")
+
+#Mapview option
+mapview(nc_plants, cex = "Plant nameplate capacity (MW)", zcol = "Plant primary fuel category", layer.name = 'Plant Primary Fuel Category') +
+  mapview(nc_counties, col.regions = "grey", layer.name = 'Counties')
+
+```
+
+## Question 2: What are the Environmental Justice implications of electricity power generation in North Carolina?
 
 ```{r}
 nc_tracts <- tracts(state = 'NC', year = 2020) %>%
@@ -202,6 +179,7 @@ EJ.NC_sf <- nc_tracts %>%
 
 mapview(EJ.NC_sf, zcol = 'Identified.as.disadvantaged',
         layer.name = 'County Disadvantaged Status')
+
 ```
 
 ```{r}
@@ -239,13 +217,94 @@ chisq_test
 
 ```
 
+
+
+
 ```{r}
-#Map plants and counties together
+#Map plants and disadvantaged counties together
 mapview(EJ.NC_sf, zcol = 'Identified.as.disadvantaged',
         layer.name = 'County Disadvantaged Status') +
-  mapview(nc_plants)
+  mapview(nc_plants, cex = 2,
+          layer.name = 'Power Plant Locations')
+
+view(nc_plants)
+
+#Map plants by fuel type and disadvantaged counties
+mapview(EJ.NC_sf, zcol = 'Identified.as.disadvantaged',
+        layer.name = 'County Disadvantaged Status') +
+  mapview(nc_plants, cex = 4, zcol = "Plant.primary.fuel.category", layer.name = 'Plant Primary Fuel Category') 
+
 ```
 
+
+## Question 3: Do Environmental Justice communities face impact from carbon dioxide equivalent emissions due to power plants and their geographic locations?
+
+
+```{r}
+
+#Examine emissions by fuel type in North Carolina
+
+#view(nc_energy_emissions)
+
+NC_Plant_CO2e_Plot <- ggplot(data = nc_energy_emissions) +
+  geom_bar(aes(x = `Plant primary fuel category`,
+               y = `total_CO2e`), fill = 'darkred',
+           stat = "identity") +
+  labs(title = "CO2 Equivalent Emissions from
+       Electricity Fuel Type in North Carolina",
+       subtitle = "Asreeta Ushasri",
+       x = "Plant Primary Fuel Category",
+       y = "CO2 Equivalent Emissions (Tons)")
+
+print(NC_Plant_CO2e_Plot)
+
+#Create map on CO2 Equivalent Emissions by Fuel Type
+
+view(nc_plants)
+
+mapview(nc_plants,
+        cex = "Plant annual CO2 equivalent emissions (tons)",
+        zcol = "Plant primary fuel category",
+        layer.name = "CO2 Equivalent Emissions (Tons)") +
+  mapview(EJ.NC_sf, zcol = 'Identified.as.disadvantaged',
+        layer.name = 'County Disadvantaged Status')
+
+```
+
+
+```{r}
+
+#Mapping capacity of electricity generation in NC
+
+nc_plants$`Plant nameplate capacity (MW)` <- as.numeric(nc_plants$`Plant nameplate capacity (MW)`)
+class(nc_plants$`Plant nameplate capacity (MW)` )
+
+view(NC_joined)
+
+#Color by fuel category
+ggplot() +
+  geom_sf(data = nc_counties, fill = "grey") +
+  geom_sf(data = nc_plants, aes(color = nc_plants$`Plant primary fuel category`)) +
+  labs(color = "Fuel Category")
+
+#Mapview option
+mapview(nc_plants, zcol = "Plant primary fuel category") +
+  mapview(nc_counties, col.regions = "grey")
+
+
+#Size by capacity
+#Ggplot option
+ggplot() +
+  geom_sf(data = nc_counties, fill = "grey") +
+  geom_sf(data = nc_plants, aes(size = nc_plants$`Plant nameplate capacity (MW)`)) + 
+  theme(legend.position = "none")
+
+#Mapview option
+mapview(nc_plants, cex = "Plant nameplate capacity (MW)", zcol = "Plant primary fuel category") +
+  mapview(nc_counties, col.regions = "grey")
+
+
+```
 
 \newpage
 
