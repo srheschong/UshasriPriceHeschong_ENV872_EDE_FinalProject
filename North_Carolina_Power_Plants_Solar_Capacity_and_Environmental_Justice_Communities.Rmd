@@ -1,5 +1,5 @@
 ---
-title: "Electricity Generation, Solar Power, and Environmental Justice Communities in North Carolina"
+title: "Electricity Generation and Environmental Justice Communities in North Carolina"
 author: "Fiona Price, Summer Heschong, and Asreeta Ushasri"
 date: "2024-12-12"
 output: html_document
@@ -93,7 +93,7 @@ This project utilizes the Plant 2022 and the Generator 2022 data sheets. The Pla
 
 # Analysis
 
-## Question 1: What is the distribution and capacity of Power Plants generating electricity in North Carolina?
+## Question 1: What is the distribution and capacity of power plants generating electricity in North Carolina?
 
 ```{r}
 
@@ -151,7 +151,7 @@ mapview(nc_plants, cex = "Plant nameplate capacity (MW)", zcol = "Plant primary 
 
 ```
 
-## Question 2: What are the Environmental Justice implications of electricity power generation in North Carolina?
+## Question 2: What are the Environmental Justice implications of electricity power generation in North Carolina? Are power plants primarily located in low-income and disadvantaged communities?
 
 ```{r}
 nc_tracts <- tracts(state = 'NC', year = 2020) %>%
@@ -195,6 +195,23 @@ EJ.NC_plus_plants <- st_join(EJ.NC_sf, nc_plants, join = st_intersects) %>%
 ```
 
 
+```{r}
+#Map plants and disadvantaged counties together
+mapview(EJ.NC_sf, zcol = 'Identified.as.disadvantaged',
+        layer.name = 'County Disadvantaged Status') +
+  mapview(nc_plants, cex = 2,
+          layer.name = 'Power Plant Locations')
+
+view(nc_plants)
+
+#Map plants by fuel type and disadvantaged counties
+mapview(EJ.NC_sf, zcol = 'Identified.as.disadvantaged',
+        layer.name = 'County Disadvantaged Status') +
+  mapview(nc_plants, cex = 4, zcol = "Plant.primary.fuel.category", layer.name = 'Plant Primary Fuel Category') 
+
+```
+
+
 ```{r are plant locations significant?}
 #run a Chi-square test
 observed <- table(EJ.NC_plus_plants$Identified.as.disadvantaged)
@@ -214,30 +231,10 @@ expected <- table(EJ.NC_sf$Identified.as.disadvantaged)
 chisq_test <- chisq.test(observed, p = expected / sum(expected))
 chisq_test
 
-
 ```
 
 
-
-
-```{r}
-#Map plants and disadvantaged counties together
-mapview(EJ.NC_sf, zcol = 'Identified.as.disadvantaged',
-        layer.name = 'County Disadvantaged Status') +
-  mapview(nc_plants, cex = 2,
-          layer.name = 'Power Plant Locations')
-
-view(nc_plants)
-
-#Map plants by fuel type and disadvantaged counties
-mapview(EJ.NC_sf, zcol = 'Identified.as.disadvantaged',
-        layer.name = 'County Disadvantaged Status') +
-  mapview(nc_plants, cex = 4, zcol = "Plant.primary.fuel.category", layer.name = 'Plant Primary Fuel Category') 
-
-```
-
-
-## Question 3: Do Environmental Justice communities face impact from carbon dioxide equivalent emissions due to power plants and their geographic locations?
+## Question 3: Do Environmental Justice communities face impact from carbon dioxide equivalent emissions due to power plants?
 
 
 ```{r}
@@ -260,7 +257,7 @@ print(NC_Plant_CO2e_Plot)
 
 #Create map on CO2 Equivalent Emissions by Fuel Type
 
-view(nc_plants)
+#view(nc_plants)
 
 mapview(nc_plants,
         cex = "Plant annual CO2 equivalent emissions (tons)",
@@ -271,40 +268,6 @@ mapview(nc_plants,
 
 ```
 
-
-```{r}
-
-#Mapping capacity of electricity generation in NC
-
-nc_plants$`Plant nameplate capacity (MW)` <- as.numeric(nc_plants$`Plant nameplate capacity (MW)`)
-class(nc_plants$`Plant nameplate capacity (MW)` )
-
-view(NC_joined)
-
-#Color by fuel category
-ggplot() +
-  geom_sf(data = nc_counties, fill = "grey") +
-  geom_sf(data = nc_plants, aes(color = nc_plants$`Plant primary fuel category`)) +
-  labs(color = "Fuel Category")
-
-#Mapview option
-mapview(nc_plants, zcol = "Plant primary fuel category") +
-  mapview(nc_counties, col.regions = "grey")
-
-
-#Size by capacity
-#Ggplot option
-ggplot() +
-  geom_sf(data = nc_counties, fill = "grey") +
-  geom_sf(data = nc_plants, aes(size = nc_plants$`Plant nameplate capacity (MW)`)) + 
-  theme(legend.position = "none")
-
-#Mapview option
-mapview(nc_plants, cex = "Plant nameplate capacity (MW)", zcol = "Plant primary fuel category") +
-  mapview(nc_counties, col.regions = "grey")
-
-
-```
 
 \newpage
 
