@@ -43,16 +43,26 @@ theme_set(default_theme)
 
 # Load your datasets
 
-energy_data <- read_excel(here("./Data/Raw/egrid2022_data.xlsx"), sheet = 4)
+energy_data <-
+  read_csv("./Data/Processed/NC_PowerPlants.csv")
 
-#Remove sub-headers
-energy_data <- energy_data[-1, ]
+nc_energy_total_cap <-
+  read_csv("./Data/Processed/NC_Total_Capacity.csv")
+
+nc_energy_emissions <-
+  read_csv("./Data/Processed/NC_Energy_Emissions.csv")
+
+nc_plants <- energy_data %>% 
+    st_as_sf(coords = c("Plant longitude","Plant latitude"), 
+             crs=4269) 
 
 #Load in spatial data
+
 nc_counties <- st_read(
   here("./Data/Spatial/North_Carolina_State_and_County_Boundary_Polygons.shp")) 
 
 #Reveal the CRS
+
 st_crs(nc_counties)$epsg
 
 
@@ -81,19 +91,12 @@ This project utilizes the Plant 2022 and the Generator 2022 data sheets. The Pla
 
 # Analysis
 
-
-
 ## Question 1: <insert specific question here and add additional subsections for additional questions below, if needed>
 
 ```{r}
-nc_energy_total_cap <- nc_energy %>%
-  group_by(`Plant primary fuel category`) %>%
-  summarise(total_capacity = sum(as.numeric(`Plant nameplate capacity (MW)`)))
 
-write.csv(nc_energy_total_cap, row.names = FALSE, 
-         file = "./Data/Processed/NC_Total_Capacity.csv")
-
-view(nc_energy_total_cap)
+#view(nc_energy_total_cap)
+#colnames(energy_data)
 
 NC_Plant_Cap_Plot <- ggplot(data = nc_energy_total_cap) +
   geom_bar(aes(x = `Plant primary fuel category`,
@@ -106,17 +109,9 @@ NC_Plant_Cap_Plot <- ggplot(data = nc_energy_total_cap) +
 
 print(NC_Plant_Cap_Plot)
 
-colnames(nc_plants)
+#Examine emissions by fuel type in North Carolina
 
-#Examine emissions by fuelt type in North Carolina
-
-nc_energy_emissions <- nc_energy %>%
-  group_by(`Plant primary fuel category`) %>% summarise(total_CO2e = sum(as.numeric(`Plant annual CO2 equivalent emissions (tons)`)))
-
-write.csv(nc_energy_emissions, row.names = FALSE, 
-         file = "./Data/Processed/NC_Energy_Emissions.csv")
-
-view(nc_energy_emissions)
+#view(nc_energy_emissions)
 
 NC_Plant_CO2e_Plot <- ggplot(data = nc_energy_emissions) +
   geom_bar(aes(x = `Plant primary fuel category`,
@@ -130,10 +125,11 @@ NC_Plant_CO2e_Plot <- ggplot(data = nc_energy_emissions) +
 
 print(NC_Plant_CO2e_Plot)
 
-
 #Create map on CO2 Equivalent Emissions by Fuel Type
 
-mapview(nc_plants, cex = "Plant.annual.CO2.equivalent.emissions..tons.", zcol = "Plant.primary.fuel.category", layer.name = "CO2 Equivalent Emissions (Tons)") +
+view(nc_plants)
+
+mapview(nc_plants, cex = "Plant annual CO2 equivalent emissions (tons)", zcol = "Plant primary fuel category", layer.name = "CO2 Equivalent Emissions (Tons)") +
   mapview(nc_counties, col.regions = "grey", layer.name = "Counties")
 
 

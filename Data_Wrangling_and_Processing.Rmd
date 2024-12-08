@@ -47,7 +47,7 @@ energy_data_selected <- energy_data %>%
          'Plant nameplate capacity (MW)', 'Plant annual net generation (MWh)',
          'Plant annual NOx emissions (tons)', 'Plant annual SO2 emissions (tons)',
          'Plant annual CO2 emissions (tons)', 'Plant annual CH4 emissions (lbs)',
-         'Plant annual N2O emissions (lbs)')
+         'Plant annual N2O emissions (lbs)', 'Plant annual CO2 equivalent emissions (tons)')
 ```
 
 ##C. Filter for North Carolina, the focus of this project
