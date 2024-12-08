@@ -71,7 +71,9 @@ st_crs(nc_counties)$epsg
 
 # Rationale and Research Questions
 
-
+1. What is the distribution and capacity of power plants generating electricity in North Carolina?
+2. What are the Environmental Justice implications of electricity power generation in North Carolina? Are power plants primarily located in low-income and disadvantaged communities?
+3. Do Environmental Justice communities face impact from carbon dioxide equivalent emissions due to power plants?
 
 \newpage
 
