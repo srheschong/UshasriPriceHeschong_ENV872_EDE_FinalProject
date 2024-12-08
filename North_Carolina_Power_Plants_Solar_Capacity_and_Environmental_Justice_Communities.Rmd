@@ -56,13 +56,21 @@ nc_plants <- energy_data %>%
     st_as_sf(coords = c("Plant longitude","Plant latitude"), 
              crs=4269) 
 
-#Load in spatial data
+nc_plant_emissions <- energy_data %>% 
+    st_as_sf(coords = c("Plant longitude","Plant latitude"), 
+             crs=4269)
+
+nc_EJ_powerplants <- read_csv("./Data/Processed/NC_joined.csv")
+
+EJ.NC_sf <- read_csv("./Data/Processed/NC_Env_Justice.csv") %>%
+  st_as_sf()
+
+#County spatial data
 
 nc_counties <- st_read(
   here("./Data/Spatial/North_Carolina_State_and_County_Boundary_Polygons.shp")) 
 
-#Reveal the CRS
-
+#Check the CRS
 st_crs(nc_counties)$epsg
 
 
@@ -156,26 +164,6 @@ mapview(nc_plants, cex = "Plant nameplate capacity (MW)", zcol = "Plant primary 
 ## Question 2: What are the Environmental Justice implications of electricity power generation in North Carolina? Are power plants primarily located in low-income and disadvantaged communities?
 
 ```{r}
-nc_tracts <- tracts(state = 'NC', year = 2020) %>%
-  select(GEOID, COUNTYFP, NAME)
-
-#load EJ data
-CEJST.data <- read.csv('Data/Raw/CEJST_data.csv')
-
-#load Fiona's processed plant data
-nc_plants <- st_read('Data/Processed/nc_plants.gpkg')
-
-#filter CEJST data for NC
-EJ.NC_data <- filter(CEJST.data, State.Territory == 'North Carolina')
-
-#Change spatial columns to factors in both datasets 
-EJ.NC_data$Census.tract.2010.ID <- as.factor(EJ.NC_data$Census.tract.2010.ID)
-nc_tracts$GEOID <- as.factor(nc_tracts$GEOID)
-
-#Join CEJST data to census spatial data
-EJ.NC_sf <- nc_tracts %>%
-  left_join(EJ.NC_data, by = c('GEOID'= 'Census.tract.2010.ID')) %>%
-  st_as_sf()
 
 #map which counties are classified as disadvantaged
 
@@ -184,17 +172,6 @@ mapview(EJ.NC_sf, zcol = 'Identified.as.disadvantaged',
 
 ```
 
-```{r}
-#join nc plant locations and CEJST data and select relevant columns
-
-EJ.NC_plus_plants <- st_join(EJ.NC_sf, nc_plants, join = st_intersects) %>%
-  select(Identified.as.disadvantaged, 
-         County.Name, 
-         Plant.FIPS.county.code, 
-         COUNTYFP, 
-         Plant.name,
-         Plant.primary.fuel.category)
-```
 
 
 ```{r}
@@ -204,7 +181,7 @@ mapview(EJ.NC_sf, zcol = 'Identified.as.disadvantaged',
   mapview(nc_plants, cex = 2,
           layer.name = 'Power Plant Locations')
 
-view(nc_plants)
+#view(nc_plants)
 
 #Map plants by fuel type and disadvantaged counties
 mapview(EJ.NC_sf, zcol = 'Identified.as.disadvantaged',
@@ -240,7 +217,6 @@ chisq_test
 
 
 ```{r}
-
 #Examine emissions by fuel type in North Carolina
 
 #view(nc_energy_emissions)
@@ -259,14 +235,12 @@ print(NC_Plant_CO2e_Plot)
 
 #Create map on CO2 Equivalent Emissions by Fuel Type
 
-#view(nc_plants)
-
-mapview(nc_plants,
+mapview(EJ.NC_sf, zcol = 'Identified.as.disadvantaged',
+        layer.name = 'County Disadvantaged Status') +
+  mapview(nc_plant_emissions,
         cex = "Plant annual CO2 equivalent emissions (tons)",
         zcol = "Plant primary fuel category",
-        layer.name = "CO2 Equivalent Emissions (Tons)") +
-  mapview(EJ.NC_sf, zcol = 'Identified.as.disadvantaged',
-        layer.name = 'County Disadvantaged Status')
+        layer.name = "CO2 Equivalent Emissions (Tons)")
 
 ```
 

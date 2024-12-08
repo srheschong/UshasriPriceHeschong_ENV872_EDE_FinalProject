@@ -106,7 +106,7 @@ NC_energy <- NC_energy %>%
 NC_joined <- merge(NC_energy, counties_summarized, by = "County.Name", all = FALSE)
 ```
 
-##3. Saving Processed Environmental Justice Data
+##3. Saving Processed Dataset with EJ locations and Power Plants
 
 ```{r}
 #Save joined data as a file in the processed data folder.
@@ -144,6 +144,34 @@ write.csv(NC_energy, row.names = FALSE,
 
 ```
 
+##7. Processing file with only Environmental Justice data
+
+```{r}
+nc_tracts <- tracts(state = 'NC', year = 2020) %>%
+  select(GEOID, COUNTYFP, NAME)
+
+#load EJ data
+CEJST.data <- read.csv('Data/Raw/CEJST_data.csv')
+
+#load Fiona's processed plant data
+nc_plants <- st_read('Data/Processed/nc_plants.gpkg')
+
+#filter CEJST data for NC
+EJ.NC_data <- filter(CEJST.data, State.Territory == 'North Carolina')
+
+#Change spatial columns to factors in both datasets 
+EJ.NC_data$Census.tract.2010.ID <- as.factor(EJ.NC_data$Census.tract.2010.ID)
+nc_tracts$GEOID <- as.factor(nc_tracts$GEOID)
+
+#Join CEJST data to census spatial data
+EJ.NC_sf <- nc_tracts %>%
+  left_join(EJ.NC_data, by = c('GEOID'= 'Census.tract.2010.ID')) %>%
+  st_as_sf()
+
+write.csv(EJ.NC_sf, row.names = FALSE, 
+         file = "./Data/Processed/NC_Env_Justice.csv")
+
+```
 
 ```
 
