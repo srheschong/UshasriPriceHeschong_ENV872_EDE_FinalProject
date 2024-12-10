@@ -180,6 +180,14 @@ print(Plant_Location_Size_Map)
 # Analysis
 
 ## Question 1: What is the distribution and capacity of power plants generating electricity in North Carolina?
+###Question 1a: Which type of plant has the highest capacity?
+The exploratory analysis above investigates which plant fuel category has the highest capacity. In total, gas, solar, nuclear, and coal have the highest capacities. However, this does not reflect the average capcity for each fuel type, as shown in figure X below. As displayed in this graph, nuclear has the highest average capacity, followed by coal, gas, wind, hydro, other, biomass, oil, and solar. Although has has the highest total capacity, each individual plant has a lower average capacity than nuclear and coal. This suggests there is a greater quantity of gas plants than nuclear or coal.
+
+###Question 1b: Which type of plant is the most common?
+Graph X shows the number of each type of plant. Solar is by far the most common, followed by oil, hydro, biomass, and gas. The reason solar does not have the highest total capacity in MW for NC (despite being the most common) is that it has the lowest average capacity for each plant (Graph X).
+
+###Question 1c: Where are most plants located?
+
 ```{r}
 #Which plant fuel categories have the highest capacity?
 print(NC_Plant_Cap_Plot)
