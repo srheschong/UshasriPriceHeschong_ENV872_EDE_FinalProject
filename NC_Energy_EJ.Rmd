@@ -16,11 +16,6 @@ editor_options:
 \newpage
 
 ```{r setup, include=FALSE}
-# Check your working directory
-
-getwd()
-here()
-
 # Load your packages
 
 library(dplyr)
@@ -30,6 +25,11 @@ library(tidyverse)
 library(readxl)
 library(sf)
 library(mapview)
+
+# Check your working directory
+
+getwd()
+here()
 
 # Set your ggplot theme
 
@@ -72,8 +72,6 @@ nc_counties <- st_read(
 
 #Check the CRS
 st_crs(nc_counties)$epsg
-
-
 ```
 
 
@@ -91,22 +89,13 @@ The eGRID 2022 data set provides information on electricity generation in the Un
 
 This project utilizes the Plant 2022 and the Generator 2022 data sheets. The Plant 2022 data sheet describes the capacity, location, and primary fuel source of every power plant in the United States. The Generator 2022 worksheet focuses on individual generators. Power plants often have multiple generators of various fuel types, (such as natural gas combined cycle plants). For this reason, the U.S. EPA includes a separate worksheet for generators specifically.
 
-
+Lastly, this project incorporates spatial data to understand the geographic relation between plants, 
+as well as between plants and EJ communities. The spatial data is from NC OneMap; it includes a vector polygon dataset delineating official boundaries of the North Carolina counties (in addition to the North Carolina state boundary as well). 
 
 \newpage
 
 # Exploratory Analysis 
-
-
-
-\newpage
-
-# Analysis
-
-## Question 1: What is the distribution and capacity of power plants generating electricity in North Carolina?
-
-```{r}
-
+```{r Plant Primary Fuel Cateory and Capacity Plots}
 #view(nc_energy_total_cap)
 #colnames(energy_data)
 
@@ -115,45 +104,86 @@ NC_Plant_Cap_Plot <- ggplot(data = nc_energy_total_cap) +
                y = `total_capacity`), fill = 'darkblue',
            stat = "identity") +
   labs(title = "Power Plant Capacity in North Carolina",
-       subtitle = "Asreeta Ushasri",
        x = "Plant Primary Fuel Category",
        y = "Nameplate Capacity (MW)")
 
 print(NC_Plant_Cap_Plot)
 
+#Find the frequency of each type of fuel category
+plant_counts <- nc_plants %>%
+  group_by(`Plant primary fuel category`) %>%
+  summarize(Count = n())
+#Plot it
+FuelType_Count_Plot <- 
+  ggplot(plant_counts, aes(x = `Plant primary fuel category`, y = Count, 
+                         fill = `Plant primary fuel category`)) +
+  geom_bar(stat = "identity") +  
+  geom_text(aes(label = Count), vjust = -0.5, size = 2.5) +
+  labs(title = "Number of Plants by Fuel Type", x = "Fuel Type", y = "Number of Plants") +
+  default_theme +
+  theme(axis.text.x = element_text(angle = 45, hjust = 0.3, size = 8))
+
+print(FuelType_Count_Plot)
+
 ```
 
 
+\newpage
+
+# Analysis
+
+## Question 1: What is the distribution and capacity of power plants generating electricity in North Carolina?
 ```{r}
+#Which plant fuel categories have the highest capacity?
+print(NC_Plant_Cap_Plot)
+#From this plot, it seems gas, solar, nuclear, and coal have the highest capacities.
+#Find the average capacity of each fuel type.
+average_capacity <- nc_plants %>% 
+  group_by(`Plant primary fuel category`) %>% 
+  summarize(avg_capacity = mean(`Plant nameplate capacity (MW)`))
+#This shows that nuclear has the highest average capacity, followed by coal, gas,
+#wind, hydro, other, biomass, oil, and solar. 
+
+#Which plant fuel categories are the most common?
+print(FuelType_Count_Plot)
+#This plot shows that solar is by far the most common, followed by oil, hydro, 
+#biomass, and gas.
+
+```
+
+
+```{r Spatial mapping of capacity of electricity generation}
 #Mapping capacity of electricity generation in NC
 
+#Convert capacity to numeric
 nc_plants$`Plant nameplate capacity (MW)` <-
   as.numeric(nc_plants$`Plant nameplate capacity (MW)`)
+#Check class
 class(nc_plants$`Plant nameplate capacity (MW)` )
-
-#view(NC_joined)
 
 #Color by fuel category
 ggplot() +
   geom_sf(data = nc_counties, fill = "grey") +
   geom_sf(data = nc_plants, aes(color = nc_plants$`Plant primary fuel category`)) +
-  labs(color = "Fuel Category")
+  labs(color = "Fuel Category",
+       title = "Spatial Distribution of Power Plants in NC") +
+  theme(legend.text = element_text(size = 8),
+        legend.title = element_text(size = 8))
   
 
-#Mapview option
-mapview(nc_plants, zcol = "Plant primary fuel category") +
-  mapview(nc_counties, col.regions = "grey")
+#Mapview option - allows for interactive use
+mapview(nc_plants, layer.name = "NC Power Plants", zcol = "Plant primary fuel category") +
+  mapview(nc_counties, layer.name = "NC Counties", col.regions = "grey")
 
-```
-
-
-```{r}
 #Size by capacity
 #Ggplot option
 ggplot() +
-  geom_sf(data = nc_counties, fill = "grey", layer.name = 'Counties') +
-  geom_sf(data = nc_plants, aes(size = nc_plants$`Plant nameplate capacity (MW)`), layer.name = 'Plant Primary Fuel Category') + 
-  theme(legend.position = "none")
+  geom_sf(data = nc_counties, fill = "grey") +
+  geom_sf(data = nc_plants, aes(size = nc_plants$`Plant nameplate capacity (MW)`)) +
+  labs(title = "Spatial Distribution of Power Plants in NC, Sized by Capacity",
+       size = "Capacity (MW)") +
+  default_theme +
+  theme(legend.position = "bottom") 
 
 #Mapview option
 mapview(nc_plants, cex = "Plant nameplate capacity (MW)", zcol = "Plant primary fuel category", layer.name = 'Plant Primary Fuel Category') +
