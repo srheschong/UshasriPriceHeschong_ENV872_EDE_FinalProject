@@ -127,7 +127,54 @@ print(FuelType_Count_Plot)
 
 ```
 
+```{r Spatial Analysis}
+#Mapping capacity of electricity generation in NC
 
+#Convert capacity to numeric
+nc_plants$`Plant nameplate capacity (MW)` <-
+  as.numeric(nc_plants$`Plant nameplate capacity (MW)`)
+#Check class
+class(nc_plants$`Plant nameplate capacity (MW)` )
+
+#Color by fuel category
+Plant_Location_Color_Plot <- 
+  ggplot() +
+  geom_sf(data = nc_counties, fill = "grey") +
+  geom_sf(data = nc_plants, aes(color = nc_plants$`Plant primary fuel category`)) +
+  labs(color = "Fuel Category",
+       title = "Spatial Distribution of Power Plants in NC") +
+  theme(legend.text = element_text(size = 8),
+        legend.title = element_text(size = 8))
+
+print(Plant_Location_Color_Plot)
+
+#Mapview option - allows for interactive use
+Plant_Location_Color_Map <- 
+  mapview(nc_plants, layer.name = "NC Power Plants", zcol = "Plant primary fuel category") +
+  mapview(nc_counties, layer.name = "NC Counties", col.regions = "grey")
+
+print(Plant_Location_Color_Map)
+
+#Size by capacity
+#Ggplot option
+Plant_Location_Size_Plot <- 
+  ggplot() +
+  geom_sf(data = nc_counties, fill = "grey") +
+  geom_sf(data = nc_plants, aes(size = nc_plants$`Plant nameplate capacity (MW)`)) +
+  labs(title = "Spatial Distribution of Power Plants in NC, Sized by Capacity",
+       size = "Capacity (MW)") +
+  default_theme +
+  theme(legend.position = "bottom") 
+
+print(Plant_Location_Size_Plot)
+
+#Mapview option
+Plant_Location_Size_Map <- 
+  mapview(nc_plants, cex = "Plant nameplate capacity (MW)", zcol = "Plant primary fuel category", layer.name = 'Plant Primary Fuel Category') +
+  mapview(nc_counties, col.regions = "grey", layer.name = 'Counties')
+
+print(Plant_Location_Size_Map)
+```
 \newpage
 
 # Analysis
@@ -149,45 +196,33 @@ print(FuelType_Count_Plot)
 #This plot shows that solar is by far the most common, followed by oil, hydro, 
 #biomass, and gas.
 
+#Where are most power plants in NC located?
+print(Plant_Location_Color_Map)
+#It is difficult to tell from this map.
+county_counts <- nc_plants %>% 
+  group_by(County.Name) %>% 
+  summarize(plant.counts = n())
+#Plot the counties with the top 10 highest number of plants.
+most_plants_counties <- county_counts %>% 
+  filter(plant.counts >= 17)
+Plants_by_County_Plot <- ggplot(most_plants_counties, 
+                                aes(x = `County.Name`, y = plant.counts, 
+                         fill = `County.Name`)) +
+  geom_bar(stat = "identity") +  
+  geom_text(aes(label = plant.counts), vjust = -0.5, size = 2.5) +
+  labs(title = "Number of Plants per County", x = "County", y = "Number of Plants",
+       fill = "County Name") +
+  default_theme +
+  theme(axis.text.x = element_text(angle = 45, hjust = 0.3, size = 8))
+
+print(Plants_by_County_Plot)
+#This plot shows the top 10 counties with the most plants. Robeson county has
+#the highest number of plants.
 ```
 
+```{r}
+#Is there a connection between type of plant and location?
 
-```{r Spatial mapping of capacity of electricity generation}
-#Mapping capacity of electricity generation in NC
-
-#Convert capacity to numeric
-nc_plants$`Plant nameplate capacity (MW)` <-
-  as.numeric(nc_plants$`Plant nameplate capacity (MW)`)
-#Check class
-class(nc_plants$`Plant nameplate capacity (MW)` )
-
-#Color by fuel category
-ggplot() +
-  geom_sf(data = nc_counties, fill = "grey") +
-  geom_sf(data = nc_plants, aes(color = nc_plants$`Plant primary fuel category`)) +
-  labs(color = "Fuel Category",
-       title = "Spatial Distribution of Power Plants in NC") +
-  theme(legend.text = element_text(size = 8),
-        legend.title = element_text(size = 8))
-  
-
-#Mapview option - allows for interactive use
-mapview(nc_plants, layer.name = "NC Power Plants", zcol = "Plant primary fuel category") +
-  mapview(nc_counties, layer.name = "NC Counties", col.regions = "grey")
-
-#Size by capacity
-#Ggplot option
-ggplot() +
-  geom_sf(data = nc_counties, fill = "grey") +
-  geom_sf(data = nc_plants, aes(size = nc_plants$`Plant nameplate capacity (MW)`)) +
-  labs(title = "Spatial Distribution of Power Plants in NC, Sized by Capacity",
-       size = "Capacity (MW)") +
-  default_theme +
-  theme(legend.position = "bottom") 
-
-#Mapview option
-mapview(nc_plants, cex = "Plant nameplate capacity (MW)", zcol = "Plant primary fuel category", layer.name = 'Plant Primary Fuel Category') +
-  mapview(nc_counties, col.regions = "grey", layer.name = 'Counties')
 
 ```
 
