@@ -25,7 +25,11 @@ library(tidyverse)
 library(readxl)
 library(sf)
 library(mapview)
+<<<<<<< HEAD
 library(viridis)
+=======
+library(readr)
+>>>>>>> a0aef6137d3f2f5129c0fce0a6310d4dc7ca4be4
 
 # Check your working directory
 
@@ -63,7 +67,12 @@ nc_plant_emissions <- energy_data %>%
 
 nc_EJ_powerplants <- read_csv("./Data/Processed/NC_joined.csv")
 
+<<<<<<< HEAD
 EJ.NC_sf <- read_csv("./Data/Processed/NC_Env_Justice.csv") %>% 
+=======
+
+EJ_NC_sf <- read_csv("./Data/Processed/NC_Env_Justice.csv") %>%
+>>>>>>> a0aef6137d3f2f5129c0fce0a6310d4dc7ca4be4
   st_as_sf()
 
 #County spatial data
