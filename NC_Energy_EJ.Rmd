@@ -188,15 +188,31 @@ Plant_Location_Size_Map <-
 print(Plant_Location_Size_Map)
 ```
 
-```{r EJ Analusos}
+```{r EJ Analyses}
 #map which counties are classified as disadvantaged
 
-mapview(EJ_NC_sf, zcol = 'Identified.as.disadvantaged',
+disadvantaged_map <- 
+  mapview(EJ_NC_sf, zcol = 'Identified.as.disadvantaged',
         layer.name = 'County Disadvantaged Status')
+print(disadvantaged_map)
+
+#Map plants and disadvantaged counties together
+disadvantaged_counties_map <- 
+  mapview(EJ_NC_sf, zcol = 'Identified.as.disadvantaged',
+        layer.name = 'County Disadvantaged Status') +
+  mapview(nc_plants, cex = 2,
+          layer.name = 'Power Plant Locations')
+print(disadvantaged_counties_map)
+
+#Map plants by fuel type and disadvantaged counties
+disadvantaged_plant_map <- 
+  mapview(EJ_NC_sf, zcol = 'Identified.as.disadvantaged',
+        layer.name = 'County Disadvantaged Status') +
+  mapview(nc_plants, cex = 4, zcol = "Plant primary fuel category", 
+          layer.name = 'Plant Primary Fuel Category') 
+print(disadvantaged_plant_map)
 
 ```
-
-
 \newpage
 
 # Analysis
@@ -280,33 +296,20 @@ print(Robeson_Plot)
 #Robeson County has primarily solar plants.
 ```
 
-## Question 2: What are the Environmental Justice implications of electricity power generation in North Carolina? Are power plants primarily located in low-income and disadvantaged communities?
-
-
-
-
-
+## Question 2: What are the Environmental Justice implications of electricity power generation in North Carolina? 
+###Question 2a: Are power plants primarily located in low-income and disadvantaged communities?
 
 ```{r}
-#Map plants and disadvantaged counties together
-mapview(EJ.NC_sf, zcol = 'Identified.as.disadvantaged',
-        layer.name = 'County Disadvantaged Status') +
-  mapview(nc_plants, cex = 2,
-          layer.name = 'Power Plant Locations')
+#Check locations of power plants and disadvantaged counties.
+print(disadvantaged_plant_map)
+#Hard to tell from this map. Run statistical analyses. 
 
-#view(nc_plants)
-
-#Map plants by fuel type and disadvantaged counties
-mapview(EJ.NC_sf, zcol = 'Identified.as.disadvantaged',
-        layer.name = 'County Disadvantaged Status') +
-  mapview(nc_plants, cex = 4, zcol = "Plant.primary.fuel.category", layer.name = 'Plant Primary Fuel Category') 
 
 ```
 
-
 ```{r are plant locations significant?}
 #run a Chi-square test
-observed <- table(EJ.NC_plus_plants$Identified.as.disadvantaged)
+observed <- table(EJ_NC_plus_plants$Identified.as.disadvantaged)
 expected <- table(EJ.NC_sf$Identified.as.disadvantaged)
 
 chisq_test <- chisq.test(observed, p = expected / sum(expected))
