@@ -17,6 +17,7 @@ library(here)
 library(tidyverse)
 library(readxl)
 library(sf)
+library(tigris)
 
 ```
 
@@ -168,8 +169,8 @@ EJ.NC_sf <- nc_tracts %>%
   left_join(EJ.NC_data, by = c('GEOID'= 'Census.tract.2010.ID')) %>%
   st_as_sf()
 
-write.csv(EJ.NC_sf, row.names = FALSE, 
-         file = "./Data/Processed/NC_Env_Justice.csv")
+st_write(EJ.NC_sf, 'Data/Processed/NC_Env_Justice.gpkg')
+
 
 ```
 
