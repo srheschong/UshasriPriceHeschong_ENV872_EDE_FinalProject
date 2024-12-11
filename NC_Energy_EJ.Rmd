@@ -176,6 +176,16 @@ Plant_Location_Size_Map <-
 
 print(Plant_Location_Size_Map)
 ```
+
+```{r EJ Analusos}
+#map which counties are classified as disadvantaged
+
+mapview(EJ.NC_sf, zcol = 'Identified.as.disadvantaged',
+        layer.name = 'County Disadvantaged Status')
+
+```
+
+
 \newpage
 
 # Analysis
@@ -188,6 +198,8 @@ The exploratory analysis above investigates which plant fuel category has the hi
 Graph X shows the number of each type of plant. Solar is by far the most common, followed by oil, hydro, biomass, and gas. The reason solar does not have the highest total capacity in MW for NC (despite being the most common) is that it has the lowest average capacity for each plant (Graph X).
 
 ###Question 1c: Where are most plants located?
+The ten counties with the most power plants are, in order, Robseon, Duplin, Wayne, Nash, Cleveland and Johnston (tied at 29), and Bladen, Catawba, Halifax, and Randolph (all tied at 17). To understand the breakdown of power plants by fuel type in the county with the most plants (Robeson), this county was isolated for analysis. The primary power plant type in Robeson County was solar (41 plants, versus biomass (2) and oil (1)).
+
 
 ```{r}
 #Which plant fuel categories have the highest capacity?
@@ -227,24 +239,37 @@ Plants_by_County_Plot <- ggplot(most_plants_counties,
 print(Plants_by_County_Plot)
 #This plot shows the top 10 counties with the most plants. Robeson county has
 #the highest number of plants.
-```
 
-```{r}
-#Is there a connection between type of plant and location?
+#Plot the breakdown of plant type for Robeson only. 
+#First, filter for Robeson.
+Robeson <- nc_plants %>% 
+  filter(nc_plants$County.Name == "Robeson")
+#Find the frequency of each type of fuel category
+Robeson_fuel <- Robeson %>%
+  group_by(`Plant primary fuel category`) %>%
+  summarize(Count = n())
 
+#Now plot by fuel type.
+Robeson_Plot <- 
+  ggplot(Robeson_fuel, aes(x = `Plant primary fuel category`, y = Count, 
+                         fill = `Plant primary fuel category`)) +
+  geom_bar(stat = "identity") +  
+  geom_text(aes(label = Count), vjust = -0.5, size = 2.5) +
+  labs(title = "Number of Plants by Fuel Type", 
+       subtitle = "Robeson County",
+       x = "Fuel Type", y = "Number of Plants",
+       fill = "Plant Primary Fuel Category") +
+  default_theme +
+  theme(axis.text.x = element_text(angle = 45, hjust = 0.3, size = 8))
 
+print(Robeson_Plot)
+#Robeson County has primarily solar plants.
 ```
 
 ## Question 2: What are the Environmental Justice implications of electricity power generation in North Carolina? Are power plants primarily located in low-income and disadvantaged communities?
 
-```{r}
 
-#map which counties are classified as disadvantaged
 
-mapview(EJ.NC_sf, zcol = 'Identified.as.disadvantaged',
-        layer.name = 'County Disadvantaged Status')
-
-```
 
 
 
