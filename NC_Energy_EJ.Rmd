@@ -65,6 +65,8 @@ nc_plant_emissions <- energy_data %>%
 
 nc_EJ_powerplants <- read_csv("./Data/Processed/NC_joined.csv")
 
+nc_plants_counties <- st_read('Data/Processed/nc_plants_EJ.gpkg')
+
 EJ_NC_sf <- st_read("./Data/Processed/NC_Env_Justice.gpkg")
 
 #County spatial data
@@ -308,9 +310,28 @@ print(disadvantaged_plant_map)
 ```
 
 ```{r are plant locations significant?}
+
+#join nc plant locations and CEJST data and select relevant columns
+EJ.NC_plus_plants <- st_join(EJ_NC_sf, nc_plants_counties, join = st_intersects) %>%
+  select(Identified.as.disadvantaged, 
+         County.Name, 
+         Plant.FIPS.county.code, 
+         COUNTYFP, 
+         Plant.name,
+         Plant.primary.fuel.category,
+         Percent.Black.or.African.American.alone,
+         Percent.American.Indian...Alaska.Native,
+         Percent.Asian,
+         Percent.Native.Hawaiian.or.Pacific,
+         Percent.two.or.more.races,
+         Percent.Hispanic.or.Latino,
+         Percent.other.races,
+         Percent.White,
+         Total.population)
+
 #run a Chi-square test
-observed <- table(EJ_NC_plus_plants$Identified.as.disadvantaged)
-expected <- table(EJ.NC_sf$Identified.as.disadvantaged)
+observed <- table(EJ.NC_plus_plants$Identified.as.disadvantaged)
+expected <- table(EJ_NC_sf$Identified.as.disadvantaged)
 
 chisq_test <- chisq.test(observed, p = expected / sum(expected))
 chisq_test
@@ -321,7 +342,7 @@ nc_unhealthy_plants <- EJ.NC_plus_plants %>%
 
 #Perform Chi-square test for worst types of energy to live by
 observed <- table(nc_unhealthy_plants$Identified.as.disadvantaged)
-expected <- table(EJ.NC_sf$Identified.as.disadvantaged)
+expected <- table(EJ_NC_sf$Identified.as.disadvantaged)
 
 chisq_test <- chisq.test(observed, p = expected / sum(expected))
 chisq_test
