@@ -25,8 +25,10 @@ library(tidyverse)
 library(readxl)
 library(sf)
 library(mapview)
+library(viridis)
 library(readr)
 library(tigris)
+
 
 # Check your working directory
 
@@ -63,7 +65,6 @@ nc_plant_emissions <- energy_data %>%
              crs=4269)
 
 nc_EJ_powerplants <- read_csv("./Data/Processed/NC_joined.csv")
-
 
 EJ_NC_sf <- st_read("./Data/Processed/NC_Env_Justice.gpkg") 
 
@@ -122,8 +123,8 @@ FuelType_Count_Plot <-
   geom_bar(stat = "identity") +  
   geom_text(aes(label = Count), vjust = -0.5, size = 2.5) +
   labs(title = "Number of Plants by Fuel Type", x = "Fuel Type", y = "Number of Plants") +
-  default_theme +
-  theme(axis.text.x = element_text(angle = 45, hjust = 0.3, size = 8))
+  theme(axis.text.x = element_text(angle = 45, hjust = 0.3, size = 8)) +
+  scale_fill_viridis(discrete = TRUE, option = "C")
 
 print(FuelType_Count_Plot)
 
@@ -147,14 +148,18 @@ Plant_Location_Color_Plot <-
   labs(color = "Fuel Category",
        title = "Spatial Distribution of Power Plants in NC") +
   theme(legend.text = element_text(size = 8),
-        legend.title = element_text(size = 8))
+        legend.title = element_text(size = 8)) +
+   scale_color_viridis_d(option = "C")
 
 print(Plant_Location_Color_Plot)
 
 #Mapview option - allows for interactive use
 Plant_Location_Color_Map <- 
-  mapview(nc_plants, layer.name = "NC Power Plants", zcol = "Plant primary fuel category") +
-  mapview(nc_counties, layer.name = "NC Counties", col.regions = "grey")
+  mapview(nc_plants, layer.name = "NC Power Plants", 
+          zcol = "Plant primary fuel category",
+          col.regions = viridis::viridis(length(unique(nc_plants$`Plant primary fuel category`)), 
+                                         option = "C")) +
+  mapview(nc_counties, layer.name = "NC Counties", col.regions = "grey") 
 
 print(Plant_Location_Color_Map)
 
@@ -163,17 +168,22 @@ print(Plant_Location_Color_Map)
 Plant_Location_Size_Plot <- 
   ggplot() +
   geom_sf(data = nc_counties, fill = "grey") +
-  geom_sf(data = nc_plants, aes(size = nc_plants$`Plant nameplate capacity (MW)`)) +
+  geom_sf(data = nc_plants, aes(size = nc_plants$`Plant nameplate capacity (MW)`,
+                                color = "red")) +
   labs(title = "Spatial Distribution of Power Plants in NC, Sized by Capacity",
        size = "Capacity (MW)") +
   default_theme +
-  theme(legend.position = "bottom") 
+  theme(legend.position = "bottom")
 
 print(Plant_Location_Size_Plot)
 
 #Mapview option
 Plant_Location_Size_Map <- 
-  mapview(nc_plants, cex = "Plant nameplate capacity (MW)", zcol = "Plant primary fuel category", layer.name = 'Plant Primary Fuel Category') +
+  mapview(nc_plants, cex = "Plant nameplate capacity (MW)", 
+          zcol = "Plant primary fuel category",
+          col.regions = viridis::viridis(length(unique(nc_plants$`Plant primary fuel category`)), 
+                                         option = "C"),
+          layer.name = 'Plant Primary Fuel Category') +
   mapview(nc_counties, col.regions = "grey", layer.name = 'Counties')
 
 print(Plant_Location_Size_Map)
@@ -229,15 +239,17 @@ county_counts <- nc_plants %>%
 most_plants_counties <- county_counts %>% 
   filter(plant.counts >= 17)
 Plants_by_County_Plot <- ggplot(most_plants_counties, 
-                                aes(x = `County.Name`, y = plant.counts, 
-                         fill = `County.Name`)) +
+                aes(x = fct_reorder(`County.Name`, plant.counts, .desc = TRUE), 
+                y = plant.counts, 
+                fill = plant.counts)) +
   geom_bar(stat = "identity") +  
   geom_text(aes(label = plant.counts), vjust = -0.5, size = 2.5) +
   labs(title = "Number of Plants per County", x = "County", y = "Number of Plants",
        fill = "County Name") +
   default_theme +
-  theme(axis.text.x = element_text(angle = 45, hjust = 0.3, size = 8))
-
+  theme(axis.text.x = element_text(angle = 45, hjust = 0.3, size = 8)) +
+  scale_fill_viridis(option = "C") 
+  
 print(Plants_by_County_Plot)
 #This plot shows the top 10 counties with the most plants. Robeson county has
 #the highest number of plants.
@@ -262,7 +274,8 @@ Robeson_Plot <-
        x = "Fuel Type", y = "Number of Plants",
        fill = "Plant Primary Fuel Category") +
   default_theme +
-  theme(axis.text.x = element_text(angle = 45, hjust = 0.3, size = 8))
+  theme(axis.text.x = element_text(angle = 45, hjust = 0.3, size = 8)) +
+  scale_fill_viridis_d(option = "C") 
 
 print(Robeson_Plot)
 #Robeson County has primarily solar plants.
