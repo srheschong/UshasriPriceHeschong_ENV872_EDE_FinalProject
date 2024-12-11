@@ -27,8 +27,11 @@ library(sf)
 library(mapview)
 library(viridis)
 library(readr)
+<<<<<<< HEAD
 library(tigris)
 
+=======
+>>>>>>> origin/main
 
 # Check your working directory
 
@@ -66,7 +69,16 @@ nc_plant_emissions <- energy_data %>%
 
 nc_EJ_powerplants <- read_csv("./Data/Processed/NC_joined.csv")
 
+<<<<<<< HEAD
 EJ_NC_sf <- st_read("./Data/Processed/NC_Env_Justice.gpkg") 
+=======
+
+EJ.NC_sf <- read_csv("./Data/Processed/NC_Env_Justice.csv")
+
+
+EJ_NC_sf <- read_csv("./Data/Processed/NC_Env_Justice.csv") %>%
+  st_as_sf()
+>>>>>>> origin/main
 
 #County spatial data
 
