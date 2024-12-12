@@ -6,8 +6,6 @@ course: "ENVRION872: Environmental Data Exploration"
 date: "2024-12-12"
 instructors: "Professor Luana Lima and Professor John Fay"
 output: pdf_document
-  fig_width: 7
-  fig_height: 5
 editor_options: 
 
   
@@ -33,6 +31,7 @@ library(mapview)
 library(viridis)
 library(readr)
 library(tigris)
+library(bookdown)
 
 # Check your working directory
 
@@ -125,7 +124,7 @@ print(NC_Plant_Cap_Plot)
 Although natural gas contributes the most to electricity capacity in North Carolina, the number of solar power plants in the state is notably high, displayed in Figure \@ref(fig:fig2). This indicates that North Carolina likely hosts numerous, small solar power plants across the state. Solar power plants are small in capacity, but remain the most popular renewable resource in the state.
 
 
-```{r fig2, fig.cap="Number of Power Plants in North Carolina by Fuel Type", echo=FALSE}
+```{r fig2, fig.cap="Number of Power Plants in North Carolina by Fuel Type", fig.height=5, echo=FALSE}
 #Find the frequency of each type of fuel category
 plant_counts <- nc_plants %>%
   group_by(`Plant primary fuel category`) %>%
@@ -146,7 +145,7 @@ Solar power plants are evenly throughout the state of North Carolina, depicted i
 
 In North Carolina, natural gas power plants are absent from the atlantic coast area. For the most part, natural gas power plants are instead located slightly inland (though spread across counties).
 
-```{r fig3, fig.cap="Power Plant Locations in North Carolina", echo=FALSE, message=FALSE, warning=FALSE}
+```{r fig3, fig.cap="Power Plant Locations in North Carolina", fig.height=5, echo=FALSE, message=FALSE, warning=FALSE}
 
 
 #Convert capacity to numeric
@@ -171,7 +170,8 @@ print(Plant_Location_Color_Plot)
 
 While the number of solar power plants is large, Figure \@ref(fig:<fig4>) showcases that each solar plant contains a relatively small electricity generation capacity. The natural gas and coal power plants, though lower in number, producer a larger share of electric power in the state.
 
-```{r fig4, fig.cap= "Power Plant Nameplate Capacity (MW) by Location in North Carolina", echo=FALSE, message=FALSE, warning=FALSE}
+
+```{r fig4, fig.cap= "Power Plant Nameplate Capacity (MW) by Location in North Carolina", fig.height=5, echo=FALSE, message=FALSE, warning=FALSE}
 
 #Size by capacity
 #Ggplot option
@@ -192,11 +192,16 @@ print(Plant_Location_Size_Plot)
 
 ```
 
+
+
+
 Figure \@ref(fig:fig5) maps census tract disadvantaged status, while Figure \@ref(fig:fig6) maps census tract disadvantaged status and power plant location. A few disadvantaged counties have a concentration of power plants in the Southern area of the state. However, the Raleigh metropolitan area is not classified as disadvantaged, but also has a notable concentration of power plants. Therefore, further investigation is required to understand if any correlation exists between census tract status and power plant locations.
 
 The fuel type of the power plant also impacts front-line communities. Coal and natural gas power plants influence air quality due to the release of criteria air pollutants such as NOx. There are a handful of natural gas and oil power plants located around Robeson and Scotland county, but there are also many solar power plants in these areas. The Raleigh metropolitan area also has a couple of natural gas power plants.
 
-```{r fig5, fig.cap="Disadvantaged Census Tracts in North Carolina", echo=FALSE, message=FALSE, warning=FALSE}
+
+
+```{r fig5, fig.cap="Disadvantaged Census Tracts in North Carolina", fig.height=5, echo=FALSE, message=FALSE, warning=FALSE}
 
 #Map which counties are classified as disadvantaged
 #Set colors for disadvantaged vs. not
@@ -214,7 +219,7 @@ print(disadvantaged_map_ggplot)
 ```
 
 
-```{r fig6, fig.cap="Disadvantaged Census Tracts and Power Plant Locations in North Carolina", echo=FALSE, message=FALSE, warning=FALSE}
+```{r fig6, fig.cap="Disadvantaged Census Tracts and Power Plant Locations in North Carolina", fig.height=5, echo=FALSE, message=FALSE, warning=FALSE}
 
 disadvantaged_tracts_map_ggplot <- ggplot() +
   geom_sf(data = EJ_NC_sf, aes(fill = Identified.as.disadvantaged), 
@@ -246,7 +251,7 @@ The exploratory analysis above investigates which plant fuel category has the hi
 
 Although natural gas contributes the most to electricity capacity in North Carolina, the number of solar power plants in the state is notably high, displayed below in Figure \@ref(fig:fig7). This graph shows the number of each type of plant. Solar is by far the most common, followed by oil, hydro, biomass, and gas. The reason solar does not have the highest total capacity in MW for NC (despite being the most common) is that it has the lowest average capacity for each plant.  This indicates that North Carolina likely hosts numerous, small solar power plants across the state. Solar power plants are small in capacity, but remain the most popular renewable resource in the state.
 
-```{r fig7, Plant Primary Fuel Cateory and Capacity Plot 2, fig.cap ="Number of Power Plants by Fuel Type in North Carolina", echo=FALSE, message=FALSE, warning=FALSE}
+```{r fig7, Plant Primary Fuel Cateory and Capacity Plot 2, fig.cap ="Number of Power Plants by Fuel Type in North Carolina", fig.height=5, echo=FALSE, message=FALSE, warning=FALSE}
 #Find the frequency of each type of fuel category
 plant_counts <- nc_plants %>%
   group_by(`Plant primary fuel category`) %>%
@@ -270,7 +275,7 @@ print(FuelType_Count_Plot)
 As depicted in Figure \@ref(fig:fig8), the ten counties with the most power plants are, in order, Robseon, Duplin, Wayne, Nash, Cleveland and Johnston (tied at 29), and Bladen, Catawba, Halifax, and Randolph (all tied at 17). To understand the breakdown of power plants by fuel type in the county with the most plants (Robeson), this county was isolated for analysis (Figure \@ref(fig:fig9)). The primary power plant type in Robeson County was solar (41 plants, versus biomass (2) and oil (1)).
 
 
-```{r fig8, fig.cap="Top Ten Counties with Power Plant Sites", echo=FALSE, message=FALSE, warning=FALSE}
+```{r fig8, fig.cap="Top Ten Counties with Power Plant Sites", fig.height=5, echo=FALSE, message=FALSE, warning=FALSE}
 
 ### Question 1c: Where are most plants located?
 #Where are most plants located?
@@ -302,7 +307,7 @@ print(Plants_by_County_Plot)
 ```
 
 
-```{r fig9, fig.cap="Primary Fuel Category of Robeson County Power Plants", echo=FALSE, message=FALSE, warning=FALSE}
+```{r fig9, fig.cap="Primary Fuel Category of Robeson County Power Plants", fig.height=5, echo=FALSE, message=FALSE, warning=FALSE}
 
 #Plot the breakdown of plant type for Robeson only. 
 #First, filter for Robeson.
