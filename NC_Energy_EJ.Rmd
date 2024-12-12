@@ -3,11 +3,10 @@ title: "Electricity Generation and Environmental Justice Communities in North Ca
 author: "Fiona Price, Summer Heschong, and Asreeta Ushasri"
 date: "2024-12-12"
 output:
+  word_document: default
   pdf_document:
     fig_caption: true
 editor_options: null
-
-
 ---
 
 \newpage
@@ -52,6 +51,8 @@ theme_set(default_theme)
 energy_data <-
   read_csv("./Data/Processed/NC_PowerPlants.csv")
 
+str(energy_data)
+
 nc_energy_total_cap <-
   read_csv("./Data/Processed/NC_Total_Capacity.csv")
 
@@ -72,6 +73,8 @@ nc_plants_counties <- st_read('Data/Processed/nc_plants_EJ.gpkg')
 
 EJ_NC_sf <- st_read("./Data/Processed/NC_Env_Justice.gpkg")
 
+str(EJ_NC_sf)
+
 #County spatial data
 
 nc_counties <- st_read(
@@ -87,15 +90,13 @@ nc_counties <- st_read(
 3. What are the Environmental Justice implications of electricity power generation in North Carolina? Are power plants primarily located in low-income and disadvantaged communities?
 
 
-\newpage
-
 # Dataset Information
 
-The eGRID 2022 data set provides information on electricity generation in the United States. The U.S. EPA publishes this data to describe capacity and geographic distribution of different energy resources. The 2022 data is the most recent data (published in 2024), because it requires time to process and compile this national data into a workbook.
+The eGRID 2022 data set provides information on electricity generation in the United States. The U.S. EPA publishes this data to describe capacity and geographic distribution of different energy resources. The 2022 data is the most recent data (published in 2024), because it requires time to process and compile this national data into a workbook. This data structure of EGRID is a data frame (imported from a xlsx file).
 
-This project utilizes the Plant 2022 and the Generator 2022 data sheets. The Plant 2022 data sheet describes the capacity, location, and primary fuel source of every power plant in the United States. The Generator 2022 worksheet focuses on individual generators. Power plants often have multiple generators of various fuel types, (such as natural gas combined cycle plants). For this reason, the U.S. EPA includes a separate worksheet for generators specifically.
+This project utilizes the Plant 2022 and the Generator 2022 data sheets. The Plant 2022 data sheet describes the capacity, location, and primary fuel source of every power plant in the United States. The Generator 2022 worksheet focuses on individual generators. Power plants often have multiple generators of various fuel types, (such as natural gas combined cycle plants). For this reason, the U.S. EPA includes a separate worksheet for generators specifically. This project wrangled data from the Plant 2022 workhseet on nameplate capacity, fuel type, location and emissions of power plants in North Carolina.
 
-To understand the impact of electricity generation on environmental justice, this project includes the Climate and Economic Justice Screening Tool. The U.S. Council on Environmental Quality developed this tool to highlight communities that face unprecedented impact from environmental issues.
+To understand the impact of electricity generation on environmental justice, this project includes the Climate and Economic Justice Screening Tool. The U.S. Council on Environmental Quality developed this tool to highlight communities that face unprecedented impact from environmental issues. The structure of this data is a data frame. This project wrangled demographics data and disadvantaged classification status from this dataset.
 
 Lastly, this project incorporates spatial data to understand the geographic relation between plants, as well as between plants and environmental justice (EJ) communities. The spatial data is from NC OneMap; it includes a vector polygon dataset delineating official boundaries of the North Carolina counties (in addition to the North Carolina state boundary as well). 
 
@@ -103,7 +104,7 @@ Lastly, this project incorporates spatial data to understand the geographic rela
 
 # Exploratory Analysis 
 
-As shown in \@ref(fig:fig1), natural gas generates the largest capacity of electricity power in North Carolina. The sum of natural gas power plants' nameplate capacities outranks solar, nuclear and coal. This follows broader trends in the United States. After technological advances in horizontal drilling and shale fracking in the 2010s, natural gas became economically more efficient to process (Rapier, 2024). Natural gas has therefore transformed into a primary fuel source for electricity generation in the United States.
+As shown in Figure 1, natural gas generates the largest capacity of electricity power in North Carolina. The sum of natural gas power plants' nameplate capacities outranks solar, nuclear and coal. This follows broader trends in the United States. After technological advances in horizontal drilling and shale fracking in the 2010s, natural gas became economically more efficient to process (Rapier, 2024). Natural gas has therefore transformed into a primary fuel source for electricity generation in the United States.
 
 ```{r fig1, fig.cap ="Total capacity (in MW) by Power Plant", echo=FALSE, message=FALSE, warning=FALSE}
 #view(nc_energy_total_cap)
@@ -120,7 +121,7 @@ NC_Plant_Cap_Plot <- ggplot(data = nc_energy_total_cap) +
 print(NC_Plant_Cap_Plot)
 ```
 
-Although natural gas contributes the most to electricity capacity in North Carolina, the number of solar power plants in the state is notably high, displayed in Figure \@ref(fig:fig2). This indicates that North Carolina likely hosts numerous, small solar power plants across the state. Solar power plants are small in capacity, but remain the most popular renewable resource in the state.
+Although natural gas contributes the most to electricity capacity in North Carolina, the number of solar power plants in the state is notably high, displayed in Figure 2. This indicates that North Carolina likely hosts numerous, small solar power plants across the state. Solar power plants are small in capacity, but remain the most popular renewable resource in the state.
 
 
 ```{r fig2, fig.cap="Number of Power Plants in North Carolina by Fuel Type", fig.height=4, echo=FALSE}
@@ -140,7 +141,7 @@ FuelType_Count_Plot <-
   scale_fill_viridis(discrete = TRUE, option = "C")
 ```
 
-Solar power plants are evenly throughout the state of North Carolina, depicted in Figure \@ref(fig:fig3), except in Western North Carolina along the Appalachian range. In this mountainous region, hydro power plants are more common than solar power plants.
+Solar power plants are evenly throughout the state of North Carolina, depicted in Figure 3, except in Western North Carolina along the Appalachian range. In this mountainous region, hydro power plants are more common than solar power plants.
 
 In North Carolina, natural gas power plants are absent from the atlantic coast area. For the most part, natural gas power plants are instead located slightly inland (though spread across counties).
 
@@ -167,7 +168,7 @@ print(Plant_Location_Color_Plot)
 
 ```
 
-While the number of solar power plants is large, Figure \@ref(fig:fig4) showcases that each solar plant contains a relatively small electricity generation capacity. The natural gas and coal power plants, though lower in number, producer a larger share of electric power in the state.
+While the number of solar power plants is large, Figure 4 showcases that each solar plant contains a relatively small electricity generation capacity. The natural gas and coal power plants, though lower in number, producer a larger share of electric power in the state.
 
 
 ```{r fig4, fig.cap= "Power Plant Nameplate Capacity (MW) by Location in North Carolina", fig.height=4, echo=FALSE, message=FALSE, warning=FALSE}
@@ -194,7 +195,7 @@ print(Plant_Location_Size_Plot)
 
 \newpage
 
-Figure \@ref(fig:fig5) maps census tract disadvantaged status, while Figure \@ref(fig:fig6) maps census tract disadvantaged status and power plant location. A few disadvantaged counties have a concentration of power plants in the Southern area of the state. However, the Raleigh metropolitan area is not classified as disadvantaged, but also has a notable concentration of power plants. Therefore, further investigation is required to understand if any correlation exists between census tract status and power plant locations.
+Figure 5 maps census tract disadvantaged status, while Figure 6 maps census tract disadvantaged status and power plant location. A few disadvantaged counties have a concentration of power plants in the Southern area of the state. However, the Raleigh metropolitan area is not classified as disadvantaged, but also has a notable concentration of power plants. Therefore, further investigation is required to understand if any correlation exists between census tract status and power plant locations.
 
 The fuel type of the power plant also impacts front-line communities. Coal and natural gas power plants influence air quality due to the release of criteria air pollutants such as NOx. There are a handful of natural gas and oil power plants located around Robeson and Scotland county, but there are also many solar power plants in these areas. The Raleigh metropolitan area also has a couple of natural gas power plants.
 
@@ -243,13 +244,13 @@ This project aims to explore primary fuel type of electricity generation along w
 
 ### Question 1a: Which type of plant has the highest capacity?
 
-The exploratory analysis above investigates which plant fuel category has the highest capacity. In total, gas, solar, nuclear, and coal have the highest generation capacities. However, this does not reflect the average capacity for each fuel type, as shown in figure  below. As displayed in this graph, nuclear has the highest average capacity, followed by coal, gas, wind, hydro, other, biomass, oil, and solar. Although natural gas has the highest total capacity, each individual plant has a lower average capacity than nuclear and coal. This suggests there is a greater quantity of natural gas plants than nuclear or coal.
+The exploratory analysis above investigates which plant fuel category has the highest capacity. Figure 1 illustrates that natural gas, solar, nuclear, and coal have the highest generation capacities. Although natural gas has the highest total capacity, each individual plant has a lower average capacity than nuclear and coal. This suggests there is a greater quantity of natural gas plants than nuclear or coal.
 
 \newpage
 
 ### Question 1b: Which type of plant is the most common?
 
-Although natural gas contributes the most to electricity capacity in North Carolina, the number of solar power plants in the state is notably high, displayed below in Figure \@ref(fig:fig7). This graph shows the number of each type of plant. Solar is by far the most common, followed by oil, hydro, biomass, and gas. The reason solar does not have the highest total capacity in MW for NC (despite being the most common) is that it has the lowest average capacity for each plant.  This indicates that North Carolina likely hosts numerous, small solar power plants across the state. Solar power plants are small in capacity, but remain the most popular renewable resource in the state.
+Although natural gas contributes the most to electricity capacity in North Carolina, the number of solar power plants in the state is notably high, displayed below in Figure 7. This graph shows the number of each type of plant. Solar is by far the most common, followed by oil, hydro, biomass, and gas. The reason solar does not have the highest total capacity in MW for NC (despite being the most common) is that it has the lowest average capacity for each plant.  This indicates that North Carolina likely hosts numerous, small solar power plants across the state. Solar power plants are small in capacity, but remain the most popular renewable resource in the state.
 
 ```{r fig7, Plant Primary Fuel Cateory and Capacity Plot 2, fig.cap ="Number of Power Plants by Fuel Type in North Carolina", fig.height=4, echo=FALSE, message=FALSE, warning=FALSE}
 #Find the frequency of each type of fuel category
@@ -272,7 +273,7 @@ print(FuelType_Count_Plot)
 
 
 ### Question 1c: Where are most plants located?
-As depicted in Figure \@ref(fig:fig8), the ten counties with the most power plants are, in order, Robseon, Duplin, Wayne, Nash, Cleveland and Johnston (tied at 29), and Bladen, Catawba, Halifax, and Randolph (all tied at 17). To understand the breakdown of power plants by fuel type in the county with the most plants (Robeson), this county was isolated for analysis (Figure \@ref(fig:fig9)). The primary power plant type in Robeson County was solar (41 plants, versus biomass (2) and oil (1)).
+As depicted in Figure 8, the ten counties with the most power plants are, in order, Robseon, Duplin, Wayne, Nash, Cleveland and Johnston (tied at 29), and Bladen, Catawba, Halifax, and Randolph (all tied at 17). To understand the breakdown of power plants by fuel type in the county with the most plants (Robeson), this county was isolated for analysis (Figure 9). The primary power plant type in Robeson County was solar (41 plants, versus biomass (2) and oil (1)).
 
 
 ```{r fig8, fig.cap="Top Ten Counties with Power Plant Sites", fig.height=4, echo=FALSE, message=FALSE, warning=FALSE}
@@ -342,7 +343,7 @@ print(Robeson_Plot)
 
 ### Question 2a: How do power plants contribute to carbon dioxide equivalent emissions in North Carolina?
 
-As shown in the bar chart on CO2 Equivalent Emissions (Figure \@ref(fig:fig10)), only natural gas and coal-fired power plants release large quantities of carbon emissions when generating electricity.
+As shown in the bar chart on CO2 Equivalent Emissions (Figure 10), only natural gas and coal-fired power plants release large quantities of carbon emissions when generating electricity.
 
 ```{r fig10, fig.cap="CO2 Equivalent Emissions from Electricity Generation in North Carolina", fig.height=4, echo=FALSE, message=FALSE, warning=FALSE}
 
@@ -361,7 +362,7 @@ NC_Plant_CO2e_Plot <- ggplot(data = nc_energy_emissions) +
 print(NC_Plant_CO2e_Plot)
 ```
 
-Analyzing this spatially (Figure \@ref(fig:fig11)), coal and natural gas power plants release more carbon dioxide equivalent emissions than renewable resources. This impacts counties with and without the disadvantaged status. Emissions from natural gas power plants in particular border disadvantaged communities, even when the power plant itself is not located in a disadvantaged community.
+Analyzing this spatially (Figure 11), coal and natural gas power plants release more carbon dioxide equivalent emissions than renewable resources. This impacts counties with and without the disadvantaged status. Emissions from natural gas power plants in particular border disadvantaged communities, even when the power plant itself is not located in a disadvantaged community.
 
 ```{r fig11, fig.cap="CO2 Equivalent Emissions from Power Plants (in tons) and Disadvantaged Communities in North Carolina", fig.height=4, echo=FALSE, message=FALSE, warning=FALSE}
 
@@ -391,11 +392,12 @@ print(disadvantaged_plant_emissions_map)
 This influences the cumulative environmental justice impacts in a community. Cumulative impacts is the combination of chemical and environmental stressors from multiple pathways which influence the health and well-being of a community (Bakkensen et al., 2024). In essence, cumulative impacts account for different sectors of the environment, such as air quality and water quality, which are typically management by different public departments. Because air quality and water quality are monitored separately, recognizing the overlapping effect that two separate environmental stressors have on a community is crucial to creating equitable environmental policies. Therefore, exposure to air pollutants on top of economic disadvantage harms the larger health outcomes of North Carolina counties.
 
 \newpage
+
 ### Question 2b: What is the distribution of NOx emissions from power plants in North Carolina?
 
 NOx is listed as one of the six criteria air pollutants by the U.S. EPA (Suh et al., 2000). Nitric oxides react with volatile organic compounds and sunlight to produce ground-level ozone (Suh et al., 2000). Ground-level ozone reacts negatively with lung tissue, causing burning in the lungs and breathing difficulties for vulnerable populations such as young kids, elderly adults, and individuals with disabilities or asthma (Suh et al., 2000).
 
-Mapping NOx emissions along with counties reveals that counties with and without disadvantaged status face NOx emissions when located close to fossil fuel power plants. In the map below (Figure \@ref(fig:fig12)), the dark circles represent NOx emissions from power plant sites. Larger circles indicate a greater amount of NOx emissions in tons. Examining correlation between census tract disadvantaged status and power plant location will reveal if power plants are disproportionately located close to disadvantaged communities. Given that natural gas and coal plants release high levels of NOx and carbon emissions, proximity to these power plants could impact public health outcomes.
+Mapping NOx emissions along with counties reveals that counties with and without disadvantaged status face NOx emissions when located close to fossil fuel power plants. In the map below (Figure 12)), the dark circles represent NOx emissions from power plant sites. Larger circles indicate a greater amount of NOx emissions in tons. Examining correlation between census tract disadvantaged status and power plant location will reveal if power plants are disproportionately located close to disadvantaged communities. Given that natural gas and coal plants release high levels of NOx and carbon emissions, proximity to these power plants could impact public health outcomes.
 
 
 ```{r fig12, fig.cap="NOx Emissions from Power Plants (in tons) and Disadvantaged Communities in North Carolina", fig.height=4, echo=FALSE, message=FALSE, warning=FALSE}
@@ -426,7 +428,7 @@ print(nox_emissions_map)
 ### Question 2c: What is the distribution of SO2 emissions from power plants in North Carolina?
 SO2 is another criteria air pollutant tracked by the U.S. EPA (Saxena, 2019). Sulfur dioxide contributes to acid rain, which deteriorates building materials and plant life. Acid rain does not directly impact human health, but indigesting and inhaling acidic compounds formed from sulfur is dangerous for humans (Saxena, 2019). This can also impact pulmonary issues (Saxena, 2019).
 
-As depicted in the map of SO2 emissions below (Figure \@ref(fig:fig13)), coal power plants contribute the most to sulfur dioxide. The black circles represent emissions; the larger the circle, the greater the power plant's emissions. A reduction in sulfur dioxide emissions is one of the advantages to natural gas over coal. Natural gas does not release as much sulfur as coal combustion. The nation-wide trend of shifting from coal to natural gas reduces the sulfur released in the air. Determining the impact of power plant proximity on disadvantaged communities requires further investigation into the correlation between location and environmental justice communities.
+As depicted in the map of SO2 emissions below (Figure 13), coal power plants contribute the most to sulfur dioxide. The black circles represent emissions; the larger the circle, the greater the power plant's emissions. A reduction in sulfur dioxide emissions is one of the advantages to natural gas over coal. Natural gas does not release as much sulfur as coal combustion. The nation-wide trend of shifting from coal to natural gas reduces the sulfur released in the air. Determining the impact of power plant proximity on disadvantaged communities requires further investigation into the correlation between location and environmental justice communities.
 
 ```{r fig13, fig.cap="SO2 Emissions from Power Plants (in tons) and Disadvantaged Communities in North Carolina", fig.height=4, echo=FALSE, message=FALSE, warning=FALSE}
 
