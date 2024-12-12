@@ -250,7 +250,7 @@ The exploratory analysis above investigates which plant fuel category has the hi
 
 ### Question 1b: Which type of plant is the most common?
 
-Although natural gas contributes the most to electricity capacity in North Carolina, the number of solar power plants in the state is notably high, displayed below in Figure 7. This graph shows the number of each type of plant. Solar is by far the most common, followed by oil, hydro, biomass, and gas. The reason solar does not have the highest total capacity in MW for NC (despite being the most common) is that it has the lowest average capacity for each plant.  This indicates that North Carolina likely hosts numerous, small solar power plants across the state. Solar power plants are small in capacity, but remain the most popular renewable resource in the state.
+Although natural gas contributes the most to electricity capacity in North Carolina, the number of solar power plants in the state is notably high, displayed below in Figure 6. This graph shows the number of each type of plant. Solar is by far the most common, followed by oil, hydro, biomass, and gas. The reason solar does not have the highest total capacity in MW for NC (despite being the most common) is that it has the lowest average capacity for each plant.  This indicates that North Carolina likely hosts numerous, small solar power plants across the state. Solar power plants are small in capacity, but remain the most popular renewable resource in the state.
 
 ```{r fig7, Plant Primary Fuel Cateory and Capacity Plot 2, fig.cap ="Number of Power Plants by Fuel Type in North Carolina", fig.height=4, echo=FALSE, message=FALSE, warning=FALSE}
 #Find the frequency of each type of fuel category
