@@ -9,9 +9,9 @@ The researchers' interest in Energy and Environmental Justice motivated the topi
 
 This analysis plans to address the following research questions:
 
-Question 1: What is the distribution and capacity of power plants generating electricity in North Carolina?
-Question 2: What are the Environmental Justice implications of electricity power generation in North Carolina? Are power plants primarily located in low-income and disadvantaged communities?
-Question 3: Do Environmental Justice communities face impact from carbon dioxide equivalent emissions due to power plants?
+1. What is the distribution and capacity of power plants generating electricity in North Carolina?
+2. Does electricity generation impact air quality through criteria air pollutant emissions in North Carolina?
+3. What are the Environmental Justice implications of electricity power generation in North Carolina? Are power plants primarily located in low-income and disadvantaged communities?
 
 
 ## Investigators
@@ -31,6 +31,9 @@ This repository contains a folder with the relevant data, including Raw, Process
 Include the column name, a description of the information, the class of data, and
 any units associated with the data. Create a list or table for each data file.>
 
+
+
 ## Scripts and code
-<list any software scripts/code contained in the repository and a description of
-their purpose.>
+The repository also contains a Data Wrangling and Processing RMD file, which contains the code to write the processed data sets. The Data Wrangling file showcases which worksheets in the EGRID 2022 data set were utilized in this analysis.
+
+The individual analyses folder contains three RMD files which were initial explorations by members on the research team, and one blank example of the final project template. Each researcher analyzed one of the three research questions in an individual RMD file, before compiling into the final product.

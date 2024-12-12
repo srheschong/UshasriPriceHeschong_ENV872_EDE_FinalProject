@@ -83,8 +83,9 @@ st_crs(nc_counties)$epsg
 # Rationale and Research Questions
 
 1. What is the distribution and capacity of power plants generating electricity in North Carolina?
-2. What are the Environmental Justice implications of electricity power generation in North Carolina? Are power plants primarily located in low-income and disadvantaged communities?
-3. Do Environmental Justice communities face impact from carbon dioxide equivalent emissions due to power plants?
+2. Does electricity generation impact air quality through criteria air pollutant emissions in North Carolina?
+3. What are the Environmental Justice implications of electricity power generation in North Carolina? Are power plants primarily located in low-income and disadvantaged communities?
+
 
 \newpage
 
@@ -321,9 +322,55 @@ print(Robeson_Plot)
 
 ```
 
-## Question 2: What are the Environmental Justice implications of electricity power generation in North Carolina? 
 
-###Question 2a: Are power plants primarily located in low-income and disadvantaged communities?
+## Question 2: Does electricity generation impact air quality through criteria air pollutant emissions in North Carolina?
+
+
+```{r}
+#Examine emissions by fuel type in North Carolina
+
+#view(nc_energy_emissions)
+
+NC_Plant_CO2e_Plot <- ggplot(data = nc_energy_emissions) +
+  geom_bar(aes(x = `Plant primary fuel category`,
+               y = `total_CO2e`), fill = 'darkred',
+           stat = "identity") +
+  labs(title = "CO2 Equivalent Emissions from
+       Electricity Fuel Type in North Carolina",
+       x = "Plant Primary Fuel Category",
+       y = "CO2 Equivalent Emissions (Tons)")
+
+print(NC_Plant_CO2e_Plot)
+
+#Create map on CO2 Equivalent Emissions by Fuel Type
+
+mapview(EJ_NC_sf, zcol = 'Identified.as.disadvantaged',
+        layer.name = 'County Disadvantaged Status') +
+  mapview(nc_plant_emissions,
+        cex = "Plant annual CO2 equivalent emissions (tons)",
+        zcol = "Plant primary fuel category",
+        layer.name = "CO2 Equivalent Emissions (Tons)")
+
+#Check types of other emissions
+
+colnames(nc_plant_emissions)
+
+#Analyze NOx
+#EPA defines this as a dangerous pollutant for public health
+
+mapview(EJ_NC_sf, zcol = 'Identified.as.disadvantaged',
+        layer.name = 'County Disadvantaged Status') +
+  mapview(nc_plant_emissions,
+        cex = "Plant annual NOx emissions (tons)",
+        zcol = "Plant primary fuel category",
+        layer.name = "NOx Emissions (Tons)")
+
+```
+
+
+## Question 3: What are the Environmental Justice implications of electricity power generation in North Carolina? 
+
+###Question 3a: Are power plants primarily located in low-income and disadvantaged communities?
 
 ```{r}
 #Check locations of power plants and disadvantaged counties.
@@ -373,50 +420,6 @@ chisq_test
 
 ```
 
-
-## Question 3: Do Environmental Justice communities face impact from air quality emissions due to power plants?
-
-
-```{r}
-#Examine emissions by fuel type in North Carolina
-
-#view(nc_energy_emissions)
-
-NC_Plant_CO2e_Plot <- ggplot(data = nc_energy_emissions) +
-  geom_bar(aes(x = `Plant primary fuel category`,
-               y = `total_CO2e`), fill = 'darkred',
-           stat = "identity") +
-  labs(title = "CO2 Equivalent Emissions from
-       Electricity Fuel Type in North Carolina",
-       x = "Plant Primary Fuel Category",
-       y = "CO2 Equivalent Emissions (Tons)")
-
-print(NC_Plant_CO2e_Plot)
-
-#Create map on CO2 Equivalent Emissions by Fuel Type
-
-mapview(EJ_NC_sf, zcol = 'Identified.as.disadvantaged',
-        layer.name = 'County Disadvantaged Status') +
-  mapview(nc_plant_emissions,
-        cex = "Plant annual CO2 equivalent emissions (tons)",
-        zcol = "Plant primary fuel category",
-        layer.name = "CO2 Equivalent Emissions (Tons)")
-
-#Check types of other emissions
-
-colnames(nc_plant_emissions)
-
-#Analyze NOx
-#EPA defines this as a dangerous pollutant for public health
-
-mapview(EJ_NC_sf, zcol = 'Identified.as.disadvantaged',
-        layer.name = 'County Disadvantaged Status') +
-  mapview(nc_plant_emissions,
-        cex = "Plant annual NOx emissions (tons)",
-        zcol = "Plant primary fuel category",
-        layer.name = "NOx Emissions (Tons)")
-
-```
 
 
 \newpage
