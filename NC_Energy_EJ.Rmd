@@ -3,13 +3,15 @@ title: "Electricity Generation and Environmental Justice Communities in North Ca
 author: "Fiona Price, Summer Heschong, and Asreeta Ushasri"
 date: "2024-12-12"
 subtitle: "Duke University, Nicholas School of the Environment"
-subtitle: "Instructors: Professor Luana Lima and Professor John Fay"
-subtitle: "ENVRION872: Environmental Data Exploration"
 output:
-  word_document: default
   pdf_document: default
+  word_document: default
   fig_caption: true
 editor_options: null
+
+subtitle: "Instructors: Professor Luana Lima and Professor John Fay"
+subtitle: "ENVRION872: Environmental Data Exploration"
+
 ---
 
 \newpage
@@ -18,8 +20,7 @@ editor_options: null
 \listoffigures 
 \newpage
 
-```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
-knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```{r setup, echo=FALSE, message=FALSE, warning=FALSE, include = FALSE}
 # Load your packages
 
 library(dplyr)
