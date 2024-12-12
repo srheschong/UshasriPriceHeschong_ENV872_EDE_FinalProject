@@ -197,6 +197,7 @@ Plant_Location_Size_Map <-
   mapview(nc_counties, col.regions = "grey", layer.name = 'Counties')
 
 print(Plant_Location_Size_Map)
+
 ```
 
 In North Carolina, natural gas power plants are absent from the atlantic coast area as depicted in Figure 3. For the most part, natural gas power plants are instead located slightly inland (though spread across counties).

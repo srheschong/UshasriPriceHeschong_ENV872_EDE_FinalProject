@@ -1,30 +1,202 @@
 ---
 title: "Data Exploration"
-author: "Fiona Price"
+author: "Summer Heschong, Fiona Price, and Asreeta Ushasri"
 date: "2024-11-30"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+# Load your packages
+
+library(dplyr)
+library(ggplot2)
+library(here)
+library(tidyverse)
+library(readxl)
+library(sf)
+library(mapview)
+library(viridis)
+library(readr)
+library(tigris)
+# Load your datasets
+
+energy_data <-
+  read_csv("./Data/Processed/NC_PowerPlants.csv")
+
+nc_energy_total_cap <-
+  read_csv("./Data/Processed/NC_Total_Capacity.csv")
+
+nc_energy_emissions <-
+  read_csv("./Data/Processed/NC_Energy_Emissions.csv")
+
+nc_plants <- energy_data %>% 
+    st_as_sf(coords = c("Plant longitude","Plant latitude"), 
+             crs=4269) 
+
+nc_plant_emissions <- energy_data %>% 
+    st_as_sf(coords = c("Plant longitude","Plant latitude"), 
+             crs=4269)
+
+nc_EJ_powerplants <- read_csv("./Data/Processed/NC_joined.csv")
+
+nc_plants_counties <- st_read('Data/Processed/nc_plants_EJ.gpkg')
+
+EJ_NC_sf <- st_read("./Data/Processed/NC_Env_Justice.gpkg")
+
+#County spatial data
+
+nc_counties <- st_read(
+  here("./Data/Spatial/North_Carolina_State_and_County_Boundary_Polygons.shp")) 
+
+#Check the CRS
+st_crs(nc_counties)$epsg
+
 ```
 
-## R Markdown
+## Column Names
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+```{r Explore Columm Names}
+#NC Counties
+colnames(nc_counties)
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+#EJ Powerplants
+colnames(nc_EJ_powerplants)
 
-```{r cars}
-summary(cars)
+#Energy Emissions
+colnames(nc_energy_emissions)
+
+#Total Capacity
+colnames(nc_energy_total_cap)
+
+#Plant Emissions
+colnames(nc_plant_emissions)
+
+#NC Power Plants
+colnames(nc_plants)
+
+#NC Power Plants and Counties
+colnames(nc_plants_counties)
+
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+## Data Exploration
+
+```{r Energy Data}
+#view(nc_energy_total_cap)
+#colnames(energy_data)
+
+NC_Plant_Cap_Plot <- ggplot(data = nc_energy_total_cap) +
+  geom_bar(aes(x = `Plant primary fuel category`,
+               y = `total_capacity`), fill = 'darkblue',
+           stat = "identity") +
+  labs(title = "Power Plant Capacity in North Carolina",
+       x = "Plant Primary Fuel Category",
+       y = "Nameplate Capacity (MW)")
+
+print(NC_Plant_Cap_Plot)
+
+#Find the frequency of each type of fuel category
+plant_counts <- nc_plants %>%
+  group_by(`Plant primary fuel category`) %>%
+  summarize(Count = n())
+#Plot it
+FuelType_Count_Plot <- 
+  ggplot(plant_counts, aes(x = `Plant primary fuel category`, y = Count, 
+                         fill = `Plant primary fuel category`)) +
+  geom_bar(stat = "identity") +  
+  geom_text(aes(label = Count), vjust = -0.5, size = 2.5) +
+  labs(title = "Number of Plants by Fuel Type", x = "Fuel Type", y = "Number of Plants") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 0.3, size = 8)) +
+  scale_fill_viridis(discrete = TRUE, option = "C")
+
+print(FuelType_Count_Plot)
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r Spatial Analysis}
+#Mapping capacity of electricity generation in NC
+
+#Convert capacity to numeric
+nc_plants$`Plant nameplate capacity (MW)` <-
+  as.numeric(nc_plants$`Plant nameplate capacity (MW)`)
+#Check class
+class(nc_plants$`Plant nameplate capacity (MW)` )
+
+#Color by fuel category
+Plant_Location_Color_Plot <- 
+  ggplot() +
+  geom_sf(data = nc_counties, fill = "grey") +
+  geom_sf(data = nc_plants, aes(color = nc_plants$`Plant primary fuel category`)) +
+  labs(color = "Fuel Category",
+       title = "Spatial Distribution of Power Plants in NC") +
+  theme(legend.text = element_text(size = 8),
+        legend.title = element_text(size = 8)) +
+   scale_color_viridis_d(option = "C")
+
+print(Plant_Location_Color_Plot)
+
+#Mapview option - allows for interactive use
+Plant_Location_Color_Map <- 
+  mapview(nc_plants, layer.name = "NC Power Plants", 
+          zcol = "Plant primary fuel category",
+          col.regions = viridis::viridis(length(unique(nc_plants$`Plant primary fuel category`)), 
+                                         option = "C")) +
+  mapview(nc_counties, layer.name = "NC Counties", col.regions = "grey") 
+
+print(Plant_Location_Color_Map)
+
+#Size by capacity
+#Ggplot option
+Plant_Location_Size_Plot <- 
+  ggplot() +
+  geom_sf(data = nc_counties, fill = "grey") +
+  geom_sf(data = nc_plants, aes(size = nc_plants$`Plant nameplate capacity (MW)`,
+                                color = "red")) +
+  labs(title = "Spatial Distribution of Power Plants in NC, Sized by Capacity",
+       size = "Capacity (MW)") +
+  default_theme +
+  theme(legend.position = "bottom")
+
+print(Plant_Location_Size_Plot)
+
+#Mapview option
+Plant_Location_Size_Map <- 
+  mapview(nc_plants, cex = "Plant nameplate capacity (MW)", 
+          zcol = "Plant primary fuel category",
+          col.regions = viridis::viridis(length(unique(nc_plants$`Plant primary fuel category`)), 
+                                         option = "C"),
+          layer.name = 'Plant Primary Fuel Category') +
+  mapview(nc_counties, col.regions = "grey", layer.name = 'Counties')
+
+print(Plant_Location_Size_Map)
+```
+
+
+
+```{r EJ Analyses}
+#map which counties are classified as disadvantaged
+
+disadvantaged_map <- 
+  mapview(EJ_NC_sf, zcol = 'Identified.as.disadvantaged',
+        layer.name = 'County Disadvantaged Status')
+print(disadvantaged_map)
+
+#Map plants and disadvantaged counties together
+disadvantaged_counties_map <- 
+  mapview(EJ_NC_sf, zcol = 'Identified.as.disadvantaged',
+        layer.name = 'County Disadvantaged Status') +
+  mapview(nc_plants, cex = 2,
+          layer.name = 'Power Plant Locations')
+print(disadvantaged_counties_map)
+
+#Map plants by fuel type and disadvantaged counties
+disadvantaged_plant_map <- 
+  mapview(EJ_NC_sf, zcol = 'Identified.as.disadvantaged',
+        layer.name = 'County Disadvantaged Status') +
+  mapview(nc_plants, cex = 4, zcol = "Plant primary fuel category", 
+          layer.name = 'Plant Primary Fuel Category') 
+print(disadvantaged_plant_map)
+
+```
