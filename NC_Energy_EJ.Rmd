@@ -137,7 +137,7 @@ print(FuelType_Count_Plot)
 ```
 
 
-As shown in Figure 1, natural gas generates the largest capacity of electricity power in North Carolina. The sum of natural gas power plants' nameplate capacities outranks solar, nuclear and coal. This follows broader trends in the United States. After technological advances in horizontal drilling and shale fracking in the 2010s, natural gas became economically more efficient to process. Natural gas has therefore transformed into a primary fuel source for electricity generation in the United States.
+As shown in Figure 1, natural gas generates the largest capacity of electricity power in North Carolina. The sum of natural gas power plants' nameplate capacities outranks solar, nuclear and coal. This follows broader trends in the United States. After technological advances in horizontal drilling and shale fracking in the 2010s, natural gas became economically more efficient to process (Rapier, 2024). Natural gas has therefore transformed into a primary fuel source for electricity generation in the United States.
 
 Although natural gas contributes the most to electricity capacity in North Carolina, the number of solar power plants in the state is notably high, displayed in Figure 2. This indicates that North Carolina likely hosts numerous, small solar power plants across the state. Solar power plants are small in capacity, but remain the most popular renewable resource in the state.
 
@@ -339,14 +339,20 @@ print(Robeson_Plot)
 ## Question 2: Does electricity generation impact air quality through criteria air pollutant emissions in North Carolina?
 
 ### Question 2a: How do power plants contribute to carbon dioxide equivalent emissions in North Carolina?
-
 As shown in the bar chart on CO2 Equivalent Emissions, only natural gas and coal-fired power plants release large quantities of carbon emissions when generating electricity.
-Analyzing this spatially, coal and natural gas power plants release more carbon dioxide equivalent emissions than renewable resources. This impacts counties with and without the disadvantaged status. Emissions from natural gas power plants in particular border disadvantaged communities, even when the power plant itself is not located in a disadvantaged community. This influences the cumulative environmental justice impacts in a community. Cumulative impacts is the "combination of chemical and non-chemical" environmental stressors which influences the health and well-being of a community (U.S. EPA, 2022). In essense, cumulative impacts account for different sectors of the environment, such as air quality and water quality, which are typically management by different public departments. Because air quality and water quality are monitored separately, recognizing the overlapping effect that two separate environmental stressors have on a community is crucial to creating equitable environmental policies. Therefore, exposure to air pollutants on top of economic disadvantage harms the larger health outcomes of North Carolina counties.
+Analyzing this spatially, coal and natural gas power plants release more carbon dioxide equivalent emissions than renewable resources. This impacts counties with and without the disadvantaged status. Emissions from natural gas power plants in particular border disadvantaged communities, even when the power plant itself is not located in a disadvantaged community.
+
+This influences the cumulative environmental justice impacts in a community. Cumulative impacts is the combination of chemical and environmental stressors from multiple pathways which influence the health and well-being of a community (Bakkensen et al., 2024). In essence, cumulative impacts account for different sectors of the environment, such as air quality and water quality, which are typically management by different public departments. Because air quality and water quality are monitored separately, recognizing the overlapping effect that two separate environmental stressors have on a community is crucial to creating equitable environmental policies. Therefore, exposure to air pollutants on top of economic disadvantage harms the larger health outcomes of North Carolina counties.
 
 ### Question 2b: What is the distribution of NOx emissions from power plants in North Carolina?
+NOx is listed as one of the six criteria air pollutants by the U.S. EPA (Suh et al., 2000). Nitric oxides react with volatile organic compounds and sunlight to produce ground-level ozone (Suh et al., 2000). Ground-level ozone reacts negatively with lung tissue, causing burning in the lungs and breathing difficulties for vulnerable populations such as young kids, elderly adults, and individuals with disabilities or asthma (Suh et al., 2000).
 
-NOx is listed as one of the six criteria air pollutants by the U.S. EPA. Nitric oxides react with volatile organic compounds and sunlight to produce ground-level ozone. Ground-level ozone reacts negatively with lung tissue, causing burning in the lungs and breathing difficulties for vulnerable populations (young kids, elderly adults, individuals with disabilities or asthma.) Mapping NOx emissions along with counties reveals that counties with and without disadvantaged status face NOx emissions when located close to fossil fuel power plants. Examining correlation between county status and power plant location will reveal if power plants are disproportionately located close to disadvantaged communities. Given that natural gas and coal plants release high levels of NOx and carbon emissions, proximity to these power plants could impact public health outocmes.
+Mapping NOx emissions along with counties reveals that counties with and without disadvantaged status face NOx emissions when located close to fossil fuel power plants. Examining correlation between county status and power plant location will reveal if power plants are disproportionately located close to disadvantaged communities. Given that natural gas and coal plants release high levels of NOx and carbon emissions, proximity to these power plants could impact public health outocmes.
 
+### Question 2c: What is the distribution of SO2 emissions from power plants in North Carolina?
+SO2 is another criteria air pollutant tracked by the U.S. EPA (Saxena, 2019). Sulfur dioxide contributes to acid rain, which deteriorates building materials and plant life. Acid rain does not directly impact human health, but indigesting and inhaling acidic compounds formed from sulfur is dangerous for humans (Saxena, 2019). This can also impact pulmonary issues (Saxena, 2019).
+
+As depicted in the map of SO2 emissions, coal power plants contribute the most to sulfur dioxide. This is one of the advantages to natural gas. Natural gas does not release as much sulfur as coal combustion. The nation-wide trend of shifting from coal to natural gas reduces the sulfure released in the air. Determining the impact of power plant proximity on disadvantaged communities requires further investigation into the correlation between location and environmental justice communities.
 
 ```{r}
 #Examine emissions by fuel type in North Carolina
@@ -386,6 +392,17 @@ mapview(EJ_NC_sf, zcol = 'Identified.as.disadvantaged',
         cex = "Plant annual NOx emissions (tons)",
         zcol = "Plant primary fuel category",
         layer.name = "NOx Emissions (Tons)")
+
+#Analyze SO2
+#EPA defines this as a dangerous pollutant for public health
+
+mapview(EJ_NC_sf, zcol = 'Identified.as.disadvantaged',
+        layer.name = 'County Disadvantaged Status') +
+  mapview(nc_plant_emissions,
+        cex = "Plant annual SO2 emissions (tons)",
+        zcol = "Plant primary fuel category",
+        layer.name = "SO2 Emissions (Tons)")
+
 
 ```
 
@@ -433,7 +450,6 @@ chisq_test
 ```
 
 
-
 \newpage
 
 # Summary and Conclusions
@@ -442,4 +458,23 @@ chisq_test
 \newpage
 
 # References
-<add references here if relevant, otherwise delete this section> 
+
+Bakkensen, L. A., Ma, L., Muehlenbachs, L., & Benitez, L. (2024).
+    Cumulative impacts in environmental justice: Insights from economics and policy.        *Regional Science and Urban Economics, 107*, 103993.
+    https://doi.org/10.1016/j.regsciurbeco.2024.103993
+
+Rapier, R. (2024, May 20). *How Natural Gas And Renewables Dethroned Coal In America*.      Forbes. https://www.forbes.com/sites/rrapier/2024/05/20/how-natural-gas-and-renewables-dethroned-coal-in-america/
+
+Saxena, P., & Sonwani, S. (2019). Primary Criteria Air Pollutants:
+    Environmental Health Effects. In Criteria Air Pollutants and their
+    Impact on Environmental Health (pp. 49–82). *Springer Singapore*.
+    https://doi.org/10.1007/978-981-13-9992-3_3
+    
+Suh, H. H., Bahadori, T., Vallarino, J., & Spengler, J. D. (2000).
+    Criteria air pollutants and toxic air pollutants. *Environmental Health                 Perspectives, 108*(suppl 4), 625–633.
+    https://doi.org/10.1289/ehp.00108s4625
+
+U.S. Environmental Protection Agency. (2024). *Emissions and Generation Resource            Integrated Database (eGRID), 2022*. https://www.epa.gov/egrid/download-data 
+
+U.S. Environmental Protection Agency. (2024). *Emissions and Generation Resource            Integrated Database (eGRID), Technical Guide 2022*.
+    https://www.epa.gov/egrid/egrid-technicalguide. 
