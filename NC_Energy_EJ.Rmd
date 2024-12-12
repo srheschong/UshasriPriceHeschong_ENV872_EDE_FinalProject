@@ -142,26 +142,6 @@ FuelType_Count_Plot <-
 
 Solar power plants are evenly throughout the state of North Carolina, depicted, except in Western North Carolina along the Appalachian range. In this mountainous region, hydro power plants are more common than solar power plants.
 
-```{r fig2, fig.cap="Number of power plants in North Carolina by fuel type. Solar, oil, and hydro are the most common.", echo=FALSE}
-
-#Find the frequency of each type of fuel category
-plant_capacity <- nc_plants %>%
-  group_by(`Plant primary fuel category`) %>%
-  summarize(average_capacity = mean(`Plant nameplate capacity (MW)`))
-#Plot it
-FuelCapacity_Plot <- 
-  ggplot(plant_capacity) +
-  geom_bar(aes(x = `Plant primary fuel category`, 
-               y = average_capacity),
-           stat = "identity",
-              fill = 'darkblue')+
-  labs(title = "Average Capacity (MW) by Fuel Type",
-       x = "Fuel Type", y = "Average Capacity (MW)") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 0.3, size = 8))
-print(FuelCapacity_Plot)
-```
-
-
 As shown in Figure \@ref(fig:fig1), natural gas generates the largest capacity of electricity power in North Carolina. The sum of natural gas power plants' nameplate capacities outranks solar, nuclear and coal. This follows broader trends in the United States. After technological advances in horizontal drilling and shale fracking in the 2010s, natural gas became economically more efficient to process (Rapier, 2024). Natural gas has therefore transformed into a primary fuel source for electricity generation in the United States.
 
 Although natural gas contributes the most to electricity capacity in North Carolina, the number of solar power plants in the state is notably high, displayed in Figure \@ref(fig:fig2). This indicates that North Carolina likely hosts numerous, small solar power plants across the state. Solar power plants are small in capacity, but remain the most popular renewable resource in the state.
