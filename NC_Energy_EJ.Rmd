@@ -337,9 +337,15 @@ print(Robeson_Plot)
 
 
 ## Question 2: Does electricity generation impact air quality through criteria air pollutant emissions in North Carolina?
-As shown in the bar chart on CO2 Equivalent Emissions, only natural gas and coal power plants release carbon emissions when generating electricity.
 
+### Question 2a: How do power plants contribute to carbon dioxide equivalent emissions in North Carolina?
 
+As shown in the bar chart on CO2 Equivalent Emissions, only natural gas and coal-fired power plants release large quantities of carbon emissions when generating electricity.
+Analyzing this spatially, coal and natural gas power plants release more carbon dioxide equivalent emissions than renewable resources. This impacts counties with and without the disadvantaged status. Emissions from natural gas power plants in particular border disadvantaged communities, even when the power plant itself is not located in a disadvantaged community. This influences the cumulative environmental justice impacts in a community. Cumulative impacts is the "combination of chemical and non-chemical" environmental stressors which influences the health and well-being of a community (U.S. EPA, 2022). In essense, cumulative impacts account for different sectors of the environment, such as air quality and water quality, which are typically management by different public departments. Because air quality and water quality are monitored separately, recognizing the overlapping effect that two separate environmental stressors have on a community is crucial to creating equitable environmental policies. Therefore, exposure to air pollutants on top of economic disadvantage harms the larger health outcomes of North Carolina counties.
+
+### Question 2b: What is the distribution of NOx emissions from power plants in North Carolina?
+
+NOx is listed as one of the six criteria air pollutants by the U.S. EPA. Nitric oxides react with volatile organic compounds and sunlight to produce ground-level ozone. Ground-level ozone reacts negatively with lung tissue, causing burning in the lungs and breathing difficulties for vulnerable populations (young kids, elderly adults, individuals with disabilities or asthma.) Mapping NOx emissions along with counties reveals that counties with and without disadvantaged status face NOx emissions when located close to fossil fuel power plants. Examining correlation between county status and power plant location will reveal if power plants are disproportionately located close to disadvantaged communities. Given that natural gas and coal plants release high levels of NOx and carbon emissions, proximity to these power plants could impact public health outocmes.
 
 
 ```{r}
