@@ -103,7 +103,7 @@ Lastly, this project incorporates spatial data to understand the geographic rela
 
 # Exploratory Analysis 
 
-```{r fig1, fig.cap ="Total capacity (in MW) for each type of power plant in North Carolina. Gas, solar, and nuclear have the highest total capacity.", echo=FALSE}
+```{r fig1, fig.cap="Total capacity (in MW) for each type of power plant in North Carolina. Gas, solar, and nuclear have the highest total capacity."}
 #view(nc_energy_total_cap)
 #colnames(energy_data)
 
@@ -118,7 +118,7 @@ NC_Plant_Cap_Plot <- ggplot(data = nc_energy_total_cap) +
 print(NC_Plant_Cap_Plot)
 ```
 
-```{r fig2, fig.cap ="Number of power plants in North Carolina by fuel type. Solar, oil, and hydro are the most common.", echo=FALSE}
+```{r fig2, fig.cap="Number of power plants in North Carolina by fuel type. Solar, oil, and hydro are the most common.", echo=FALSE}
 #Find the frequency of each type of fuel category
 plant_counts <- nc_plants %>%
   group_by(`Plant primary fuel category`) %>%
@@ -137,7 +137,7 @@ FuelType_Count_Plot <-
 print(FuelType_Count_Plot)
 ```
 
-```{r fig3, fig.cap ="Average capacity for each type of fuel category. Nuclear has the highest average capacity per plant.", echo=FALSE}
+```{r fig3, fig.cap="Average capacity for each type of fuel category. Nuclear has the highest average capacity per plant.", echo=FALSE}
 #Find the frequency of each type of fuel category
 plant_capacity <- nc_plants %>%
   group_by(`Plant primary fuel category`) %>%

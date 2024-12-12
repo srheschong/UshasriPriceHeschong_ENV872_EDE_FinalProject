@@ -186,7 +186,7 @@ print(Plant_Location_Size_Map)
 
 ###Environmental Justice Data
 ####Mapping of Disadvantaged Communities
-```{r EJ Analyses, fig.cap ="Map of NC Disadvantaged . The size of each plant is based off capacity (MW).", echo=FALSE}
+```{r EJ Analyses, echo=FALSE}
 #map which counties are classified as disadvantaged
 
 disadvantaged_map <- 
