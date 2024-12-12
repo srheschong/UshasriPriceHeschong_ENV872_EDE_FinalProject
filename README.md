@@ -184,6 +184,6 @@ Table: NC Electricity Generation Capacity
 |"total_capacity" | This is the sum of the nameplate capacity of all the power plants under that fuel category in North Carolina in MW.|
 
 ## Scripts and code
-The repository also contains a Data Wrangling and Processing RMD file, which contains the code to write the processed data sets. The Data Wrangling file showcases which worksheets in the EGRID 2022 data set were utilized in this analysis.
+The repository includes a Data Wrangling and Processing RMD file, which contains the code to write the processed data sets. The Data Wrangling file showcases which worksheets in the EGRID 2022 data set were utilized in this analysis. The repository also contains a Data Exploration RMD file, which examines the column names of the processed data sets and includes the code for initial exploratory analysis.
 
 The individual analyses folder contains three RMD files which were initial explorations by members on the research team, and one blank example of the final project template. Each researcher analyzed one of the three research questions in an individual RMD file, before compiling into the final product.
