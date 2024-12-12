@@ -55,7 +55,7 @@ st_crs(nc_counties)$epsg
 
 ## Column Names
 
-```{r Explore Columm Names}
+```{r Explore Columm Names, echo=FALSE}
 #NC Counties
 colnames(nc_counties)
 
@@ -85,7 +85,7 @@ colnames(nc_plants_counties)
 ###Energy Data 
 ####Plant Primary Fuel Cateory and Capacity Plots
 
-```{r Plant Primary Fuel Cateory and Capacity Plots}
+```{r Plant Primary Fuel Cateory and Capacity Plots, fig.cap ="Total capacity (in MW) for each type of power plant in North Carolina. Gas, solar, and nuclear have the highest total capacity.", echo=FALSE}
 #view(nc_energy_total_cap)
 #colnames(energy_data)
 
@@ -99,7 +99,9 @@ NC_Plant_Cap_Plot <- ggplot(data = nc_energy_total_cap) +
        y = "Nameplate Capacity (MW)")
 
 print(NC_Plant_Cap_Plot)
+```
 
+```{r Plant Primary Fuel Cateory and Capacity Plots, fig.cap ="Number of power plants in North Carolina by fuel type. Solar, oil, and hydro are the most common.", echo=FALSE}
 #Find the frequency of each type of fuel category
 plant_counts <- nc_plants %>%
   group_by(`Plant primary fuel category`) %>%
@@ -118,7 +120,7 @@ print(FuelType_Count_Plot)
 ```
 
 ####Plant Spatial Analysis Plots
-```{r Spatial Analysis}
+```{r Spatial Analysis, fig.cap ="Map of NC counties and power plants, colored by fuel category.", echo=FALSE}
 #Mapping capacity of electricity generation in NC
 
 #Convert capacity to numeric
@@ -139,7 +141,9 @@ Plant_Location_Color_Plot <-
    scale_color_viridis_d(option = "C")
 
 print(Plant_Location_Color_Plot)
+```
 
+```{R Spatial Analysis, fig.cap ="Interactive map of NC counties and power plants, colored by fuel category.", echo=FALSE}
 #Mapview option - allows for interactive use
 Plant_Location_Color_Map <- 
   mapview(nc_plants, layer.name = "NC Power Plants", 
@@ -149,7 +153,9 @@ Plant_Location_Color_Map <-
   mapview(nc_counties, layer.name = "NC Counties", col.regions = "grey") 
 
 print(Plant_Location_Color_Map)
+```
 
+```{r Spatial Analysis, fig.cap ="Map of NC counties and power plants. The size of each plant is based off capacity (MW).", echo=FALSE}
 #Size by capacity
 #Ggplot option
 Plant_Location_Size_Plot <- 
@@ -163,7 +169,9 @@ Plant_Location_Size_Plot <-
   theme(legend.position = "bottom")
 
 print(Plant_Location_Size_Plot)
+```
 
+```{r Spatial Analysis, fig.cap ="Interactive map of NC counties and power plants. The size of each plant is based off capacity (MW).", echo=FALSE}
 #Mapview option
 Plant_Location_Size_Map <- 
   mapview(nc_plants, cex = "Plant nameplate capacity (MW)", 
@@ -178,7 +186,7 @@ print(Plant_Location_Size_Map)
 
 ###Environmental Justice Data
 ####Mapping of Disadvantaged Communities
-```{r EJ Analyses}
+```{r EJ Analyses, fig.cap ="Map of NC Disadvantaged . The size of each plant is based off capacity (MW).", echo=FALSE}
 #map which counties are classified as disadvantaged
 
 disadvantaged_map <- 

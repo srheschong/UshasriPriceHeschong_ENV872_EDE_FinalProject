@@ -15,7 +15,8 @@ editor_options:
 \listoffigures 
 \newpage
 
-```{r setup, include=FALSE}
+```{r setup, echo=FALSE}
+knitr::opts_chunk$set(include = FALSE)
 # Load your packages
 
 library(dplyr)
@@ -100,7 +101,7 @@ Lastly, this project incorporates spatial data to understand the geographic rela
 
 # Exploratory Analysis 
 
-```{r Plant Primary Fuel Cateory and Capacity Plots}
+```{r Plant Primary Fuel Cateory and Capacity Plot 1, fig.cap ="Total capacity (in MW) for each type of power plant in North Carolina. Gas, solar, and nuclear have the highest total capacity.", echo=FALSE}
 #view(nc_energy_total_cap)
 #colnames(energy_data)
 
@@ -113,7 +114,9 @@ NC_Plant_Cap_Plot <- ggplot(data = nc_energy_total_cap) +
        y = "Nameplate Capacity (MW)")
 
 print(NC_Plant_Cap_Plot)
+```
 
+```{r Plant Primary Fuel Cateory and Capacity Plot 2, fig.cap ="Number of power plants in North Carolina by fuel type. Solar, oil, and hydro are the most common.", echo=FALSE}
 #Find the frequency of each type of fuel category
 plant_counts <- nc_plants %>%
   group_by(`Plant primary fuel category`) %>%
@@ -130,7 +133,6 @@ FuelType_Count_Plot <-
   scale_fill_viridis(discrete = TRUE, option = "C")
 
 print(FuelType_Count_Plot)
-
 ```
 
 
@@ -139,14 +141,12 @@ As shown in Figure 1, natural gas generates the largest capacity of electricity 
 Although natural gas contributes the most to electricity capacity in North Carolina, the number of solar power plants in the state is notably high, displayed in Figure 2. This indicates that North Carolina likely hosts numerous, small solar power plants across the state. Solar power plants are small in capacity, but remain the most popular renewable resource in the state.
 
 
-```{r Spatial Analysis}
+```{r Spatial Analysis 1, fig.cap="Location of power plants in NC, colored by fuel category. Most power plants are solar.", echo=FALSE}
 #Mapping capacity of electricity generation in NC
 
 #Convert capacity to numeric
 nc_plants$`Plant nameplate capacity (MW)` <-
   as.numeric(nc_plants$`Plant nameplate capacity (MW)`)
-#Check class
-class(nc_plants$`Plant nameplate capacity (MW)` )
 
 #Color by fuel category
 Plant_Location_Color_Plot <- 
@@ -161,18 +161,9 @@ Plant_Location_Color_Plot <-
    scale_color_viridis_d(option = "C")
 
 print(Plant_Location_Color_Plot)
+```
 
-#Mapview option - allows for interactive use
-Plant_Location_Color_Map <- 
-  mapview(nc_plants, layer.name = "NC Power Plants", 
-          zcol = "Plant primary fuel category",
-          col.regions =
-      viridis::viridis(length(unique(nc_plants$`Plant primary fuel category`)), 
-                                         option = "C")) +
-  mapview(nc_counties, layer.name = "NC Counties", col.regions = "grey") 
-
-print(Plant_Location_Color_Map)
-
+```{r Spatial Analysis 2, fig.cap="Location of power plants in NC, sized by capacity (MW). Despite solar plants being common, they have less capacity.", echo=FALSE}
 #Size by capacity
 #Ggplot option
 Plant_Location_Size_Plot <- 
@@ -185,22 +176,10 @@ Plant_Location_Size_Plot <-
          "Spatial Distribution of Power Plants in NC, Sized by Capacity",
        size = "Capacity (MW)") +
   default_theme +
-  theme(legend.position = "bottom")
+  theme(legend.position = "bottom") +
+  guides(color = "none")
 
 print(Plant_Location_Size_Plot)
-
-#Mapview option
-Plant_Location_Size_Map <- 
-  mapview(nc_plants, cex = "Plant nameplate capacity (MW)", 
-          zcol = "Plant primary fuel category",
-          col.regions =
-      viridis::viridis(length(unique(nc_plants$`Plant primary fuel category`)), 
-                                         option = "C"),
-          layer.name = 'Plant Primary Fuel Category') +
-  mapview(nc_counties, col.regions = "grey", layer.name = 'Counties')
-
-print(Plant_Location_Size_Map)
-
 ```
 
 In North Carolina, natural gas power plants are absent from the atlantic coast area as depicted in Figure 3. For the most part, natural gas power plants are instead located slightly inland (though spread across counties).
@@ -209,42 +188,41 @@ Solar power plants are evenly throughout the state of North Carolina, depicted, 
 While the number of solar power plants is large, Figure 4 showcases that each solar plant contains a relatively small electricity generation capacity. The natural gas and coal power plants, though lower in number, producer a larger share of electric power in the state.
 
 
-```{r EJ Analyses}
+```{r EJ Analys 1, fig.cap="Map of disadvantaged communities in NC. Disadvantaged census tracts are shown in red.", echo=FALSE}
 #Map which counties are classified as disadvantaged
 #Set colors for disadvantaged vs. not
 disadvantaged_colors <- c("False" = "grey", "True" = "red")
 
-disadvantaged_map <- 
-  mapview(EJ_NC_sf, zcol = 'Identified.as.disadvantaged',
-        layer.name = 'County Disadvantaged Status',
-        col.regions = disadvantaged_colors,
-        na.color = "white")
-print(disadvantaged_map)
+disadvantaged_map_ggplot <- ggplot(EJ_NC_sf) +
+  geom_sf(aes(fill = Identified.as.disadvantaged), size = 0.1) +
+  scale_fill_manual(
+    values = disadvantaged_colors,
+    na.value = "white", 
+    name = "Disadvantaged Status") +
+  labs(title = "Disadvantaged Census Tracts in NC") +
+  theme(legend.position = "bottom")
+print(disadvantaged_map_ggplot)
+```
 
+```{r EJ Analys 2, fig.cap="Map of disadvantaged communities in NC along with power plants. Disadvantaged census tracts are shown in red.", echo=FALSE}
 #Map plants and disadvantaged counties together
-disadvantaged_counties_map <- 
-  mapview(EJ_NC_sf, zcol = 'Identified.as.disadvantaged',
-        layer.name = 'County Disadvantaged Status',
-        col.regions = disadvantaged_colors,
-        na.color = "white") +
-  mapview(nc_plants, cex = 2,
-          layer.name = 'Power Plant Locations')
-print(disadvantaged_counties_map)
 
-#Map plants by fuel type and disadvantaged counties
-disadvantaged_plant_map <- 
-  mapview(EJ_NC_sf, zcol = 'Identified.as.disadvantaged',
-        layer.name = 'County Disadvantaged Status',
-        col.regions = disadvantaged_colors,
-        na.color = "white") +
-  mapview(nc_plants, cex = 4, zcol = "Plant primary fuel category", 
-          layer.name = 'Plant Primary Fuel Category') 
-print(disadvantaged_plant_map)
-
+disadvantaged_tracts_map_ggplot <- ggplot() +
+  geom_sf(data = EJ_NC_sf, aes(fill = Identified.as.disadvantaged), 
+          color = "black", size = 0.1) +
+  geom_sf(data = nc_plants, aes(geometry = geometry), 
+          color = "blue", size = 1, shape = 21, fill = "blue") +
+  scale_fill_manual(
+    values = disadvantaged_colors,
+    na.value = "white",  
+    name = "Disadvantaged Status") +
+  labs(title = "Disadvantaged Census Tracts \nand Power Plant Locations in NC") +
+  theme(legend.position = "bottom")
+print(disadvantaged_tracts_map_ggplot)
 ```
 
 
-Figure 5 maps county disadvantage status and power plant location. A few disadvantaged counties have a concentration of power plants in the Southern area of the state. However, the Raleigh metropolitan area is not classified as disadvantaged, but also has a notable concentration of power plants. Therefore, further investigation is required to understand if any correlation exists between county status and power plant locations.
+Figure 5 maps census tract disadvantage status and power plant location. A few disadvantaged counties have a concentration of power plants in the Southern area of the state. However, the Raleigh metropolitan area is not classified as disadvantaged, but also has a notable concentration of power plants. Therefore, further investigation is required to understand if any correlation exists between census tract status and power plant locations.
 
 The fuel type of the power plant also impacts front-line communities. Coal and natural gas power plants influence air quality due to the release of criteria air pollutants such as NOx. There are a handful of natural gas and oil power plants located around Robeson and Scotland county, but there are also many solar power plants in these areas. The Raleigh metropolitan area also has a couple of natural gas power plants.
 
@@ -257,42 +235,28 @@ This project aims to explore primary fuel type of electricity generation along w
 
 ## Question 1: What is the distribution and capacity of power plants generating electricity in North Carolina?
 
-###Question 1a: Which type of plant has the highest capacity?
+### Question 1a: Which type of plant has the highest capacity?
 
 The exploratory analysis above investigates which plant fuel category has the highest capacity. In total, gas, solar, nuclear, and coal have the highest generation capacities. However, this does not reflect the average capacity for each fuel type, as shown in figure X below. As displayed in this graph, nuclear has the highest average capacity, followed by coal, gas, wind, hydro, other, biomass, oil, and solar. Although has has the highest total capacity, each individual plant has a lower average capacity than nuclear and coal. This suggests there is a greater quantity of gas plants than nuclear or coal.
 
-###Question 1b: Which type of plant is the most common?
+### Question 1b: Which type of plant is the most common?
+
 Graph X shows the number of each type of plant. Solar is by far the most common, followed by oil, hydro, biomass, and gas. The reason solar does not have the highest total capacity in MW for NC (despite being the most common) is that it has the lowest average capacity for each plant (Graph X).
 
-###Question 1c: Where are most plants located?
+### Question 1c: Where are most plants located?
+
 The ten counties with the most power plants are, in order, Robseon, Duplin, Wayne, Nash, Cleveland and Johnston (tied at 29), and Bladen, Catawba, Halifax, and Randolph (all tied at 17). To understand the breakdown of power plants by fuel type in the county with the most plants (Robeson), this county was isolated for analysis. The primary power plant type in Robeson County was solar (41 plants, versus biomass (2) and oil (1)).
 
 
-```{r Question 1 Analysis}
-#Which plant fuel categories have the highest capacity?
-print(NC_Plant_Cap_Plot)
-#From this plot, it seems gas, solar, nuclear, coal have the highest capacities.
-#Find the average capacity of each fuel type.
-average_capacity <- nc_plants %>% 
-  group_by(`Plant primary fuel category`) %>% 
-  summarize(avg_capacity = mean(`Plant nameplate capacity (MW)`))
-#This shows that nuclear has the highest average capacity, followed by coal, gas,
-#wind, hydro, other, biomass, oil, and solar. 
-
-#Which plant fuel categories are the most common?
-print(FuelType_Count_Plot)
-#This plot shows that solar is by far the most common, followed by oil, hydro, 
-#biomass, and gas.
-
-#Where are most power plants in NC located?
-print(Plant_Location_Color_Map)
-#It is difficult to tell from this map.
+```{r Question 1 Analysis, fig.cap="Top ten counties with the most power plants. Robeson has the most plants in NC (44 total).", echo=FALSE}
+#Where are most plants located?
 county_counts <- nc_plants %>% 
   group_by(County.Name) %>% 
   summarize(plant.counts = n())
 #Plot the counties with the top 10 highest number of plants.
 most_plants_counties <- county_counts %>% 
   filter(plant.counts >= 17)
+
 Plants_by_County_Plot <- ggplot(most_plants_counties, 
                 aes(x = fct_reorder(`County.Name`,
                                     plant.counts, .desc = TRUE), 
@@ -307,11 +271,13 @@ Plants_by_County_Plot <- ggplot(most_plants_counties,
   theme(axis.text.x = element_text(angle = 45,
                                    hjust = 0.3, size = 8)) +
   scale_fill_viridis(option = "C") 
-  
+
 print(Plants_by_County_Plot)
 #This plot shows the top 10 counties with the most plants. Robeson county has
 #the highest number of plants.
+```
 
+```{r Robeson only, fig.cap="Breakdown of plant primary fuel category for Robeson's 44 plants. Most plants in Robeson are solar.", echo=FALSE}
 #Plot the breakdown of plant type for Robeson only. 
 #First, filter for Robeson.
 Robeson <- nc_plants %>% 
@@ -337,7 +303,6 @@ Robeson_Plot <-
 
 print(Robeson_Plot)
 #Robeson County has primarily solar plants.
-
 ```
 
 
@@ -352,17 +317,15 @@ This influences the cumulative environmental justice impacts in a community. Cum
 ### Question 2b: What is the distribution of NOx emissions from power plants in North Carolina?
 NOx is listed as one of the six criteria air pollutants by the U.S. EPA (Suh et al., 2000). Nitric oxides react with volatile organic compounds and sunlight to produce ground-level ozone (Suh et al., 2000). Ground-level ozone reacts negatively with lung tissue, causing burning in the lungs and breathing difficulties for vulnerable populations such as young kids, elderly adults, and individuals with disabilities or asthma (Suh et al., 2000).
 
-Mapping NOx emissions along with counties reveals that counties with and without disadvantaged status face NOx emissions when located close to fossil fuel power plants. Examining correlation between county status and power plant location will reveal if power plants are disproportionately located close to disadvantaged communities. Given that natural gas and coal plants release high levels of NOx and carbon emissions, proximity to these power plants could impact public health outocmes.
+Mapping NOx emissions along with counties reveals that counties with and without disadvantaged status face NOx emissions when located close to fossil fuel power plants. Examining correlation between census tract disadvantaged status and power plant location will reveal if power plants are disproportionately located close to disadvantaged communities. Given that natural gas and coal plants release high levels of NOx and carbon emissions, proximity to these power plants could impact public health outocmes.
 
 ### Question 2c: What is the distribution of SO2 emissions from power plants in North Carolina?
 SO2 is another criteria air pollutant tracked by the U.S. EPA (Saxena, 2019). Sulfur dioxide contributes to acid rain, which deteriorates building materials and plant life. Acid rain does not directly impact human health, but indigesting and inhaling acidic compounds formed from sulfur is dangerous for humans (Saxena, 2019). This can also impact pulmonary issues (Saxena, 2019).
 
 As depicted in the map of SO2 emissions, coal power plants contribute the most to sulfur dioxide. This is one of the advantages to natural gas. Natural gas does not release as much sulfur as coal combustion. The nation-wide trend of shifting from coal to natural gas reduces the sulfure released in the air. Determining the impact of power plant proximity on disadvantaged communities requires further investigation into the correlation between location and environmental justice communities.
 
-```{r}
+```{r CO2 Emissions 1, fig.cap="CO2 equivalent emissions from electricty fuel type in NC. Gas and coal are the only two types that produce CO2 emissions, warning=FALSE, with gas producing the most.", echo=FALSE}
 #Examine emissions by fuel type in North Carolina
-
-#view(nc_energy_emissions)
 
 NC_Plant_CO2e_Plot <- ggplot(data = nc_energy_emissions) +
   geom_bar(aes(x = `Plant primary fuel category`,
@@ -375,61 +338,80 @@ NC_Plant_CO2e_Plot <- ggplot(data = nc_energy_emissions) +
        y = "CO2 Equivalent Emissions (Tons)")
 
 print(NC_Plant_CO2e_Plot)
+```
 
+```{r C02 emissions 2, fig.cap="Disadvantaged census tracts and power plant CO2 emissions (tons) in NC. The black circles represent emissions; the larger the circle, warning=FALSE, the greater the power plant's emissions.", echo=FALSE}
 #Create map on CO2 Equivalent Emissions by Fuel Type
 
-mapview(EJ_NC_sf, zcol = 'Identified.as.disadvantaged',
-        layer.name = 'County Disadvantaged Status',
-        col.regions = disadvantaged_colors,
-        na.color = "white") +
-  mapview(nc_plant_emissions,
-        cex = "Plant annual CO2 equivalent emissions (tons)",
-        zcol = "Plant primary fuel category",
-        layer.name = "CO2 Equivalent Emissions (Tons)")
+disadvantaged_plant_emissions_map <- ggplot() +
+  geom_sf(data = EJ_NC_sf, aes(fill = Identified.as.disadvantaged), 
+          size = 0.1) +
+  geom_sf(data = nc_plant_emissions, 
+          aes(size = `Plant annual CO2 equivalent emissions (tons)`)) +
+            scale_fill_manual(
+    values = disadvantaged_colors,
+    na.value = "white",  
+    name = "Disadvantaged Status")+
+  scale_size_continuous(
+    name = "CO2 Emissions (Tons)",
+    range = c(1, 6)) + 
+  labs(title = "Disadvantaged Census Tracts and\nPower Plant CO2 Emissions in NC") +
+  theme(legend.position = "bottom") +
+  guides(size = "none")
 
-#Check types of other emissions
+# Print the map
+print(disadvantaged_plant_emissions_map)
+```
 
-colnames(nc_plant_emissions)
-
+```{r NOx emissions, fig.cap="Disadvantaged census tracts and power plant NOx emissions (tons) in NC. The black circles represent emissions; the larger the circle, warning=FALSE, the greater the power plant's emissions.", echo=FALSE}
 #Analyze NOx
 #EPA defines this as a dangerous pollutant for public health
+nox_emissions_map <- ggplot() +
+  geom_sf(data = EJ_NC_sf, aes(fill = Identified.as.disadvantaged), 
+          size = 0.1) +
+  geom_sf(data = nc_plant_emissions, 
+          aes(size = `Plant annual NOx emissions (tons)`)) +
+            scale_fill_manual(
+    values = disadvantaged_colors,
+    na.value = "white",  
+    name = "Disadvantaged Status")+
+  scale_size_continuous(
+    name = "NOx Emissions (Tons)",
+    range = c(1, 6)) + 
+  labs(title = "Disadvantaged Census Tracts and\nPower Plant NOx Emissions in NC") +
+  theme(legend.position = "bottom") +
+  guides(size = "none")
 
-mapview(EJ_NC_sf, zcol = 'Identified.as.disadvantaged',
-        layer.name = 'County Disadvantaged Status',
-        col.regions = disadvantaged_colors,
-        na.color = "white") +
-  mapview(nc_plant_emissions,
-        cex = "Plant annual NOx emissions (tons)",
-        zcol = "Plant primary fuel category",
-        layer.name = "NOx Emissions (Tons)")
+print(nox_emissions_map)
+```
 
+```{r SO2 emissions, fig.cap="Disadvantaged census tracts and power plant SO2 emissions (tons) in NC. The black circles represent emissions; the larger the circle, warning=FALSE, the greater the power plant's emissions.", echo=FALSE}
 #Analyze SO2
 #EPA defines this as a dangerous pollutant for public health
-
-mapview(EJ_NC_sf, zcol = 'Identified.as.disadvantaged',
-        layer.name = 'County Disadvantaged Status',
-        col.regions = disadvantaged_colors,
-        na.color = "white") +
-  mapview(nc_plant_emissions,
-        cex = "Plant annual SO2 emissions (tons)",
-        zcol = "Plant primary fuel category",
-        layer.name = "SO2 Emissions (Tons)")
-
-
+so2_emissions_map <- ggplot() +
+  geom_sf(data = EJ_NC_sf, aes(fill = Identified.as.disadvantaged), 
+          size = 0.1) +
+  geom_sf(data = nc_plant_emissions, 
+          aes(size = `Plant annual SO2 emissions (tons)`)) +
+            scale_fill_manual(
+    values = disadvantaged_colors,
+    na.value = "white",  
+    name = "Disadvantaged Status")+
+  scale_size_continuous(
+    name = "NOx Emissions (Tons)",
+    range = c(1, 6)) + 
+  labs(title = "Disadvantaged Census Tracts and\nPower Plant SO2 Emissions in NC") +
+  theme(legend.position = "bottom") +
+  guides(size = "none")
+so2_emissions_map
 ```
 
 
 ## Question 3: What are the Environmental Justice implications of electricity power generation in North Carolina? 
 
-###Question 3a: Are power plants primarily located in low-income and disadvantaged communities?
+### Question 3a: Are power plants primarily located in low-income and disadvantaged communities?
 
-```{r}
-#Check locations of power plants and disadvantaged counties.
-print(disadvantaged_plant_map)
-#Hard to tell from this map. Run statistical analyses. 
-```
-
-```{r are plant locations significant?}
+```{r are plant locations significant?, echo=FALSE}
 
 #join nc plant locations and CEJST data and select relevant columns
 EJ.NC_plus_plants <- st_join(EJ_NC_sf, nc_plants_counties,
