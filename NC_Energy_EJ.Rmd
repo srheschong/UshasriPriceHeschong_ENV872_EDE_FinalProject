@@ -168,7 +168,7 @@ print(Plant_Location_Color_Plot)
 
 ```
 
-While the number of solar power plants is large, Figure 4 showcases that each solar plant contains a relatively small electricity generation capacity. The natural gas and coal power plants, though lower in number, producer a larger share of electric power in the state.
+While the number of solar power plants is large, each solar plant contains a relatively small electricity generation capacity. The natural gas and coal power plants, though lower in number, producer a larger share of electric power in the state.
 
 
 ```{r fig4, fig.cap= "Power Plant Nameplate Capacity (MW) by Location in North Carolina", fig.height=4, echo=FALSE, message=FALSE, warning=FALSE}
@@ -195,7 +195,7 @@ print(Plant_Location_Size_Plot)
 
 \newpage
 
-Figure 5 maps census tract disadvantaged status, while Figure 6 maps census tract disadvantaged status and power plant location. A few disadvantaged counties have a concentration of power plants in the Southern area of the state. However, the Raleigh metropolitan area is not classified as disadvantaged, but also has a notable concentration of power plants. Therefore, further investigation is required to understand if any correlation exists between census tract status and power plant locations.
+Figure 4 maps census tract disadvantaged status, while Figure 5 maps census tract disadvantaged status and power plant location. A few disadvantaged counties have a concentration of power plants in the Southern area of the state. However, the Raleigh metropolitan area is not classified as disadvantaged, but also has a notable concentration of power plants. Therefore, further investigation is required to understand if any correlation exists between census tract status and power plant locations.
 
 The fuel type of the power plant also impacts front-line communities. Coal and natural gas power plants influence air quality due to the release of criteria air pollutants such as NOx. There are a handful of natural gas and oil power plants located around Robeson and Scotland county, but there are also many solar power plants in these areas. The Raleigh metropolitan area also has a couple of natural gas power plants.
 
@@ -337,7 +337,7 @@ print(Robeson_Plot)
 #Robeson County has primarily solar plants.
 ```
 
-\pagebreak
+\newpage
 
 ## Question 2: Does electricity generation impact air quality through criteria air pollutant emissions in North Carolina?
 
@@ -362,7 +362,7 @@ NC_Plant_CO2e_Plot <- ggplot(data = nc_energy_emissions) +
 print(NC_Plant_CO2e_Plot)
 ```
 
-\pagebreak
+\newpage
 
 Analyzing this spatially (Figure 10), coal and natural gas power plants release more carbon dioxide equivalent emissions than renewable resources. This impacts counties with and without the disadvantaged status. Emissions from natural gas power plants in particular border disadvantaged communities, even when the power plant itself is not located in a disadvantaged community.
 
@@ -393,7 +393,7 @@ print(disadvantaged_plant_emissions_map)
 
 This influences the cumulative environmental justice impacts in a community. Cumulative impacts is the combination of chemical and environmental stressors from multiple pathways which influence the health and well-being of a community (Bakkensen et al., 2024). In essence, cumulative impacts account for different sectors of the environment, such as air quality and water quality, which are typically management by different public departments. Because air quality and water quality are monitored separately, recognizing the overlapping effect that two separate environmental stressors have on a community is crucial to creating equitable environmental policies. Therefore, exposure to air pollutants on top of economic disadvantage harms the larger health outcomes of North Carolina counties.
 
-\npagebreak
+\pagebreak
 
 ### Question 2b: What is the distribution of NOx emissions from power plants in North Carolina?
 
@@ -425,7 +425,7 @@ nox_emissions_map <- ggplot() +
 print(nox_emissions_map)
 ```
 
-\pagebreak
+\newpage
 
 ### Question 2c: What is the distribution of SO2 emissions from power plants in North Carolina?
 SO2 is another criteria air pollutant tracked by the U.S. EPA (Saxena, 2019). Sulfur dioxide contributes to acid rain, which deteriorates building materials and plant life. Acid rain does not directly impact human health, but indigesting and inhaling acidic compounds formed from sulfur is dangerous for humans (Saxena, 2019). This can also impact pulmonary issues (Saxena, 2019).
@@ -514,30 +514,30 @@ This project highlights the complex interplay between energy production and envi
 
 
 Bakkensen, L. A., Ma, L., Muehlenbachs, L., & Benitez, L. (2024).
-\indent Cumulative impacts in environmental justice: Insights from economics and policy.
-\indent *Regional Science and Urban Economics, 107*, 103993.
-\indent https://doi.org/10.1016/j.regsciurbeco.2024.103993
+Cumulative impacts in environmental justice: Insights from economics and policy.
+Regional Science and Urban Economics, 107, 103993.
+https://doi.org/10.1016/j.regsciurbeco.2024.103993
 
 
-Rapier, R. (2024, May 20). *How Natural Gas And Renewables Dethroned Coal In America*.  \indent Forbes. https://www.forbes.com/sites/rrapier/2024/05/20/how-natural-gas-and-renewables-dethroned-coal-in-america/
+Rapier, R. (2024, May 20). How Natural Gas And Renewables Dethroned Coal In America.  Forbes. https://www.forbes.com/sites/rrapier/2024/05/20/how-natural-gas-and-renewables-dethroned-coal-in-america/
 
 
 Saxena, P., & Sonwani, S. (2019). Primary Criteria Air Pollutants:
-\indent Environmental Health Effects. In Criteria Air Pollutants and their
-\indent Impact on Environmental Health (pp. 49–82). *Springer Singapore*.
-\indent https://doi.org/10.1007/978-981-13-9992-3_3
+Environmental Health Effects. In Criteria Air Pollutants and their
+Impact on Environmental Health (pp. 49–82). Springer Singapore.
+https://doi.org/10.1007/978-981-13-9992-3_3
     
     
 Suh, H. H., Bahadori, T., Vallarino, J., & Spengler, J. D. (2000).
-\indent Criteria air pollutants and toxic air pollutants. *Environmental Health         \indent Perspectives, 108*(suppl 4), 625–633.
-\indent https://doi.org/10.1289/ehp.00108s4625
+Criteria air pollutants and toxic air pollutants. Environmental Health         Perspectives, 108(suppl 4), 625–633.
+https://doi.org/10.1289/ehp.00108s4625
 
 
-U.S. Council on Environmental Quality. (2024). *Climate and Economic Justice            \indent Screening Tool, 2022*. https://screeningtool.geoplatform.gov/en/
+U.S. Council on Environmental Quality. (2024). Climate and Economic Justice            Screening Tool, 2022. https://screeningtool.geoplatform.gov/en/
 
 
-U.S. Environmental Protection Agency. (2024). *Emissions and Generation Resource        \indent Integrated Database (eGRID), 2022*. https://www.epa.gov/egrid/download-data 
+U.S. Environmental Protection Agency. (2024). Emissions and Generation Resource        Integrated Database (eGRID), 2022. https://www.epa.gov/egrid/download-data 
 
 
-U.S. Environmental Protection Agency. (2024). *Emissions and Generation Resource        \indent Integrated Database (eGRID), Technical Guide 2022*.
-\indent https://www.epa.gov/egrid/egrid-technicalguide. 
+U.S. Environmental Protection Agency. (2024). Emissions and Generation Resource       Integrated Database (eGRID), Technical Guide 2022.
+https://www.epa.gov/egrid/egrid-technicalguide. 
