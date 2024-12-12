@@ -1,3 +1,8 @@
+---
+output:
+  html_document: default
+  pdf_document: default
+---
 # UshasriPriceHeschong_ENV872_EDE_FinalProject
 
 # Analysis of North Carolina Power Plants and Environmental Justice Communities
@@ -32,36 +37,145 @@ This repository contains a folder with the relevant data, including Raw, Process
 
 Table: CEJST Data
 
-Item | Value
-:-------------|:-------------
-Filename | CEJST_data.csv
-Date | 2022
-Source | U.S. Climate and Economic Justice Screening Tool
-Link | https://screeningtool.geoplatform.gov/en/methodology
-Column Names | Please see the CEJST_ColumnNames file in the Metadata folder within the Data folder. The CEJST-communities-list and CEQ-CEJST-Instructions documents contain details on the data collection methodology as well. 
-
+|Item | Value|
+|:-------------|:-------------|
+|Filename | CEJST_data.csv|
+|Date | 2022|
+|Source | U.S. Climate and Economic Justice Screening Tool|
+|Link | https://screeningtool.geoplatform.gov/en/methodology|
+|Column Names | Please see the CEJST_ColumnNames file in the Metadata folder within the Data folder. The CEJST-communities-list and CEQ-CEJST-Instructions documents describe the data collection methodology as well.|
 
 Table: EGRID Data
 
-Item | Value
-:-------------|:-------------
-Filename | egrid2022_data.xlsx
-Date | 2022
-Source | U.S. Environmental Protection Agency
-Link | https://www.epa.gov/egrid/download-data
-Column Names | Please see the EGRID2022ColumnNames_Contents file in the Metadata folder within the Data folder. The EGRID2022_Technical_Guide contains details on the data collection methodology as well.
+|Item | Value|
+|:-------------|:-------------|
+|Filename | egrid2022_data.xlsx|
+|Date | 2022|
+|Source | U.S. Environmental Protection Agency|
+|Link | https://www.epa.gov/egrid/download-data|
+|Column Names | Please see the EGRID2022ColumnNames_Contents file in the Metadata folder within the Data folder. The EGRID2022_Technical_Guide describes the data collection methodology as well.|
 
 ### Processed Data
 
-Table: EGRID Data
+Table: NC Energy Emissions
 
-Item | Value
-:-------------|:-------------
-Filename | egrid2022_data.xlsx
-Date | 2022
-Source | U.S. Environmental Protection Agency
-Link | https://www.epa.gov/egrid/download-data
-Column Names | Please see the EGRID2022ColumnNames_Contents file in the Metadata folder within the Data folder. The EGRID2022_Technical_Guide contains details on the data collection methodology as well.
+|Item | Value|
+|:-------------|:-------------|
+|Filename | NC_Energy_Emissions.csv|
+|Source | U.S. Environmental Protection Agency|
+|Link | https://www.epa.gov/egrid/download-data|
+|Column Names and Descriptions | |
+|"Plant primary fuel category" | This is the main source of fuel used by the power plant to generate electricity|
+|"total_CO2e" | This is the CO2 equivalent emissions in tons.|
+
+Table: NC Environmental Justice CSV
+
+|Item | Value|
+|:-------------|:-------------|
+|Filename | NC_Env_Justice.csv|
+|Source |  U.S. Climate and Economic Justice Screening Tool|
+|Link | https://screeningtool.geoplatform.gov/en/methodology|
+|Column Names and Descriptions | Please see the CEJST_ColumnNames file in the Metadata folder within the Data folder.|
+
+Table: NC Environmental Justice GPKG
+
+|Item | Value|
+|:-------------|:-------------|
+|Filename | NC_Env_Justice.gpkg|
+|Source |  U.S. Climate and Economic Justice Screening Tool|
+|Link | https://screeningtool.geoplatform.gov/en/methodology|
+|Column Names and Descriptions | Please see the CEJST_ColumnNames file in the Metadata folder within the Data folder.|
+
+Table: NC Power Plants and Environmental Justice CSV
+
+|Item | Value |
+|:-------------|:-------------|
+|Filename | NC_joined.csv |
+|Source |  U.S. EPA and U.S. Climate and Economic Justice Screening Tool |
+|Link | https://www.epa.gov/egrid/download-data and https://screeningtool.geoplatform.gov/en/methodology |
+|   | |
+|Column Descriptions | |
+|     | |
+|County Name | |
+|Data Year | |           
+|Plant state abbreviation | |
+|Plant name | |                        
+|Utility name | |
+|Plant latitude | |
+|Plant longitude | |
+|Number of units | |
+|Number of generators | |
+|Plant primary fuel category  | |
+|Plant nameplate capacity (MW) | |
+|Plant annual net generation (MWh) | |
+|Plant annual NOx emissions (tons)  | |
+|Plant annual SO2 emissions (tons)   | |
+|Plant annual CO2 emissions (tons) | |
+|Plant annual CH4 emissions (lbs) | |
+|Plant annual N2O emissions (lbs) | |
+|Plant annual CO2 equivalent emissions (tons) | |
+|Percentage of Community which Identifies as Black | |
+|Percentage of Community which Identifies that race is not applicable | |
+|Percentage of Community which Identifies as Asian | |                   
+|Percentage of Community which Identifies as Hawaiian | |
+|Percentage of Community which Identifies with Two Communities | |
+|Percentage of Community which Identifies as White | |
+|Percentage of Community which Identifies as Hispanic | |
+|Counties Classified as Disadvantage | |
+|Population | |
+|Percent of Community Facing Poverty | |
+|Levels of PM 2.5 in Air Quality | |
+
+
+Table: NC Power Plants and Environmental Justice GPKG
+
+| Item | Value |
+|:-------------|:-------------|
+|Filename | nc_plants_EJ.gpkg|
+|Source |  U.S. EPA and U.S. Climate and Economic Justice Screening Tool|
+|Link | https://www.epa.gov/egrid/download-data and https://screeningtool.geoplatform.gov/en/methodology|
+|Column Descriptions | Binary file, utilized for shape/geometry in maps|
+
+Table: NC Power Plants
+
+|Item | Value |
+|:-------------|:-------------|
+|Filename | NC_PowerPlants.csv|
+|Source |  U.S. EPA|
+|Link | https://www.epa.gov/egrid/download-data|
+|   | |
+|Column Descriptions | |
+|     | |
+|Data Year | |           
+|Plant state abbreviation | |
+|Plant name | |                        
+|Utility name | |
+|County Name | |
+|Plant latitude | |
+|Plant longitude | |
+|Number of units | |
+|Number of generators | |
+|Plant primary fuel category  | |
+|Plant nameplate capacity (MW) | |
+|Plant annual net generation (MWh) | |
+|Plant annual NOx emissions (tons)  | |
+|Plant annual SO2 emissions (tons)   | |
+|Plant annual CO2 emissions (tons) | |
+|Plant annual CH4 emissions (lbs) | |
+|Plant annual N2O emissions (lbs) | |
+|Plant annual CO2 equivalent emissions (tons) | |
+
+
+Table: NC Electricity Generation Capacity
+
+|Item | Value|
+|:-------------|:-------------|
+|Filename | NC_Total_Capacity.csv|
+|Source | U.S. Environmental Protection Agency|
+|Link | https://www.epa.gov/egrid/download-data|
+|Column Names and Descriptions | |
+|"Plant primary fuel category" | This is the main source of fuel used by the power plant to generate electricity |
+|"total_capacity" | This is the sum of the nameplate capacity of all the power plants under that fuel category in North Carolina in MW.|
 
 ## Scripts and code
 The repository also contains a Data Wrangling and Processing RMD file, which contains the code to write the processed data sets. The Data Wrangling file showcases which worksheets in the EGRID 2022 data set were utilized in this analysis.

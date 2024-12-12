@@ -113,6 +113,9 @@ NC_joined <- merge(NC_energy, counties_summarized, by = "County.Name", all = FAL
 #Save joined data as a file in the processed data folder.
 write.csv(NC_joined, row.names = FALSE, 
          file = "./Data/Processed/NC_joined.csv")
+
+colnames(NC_joined)
+
 ```
 
 ##4. Saving Processed Energy Capacity Data
@@ -124,6 +127,9 @@ nc_energy_total_cap <- NC_energy %>%
 
 write.csv(nc_energy_total_cap, row.names = FALSE, 
          file = "./Data/Processed/NC_Total_Capacity.csv")
+
+colnames(nc_energy_total_cap)
+
 ```
 
 ##5. Saving Processed Energy Emissions Data
@@ -142,6 +148,8 @@ write.csv(nc_energy_emissions, row.names = FALSE,
 
 write.csv(NC_energy, row.names = FALSE, 
          file = "./Data/Processed/NC_PowerPlants.csv")
+
+colnames(NC_energy)
 
 ```
 
