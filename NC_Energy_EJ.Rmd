@@ -99,6 +99,7 @@ Lastly, this project incorporates spatial data to understand the geographic rela
 \newpage
 
 # Exploratory Analysis 
+
 ```{r Plant Primary Fuel Cateory and Capacity Plots}
 #view(nc_energy_total_cap)
 #colnames(energy_data)
@@ -130,6 +131,10 @@ FuelType_Count_Plot <-
 print(FuelType_Count_Plot)
 
 ```
+
+As shown in Figure 1, natural gas generates the largest capacity of electricity power in North Carolina. The sum of natural gas power plants' nameplate capacities outranks solar, nuclear and coal. This follows broader trends in the United States. After technological advances in horizontal drilling and shale fracking in the 2010s, natural gas became economically more efficient to process. Natural gas has therefore transformed into a primary fuel source for electricity generation in the United States.
+
+Although natural gas contributes the most to electricity capacity in North Carolina, the number of solar power plants in the state is notably high (Figure 2). This indicates that North Carolina likely hosts numerous, small solar power plants across the state. Solar power plants are small in capacity, but remain the most popular renewable resource in the state.
 
 
 ```{r Spatial Analysis}
@@ -220,8 +225,10 @@ print(disadvantaged_plant_map)
 # Analysis
 
 ## Question 1: What is the distribution and capacity of power plants generating electricity in North Carolina?
+
 ###Question 1a: Which type of plant has the highest capacity?
-The exploratory analysis above investigates which plant fuel category has the highest capacity. In total, gas, solar, nuclear, and coal have the highest capacities. However, this does not reflect the average capcity for each fuel type, as shown in figure X below. As displayed in this graph, nuclear has the highest average capacity, followed by coal, gas, wind, hydro, other, biomass, oil, and solar. Although has has the highest total capacity, each individual plant has a lower average capacity than nuclear and coal. This suggests there is a greater quantity of gas plants than nuclear or coal.
+
+The exploratory analysis above investigates which plant fuel category has the highest capacity. In total, gas, solar, nuclear, and coal have the highest generation capacities. However, this does not reflect the average capacity for each fuel type, as shown in figure X below. As displayed in this graph, nuclear has the highest average capacity, followed by coal, gas, wind, hydro, other, biomass, oil, and solar. Although has has the highest total capacity, each individual plant has a lower average capacity than nuclear and coal. This suggests there is a greater quantity of gas plants than nuclear or coal.
 
 ###Question 1b: Which type of plant is the most common?
 Graph X shows the number of each type of plant. Solar is by far the most common, followed by oil, hydro, biomass, and gas. The reason solar does not have the highest total capacity in MW for NC (despite being the most common) is that it has the lowest average capacity for each plant (Graph X).
@@ -296,9 +303,11 @@ Robeson_Plot <-
 
 print(Robeson_Plot)
 #Robeson County has primarily solar plants.
+
 ```
 
 ## Question 2: What are the Environmental Justice implications of electricity power generation in North Carolina? 
+
 ###Question 2a: Are power plants primarily located in low-income and disadvantaged communities?
 
 ```{r}
@@ -377,6 +386,20 @@ mapview(EJ.NC_sf, zcol = 'Identified.as.disadvantaged',
         cex = "Plant annual CO2 equivalent emissions (tons)",
         zcol = "Plant primary fuel category",
         layer.name = "CO2 Equivalent Emissions (Tons)")
+
+#Check types of other emissions
+
+colnames(nc_plant_emissions)
+
+#Analyze NOx
+#EPA defines this as a dangerous pollutant for public health
+
+mapview(EJ.NC_sf, zcol = 'Identified.as.disadvantaged',
+        layer.name = 'County Disadvantaged Status') +
+  mapview(nc_plant_emissions,
+        cex = "Plant annual NOx emissions (tons)",
+        zcol = "Plant primary fuel category",
+        layer.name = "NOx Emissions (Tons)")
 
 ```
 
