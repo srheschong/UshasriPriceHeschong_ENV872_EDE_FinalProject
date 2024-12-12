@@ -2,21 +2,20 @@
 title: "Electricity Generation and Environmental Justice Communities in North Carolina"
 author: "Fiona Price, Summer Heschong, and Asreeta Ushasri"
 date: "2024-12-12"
-output: html_document
+output: pdf_document
 editor_options: 
   chunk_output_type: console
+  
 ---
 
 \newpage
 \tableofcontents 
 \newpage
-\listoftables 
-\newpage
 \listoffigures 
 \newpage
 
-```{r setup, echo=FALSE}
-knitr::opts_chunk$set(include = FALSE)
+```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
+
 # Load your packages
 
 library(dplyr)
@@ -324,7 +323,7 @@ SO2 is another criteria air pollutant tracked by the U.S. EPA (Saxena, 2019). Su
 
 As depicted in the map of SO2 emissions, coal power plants contribute the most to sulfur dioxide. This is one of the advantages to natural gas. Natural gas does not release as much sulfur as coal combustion. The nation-wide trend of shifting from coal to natural gas reduces the sulfure released in the air. Determining the impact of power plant proximity on disadvantaged communities requires further investigation into the correlation between location and environmental justice communities.
 
-```{r CO2 Emissions 1, fig.cap="CO2 equivalent emissions from electricty fuel type in NC. Gas and coal are the only two types that produce CO2 emissions, warning=FALSE, with gas producing the most.", echo=FALSE}
+```{r CO2 Emissions 1, fig.cap="CO2 equivalent emissions from electricty fuel type in NC. Gas and coal are the only two types that produce CO2 emissions, with gas producing the most.", echo=FALSE, message=FALSE, warning=FALSE}
 #Examine emissions by fuel type in North Carolina
 
 NC_Plant_CO2e_Plot <- ggplot(data = nc_energy_emissions) +
@@ -340,7 +339,7 @@ NC_Plant_CO2e_Plot <- ggplot(data = nc_energy_emissions) +
 print(NC_Plant_CO2e_Plot)
 ```
 
-```{r C02 emissions 2, fig.cap="Disadvantaged census tracts and power plant CO2 emissions (tons) in NC. The black circles represent emissions; the larger the circle, warning=FALSE, the greater the power plant's emissions.", echo=FALSE}
+```{r C02 emissions 2, fig.cap="Disadvantaged census tracts and power plant CO2 emissions (tons) in NC. The black circles represent emissions; the larger the circle, the greater the power plant's emissions.", echo=FALSE, message=FALSE, warning=FALSE}
 #Create map on CO2 Equivalent Emissions by Fuel Type
 
 disadvantaged_plant_emissions_map <- ggplot() +
@@ -363,7 +362,7 @@ disadvantaged_plant_emissions_map <- ggplot() +
 print(disadvantaged_plant_emissions_map)
 ```
 
-```{r NOx emissions, fig.cap="Disadvantaged census tracts and power plant NOx emissions (tons) in NC. The black circles represent emissions; the larger the circle, warning=FALSE, the greater the power plant's emissions.", echo=FALSE}
+```{r NOx emissions, fig.cap="Disadvantaged census tracts and power plant NOx emissions (tons) in NC. The black circles represent emissions; the larger the circle, the greater the power plant's emissions.", echo=FALSE, message=FALSE, warning=FALSE}
 #Analyze NOx
 #EPA defines this as a dangerous pollutant for public health
 nox_emissions_map <- ggplot() +
@@ -385,7 +384,7 @@ nox_emissions_map <- ggplot() +
 print(nox_emissions_map)
 ```
 
-```{r SO2 emissions, fig.cap="Disadvantaged census tracts and power plant SO2 emissions (tons) in NC. The black circles represent emissions; the larger the circle, warning=FALSE, the greater the power plant's emissions.", echo=FALSE}
+```{r SO2 emissions, fig.cap="Disadvantaged census tracts and power plant SO2 emissions (tons) in NC. The black circles represent emissions; the larger the circle, the greater the power plant's emissions.", echo=FALSE, message=FALSE, warning=FALSE}
 #Analyze SO2
 #EPA defines this as a dangerous pollutant for public health
 so2_emissions_map <- ggplot() +
@@ -411,7 +410,7 @@ so2_emissions_map
 
 ### Question 3a: Are power plants primarily located in low-income and disadvantaged communities?
 
-```{r are plant locations significant?, echo=FALSE}
+```{r are plant locations significant?, echo=FALSE, message=FALSE, warning=FALSE}
 
 #join nc plant locations and CEJST data and select relevant columns
 EJ.NC_plus_plants <- st_join(EJ_NC_sf, nc_plants_counties,
