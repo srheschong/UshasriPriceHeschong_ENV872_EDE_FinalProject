@@ -95,7 +95,9 @@ The eGRID 2022 data set provides information on electricity generation in the Un
 
 This project utilizes the Plant 2022 and the Generator 2022 data sheets. The Plant 2022 data sheet describes the capacity, location, and primary fuel source of every power plant in the United States. The Generator 2022 worksheet focuses on individual generators. Power plants often have multiple generators of various fuel types, (such as natural gas combined cycle plants). For this reason, the U.S. EPA includes a separate worksheet for generators specifically.
 
-Lastly, this project incorporates spatial data to understand the geographic relation between plants, as well as between plants and EJ communities. The spatial data is from NC OneMap; it includes a vector polygon dataset delineating official boundaries of the North Carolina counties (in addition to the North Carolina state boundary as well). 
+To understand the impact of electricity generation on environmental justice, this project
+
+Lastly, this project incorporates spatial data to understand the geographic relation between plants, as well as between plants and environmental justice (EJ) communities. The spatial data is from NC OneMap; it includes a vector polygon dataset delineating official boundaries of the North Carolina counties (in addition to the North Carolina state boundary as well). 
 
 \newpage
 

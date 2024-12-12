@@ -27,11 +27,41 @@ EGRID 2022: The U.S. Environmental Protection Agency publishes data on the statu
 This repository contains a folder with the relevant data, including Raw, Processed and Spatial. The Data Wrangling and Processing RMD file depicts how the raw data sets were compiled for the analysis.
 
 ## Metadata
-<For each data file in the repository, describe the data contained in each column.
-Include the column name, a description of the information, the class of data, and
-any units associated with the data. Create a list or table for each data file.>
+
+### Raw Data
+
+Table: CEJST Data
+
+Item | Value
+:-------------|:-------------
+Filename | CEJST_data.csv
+Date | 2022
+Source | U.S. Climate and Economic Justice Screening Tool
+Link | https://screeningtool.geoplatform.gov/en/methodology
+Column Names | Please see the CEJST_ColumnNames file in the Metadata folder within the Data folder. The CEJST-communities-list and CEQ-CEJST-Instructions documents contain details on the data collection methodology as well. 
 
 
+Table: EGRID Data
+
+Item | Value
+:-------------|:-------------
+Filename | egrid2022_data.xlsx
+Date | 2022
+Source | U.S. Environmental Protection Agency
+Link | https://www.epa.gov/egrid/download-data
+Column Names | Please see the EGRID2022ColumnNames_Contents file in the Metadata folder within the Data folder. The EGRID2022_Technical_Guide contains details on the data collection methodology as well.
+
+### Processed Data
+
+Table: EGRID Data
+
+Item | Value
+:-------------|:-------------
+Filename | egrid2022_data.xlsx
+Date | 2022
+Source | U.S. Environmental Protection Agency
+Link | https://www.epa.gov/egrid/download-data
+Column Names | Please see the EGRID2022ColumnNames_Contents file in the Metadata folder within the Data folder. The EGRID2022_Technical_Guide contains details on the data collection methodology as well.
 
 ## Scripts and code
 The repository also contains a Data Wrangling and Processing RMD file, which contains the code to write the processed data sets. The Data Wrangling file showcases which worksheets in the EGRID 2022 data set were utilized in this analysis.
