@@ -202,6 +202,7 @@ Solar power plants are evenly throughout the state of North Carolina, depicted, 
 
 While the number of solar power plants is large, Figure 4 showcases that each solar plant contains a relatively small electricity generation capacity. The natural gas and coal power plants, though lower in number, producer a larger share of electric power in the state.
 
+
 ```{r EJ Analyses}
 #map which counties are classified as disadvantaged
 
