@@ -374,7 +374,7 @@ chisq_test
 ```
 
 
-## Question 3: Do Environmental Justice communities face impact from carbon dioxide equivalent emissions due to power plants?
+## Question 3: Do Environmental Justice communities face impact from air quality emissions due to power plants?
 
 
 ```{r}
@@ -395,7 +395,7 @@ print(NC_Plant_CO2e_Plot)
 
 #Create map on CO2 Equivalent Emissions by Fuel Type
 
-mapview(EJ.NC_sf, zcol = 'Identified.as.disadvantaged',
+mapview(EJ_NC_sf, zcol = 'Identified.as.disadvantaged',
         layer.name = 'County Disadvantaged Status') +
   mapview(nc_plant_emissions,
         cex = "Plant annual CO2 equivalent emissions (tons)",
@@ -409,7 +409,7 @@ colnames(nc_plant_emissions)
 #Analyze NOx
 #EPA defines this as a dangerous pollutant for public health
 
-mapview(EJ.NC_sf, zcol = 'Identified.as.disadvantaged',
+mapview(EJ_NC_sf, zcol = 'Identified.as.disadvantaged',
         layer.name = 'County Disadvantaged Status') +
   mapview(nc_plant_emissions,
         cex = "Plant annual NOx emissions (tons)",
