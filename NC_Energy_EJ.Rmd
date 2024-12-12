@@ -123,7 +123,8 @@ print(NC_Plant_Cap_Plot)
 
 In North Carolina, natural gas power plants are absent from the atlantic coast area as depicted in the figure below. For the most part, natural gas power plants are instead located slightly inland (though spread across counties).
 
-```{r fig2, fig.cap="Number of power plants in North Carolina by fuel type. Solar, oil, and hydro are the most common.", echo=FALSE}
+
+```{r fig2, fig.cap="Number of Power Plants in North Carolina by Fuel Type", echo=FALSE}
 #Find the frequency of each type of fuel category
 plant_counts <- nc_plants %>%
   group_by(`Plant primary fuel category`) %>%
@@ -372,7 +373,7 @@ print(NC_Plant_CO2e_Plot)
 Analyzing this spatially, coal and natural gas power plants release more carbon dioxide equivalent emissions than renewable resources. This impacts counties with and without the disadvantaged status. Emissions from natural gas power plants in particular border disadvantaged communities, even when the power plant itself is not located in a disadvantaged community.
 
 
-```{r C02 emissions 2, fig.cap="Disadvantaged census tracts and power plant CO2 emissions (tons) in NC. The black circles represent emissions; the larger the circle, the greater the power plant's emissions.", echo=FALSE, message=FALSE, warning=FALSE}
+```{r C02 emissions 2, fig.cap="CO2 Equivalent Emissions from Power Plants (in tons) and Disadvantaged Communities in North Carolina", echo=FALSE, message=FALSE, warning=FALSE}
 
 #Create map on CO2 Equivalent Emissions by Fuel Type
 
