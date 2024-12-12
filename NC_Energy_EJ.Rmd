@@ -6,6 +6,8 @@ course: "ENVRION872: Environmental Data Exploration"
 date: "2024-12-12"
 instructors: "Professor Luana Lima and Professor John Fay"
 output: pdf_document
+  fig_width: 7
+  fig_height: 5
 editor_options: 
 
   
@@ -386,7 +388,7 @@ This influences the cumulative environmental justice impacts in a community. Cum
 
 NOx is listed as one of the six criteria air pollutants by the U.S. EPA (Suh et al., 2000). Nitric oxides react with volatile organic compounds and sunlight to produce ground-level ozone (Suh et al., 2000). Ground-level ozone reacts negatively with lung tissue, causing burning in the lungs and breathing difficulties for vulnerable populations such as young kids, elderly adults, and individuals with disabilities or asthma (Suh et al., 2000).
 
-Mapping NOx emissions along with counties reveals that counties with and without disadvantaged status face NOx emissions when located close to fossil fuel power plants. In the map below (Figure \@ref(fig:fig12)), the dark circles represent NOx emissions from power plant sites. Larger circles indicate a greater amount of NOx emissions in tons. Examining correlation between census tract disadvantaged status and power plant location will reveal if power plants are disproportionately located close to disadvantaged communities. Given that natural gas and coal plants release high levels of NOx and carbon emissions, proximity to these power plants could impact public health outcomes.
+Mapping NOx emissions along with counties reveals that counties with and without disadvantaged status face NOx emissions when located close to fossil fuel power plants. In the map below (Figure /@ref(fig:fig12)), the dark circles represent NOx emissions from power plant sites. Larger circles indicate a greater amount of NOx emissions in tons. Examining correlation between census tract disadvantaged status and power plant location will reveal if power plants are disproportionately located close to disadvantaged communities. Given that natural gas and coal plants release high levels of NOx and carbon emissions, proximity to these power plants could impact public health outcomes.
 
 
 ```{r fig12, fig.cap="NOx Emissions from Power Plants (in tons) and Disadvantaged Communities in North Carolina", echo=FALSE, message=FALSE, warning=FALSE}
