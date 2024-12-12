@@ -1,14 +1,15 @@
 ---
 title: "Electricity Generation and Environmental Justice Communities in North Carolina"
 author: "Fiona Price, Summer Heschong, and Asreeta Ushasri"
-university: "Duke University, Nicholas School of the Environment"
-course: "ENVRION872: Environmental Data Exploration"
 date: "2024-12-12"
-instructors: "Professor Luana Lima and Professor John Fay"
-output: pdf_document
-editor_options: 
-
-  
+"Duke University, Nicholas School of the Environment"
+"Instructors: Professor Luana Lima and Professor John Fay"
+"ENVRION872: Environmental Data Exploration"
+output:
+  word_document: default
+  pdf_document: default
+  fig_caption: true
+editor_options: null
 ---
 
 \newpage
@@ -104,7 +105,7 @@ Lastly, this project incorporates spatial data to understand the geographic rela
 
 # Exploratory Analysis 
 
-As shown in @ref(fig:<fig1>), natural gas generates the largest capacity of electricity power in North Carolina. The sum of natural gas power plants' nameplate capacities outranks solar, nuclear and coal. This follows broader trends in the United States. After technological advances in horizontal drilling and shale fracking in the 2010s, natural gas became economically more efficient to process (Rapier, 2024). Natural gas has therefore transformed into a primary fuel source for electricity generation in the United States.
+As shown in @ref(fig:fig1), natural gas generates the largest capacity of electricity power in North Carolina. The sum of natural gas power plants' nameplate capacities outranks solar, nuclear and coal. This follows broader trends in the United States. After technological advances in horizontal drilling and shale fracking in the 2010s, natural gas became economically more efficient to process (Rapier, 2024). Natural gas has therefore transformed into a primary fuel source for electricity generation in the United States.
 
 ```{r fig1, fig.cap ="Total capacity (in MW) by Power Plant", echo=FALSE, message=FALSE, warning=FALSE}
 #view(nc_energy_total_cap)
@@ -141,7 +142,7 @@ FuelType_Count_Plot <-
   scale_fill_viridis(discrete = TRUE, option = "C")
 ```
 
-Solar power plants are evenly throughout the state of North Carolina, depicted in Figure @ref(fig:<fig3>), except in Western North Carolina along the Appalachian range. In this mountainous region, hydro power plants are more common than solar power plants.
+Solar power plants are evenly throughout the state of North Carolina, depicted in Figure @ref(fig:fig3), except in Western North Carolina along the Appalachian range. In this mountainous region, hydro power plants are more common than solar power plants.
 
 In North Carolina, natural gas power plants are absent from the atlantic coast area. For the most part, natural gas power plants are instead located slightly inland (though spread across counties).
 
@@ -168,7 +169,7 @@ print(Plant_Location_Color_Plot)
 
 ```
 
-While the number of solar power plants is large, Figure @ref(fig:<fig4>) showcases that each solar plant contains a relatively small electricity generation capacity. The natural gas and coal power plants, though lower in number, producer a larger share of electric power in the state.
+While the number of solar power plants is large, Figure @ref(fig:fig4) showcases that each solar plant contains a relatively small electricity generation capacity. The natural gas and coal power plants, though lower in number, producer a larger share of electric power in the state.
 
 
 ```{r fig4, fig.cap= "Power Plant Nameplate Capacity (MW) by Location in North Carolina", fig.height=5, echo=FALSE, message=FALSE, warning=FALSE}
@@ -336,6 +337,7 @@ print(Robeson_Plot)
 #Robeson County has primarily solar plants.
 ```
 
+\newpage
 
 ## Question 2: Does electricity generation impact air quality through criteria air pollutant emissions in North Carolina?
 
