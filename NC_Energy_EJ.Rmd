@@ -386,22 +386,7 @@ print(disadvantaged_plant_map)
 ```{r are plant locations significant?}
 
 #join nc plant locations and CEJST data and select relevant columns
-EJ.NC_plus_plants <- st_join(EJ_NC_sf, nc_plants_counties, join = st_intersects) %>%
-  select(Identified.as.disadvantaged, 
-         County.Name, 
-         Plant.FIPS.county.code, 
-         COUNTYFP, 
-         Plant.name,
-         Plant.primary.fuel.category,
-         Percent.Black.or.African.American.alone,
-         Percent.American.Indian...Alaska.Native,
-         Percent.Asian,
-         Percent.Native.Hawaiian.or.Pacific,
-         Percent.two.or.more.races,
-         Percent.Hispanic.or.Latino,
-         Percent.other.races,
-         Percent.White,
-         Total.population)
+EJ.NC_plus_plants <- st_join(EJ_NC_sf, nc_plants_counties, join = st_intersects)
 
 #run a Chi-square test
 observed <- table(EJ.NC_plus_plants$Identified.as.disadvantaged)
