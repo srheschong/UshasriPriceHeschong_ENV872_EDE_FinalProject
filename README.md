@@ -3,9 +3,11 @@ output:
   html_document: default
   pdf_document: default
 ---
-# UshasriPriceHeschong_ENV872_EDE_FinalProject
 
-# Analysis of North Carolina Power Plants and Environmental Justice Communities
+
+# Electricity Generation and Environmental Justice Communities in North Carolina
+
+## UshasriPriceHeschong_ENV872_EDE_FinalProject
 
 This project aims to analyze electricity generation in North Carolina, with a specific interest in solar generation and impact on Environmental Justice communities.
 
@@ -26,7 +28,11 @@ Asreeta Ushasri, Summer Heschong, Fiona Price
 Solar Power, North Carolina, Environmental Justice Communities, Electricity Generation
 
 ## Database Information
-EGRID 2022: The U.S. Environmental Protection Agency publishes data on the status of electricity generation, the location of power plants, and generator fuel types each year. This data set describes electricity generation in the United States as of 2022. https://www.epa.gov/egrid/download-data
+EGRID 2022: The U.S. Environmental Protection Agency publishes data on the status of electricity generation, the location of power plants, and generator fuel types each year. This data set describes electricity generation in the United States as of 2022. https://www.epa.gov/egrid/download-data Accessed in November 2024.
+
+CEJST 2022: The U.S. Council on Environmental Quality publishes data to map climate and economic justice in the United States. This database includes findings from the climate justice screening tool for 2022. https://screeningtool.geoplatform.gov/en/methodology#3/33.47/-97.5 Accessed in November 2024.
+
+Details for the processed data can be found in the Data Wrangling and Processed RMD.
 
 ## Folder structure, file formats, and naming conventions
 This repository contains a folder with the relevant data, including Raw, Processed and Spatial. The Data Wrangling and Processing RMD file depicts how the raw data sets were compiled for the analysis.
