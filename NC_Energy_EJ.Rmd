@@ -132,9 +132,10 @@ print(FuelType_Count_Plot)
 
 ```
 
+
 As shown in Figure 1, natural gas generates the largest capacity of electricity power in North Carolina. The sum of natural gas power plants' nameplate capacities outranks solar, nuclear and coal. This follows broader trends in the United States. After technological advances in horizontal drilling and shale fracking in the 2010s, natural gas became economically more efficient to process. Natural gas has therefore transformed into a primary fuel source for electricity generation in the United States.
 
-Although natural gas contributes the most to electricity capacity in North Carolina, the number of solar power plants in the state is notably high (Figure 2). This indicates that North Carolina likely hosts numerous, small solar power plants across the state. Solar power plants are small in capacity, but remain the most popular renewable resource in the state.
+Although natural gas contributes the most to electricity capacity in North Carolina, the number of solar power plants in the state is notably high, displayed in Figure 2. This indicates that North Carolina likely hosts numerous, small solar power plants across the state. Solar power plants are small in capacity, but remain the most popular renewable resource in the state.
 
 
 ```{r Spatial Analysis}
@@ -195,6 +196,11 @@ Plant_Location_Size_Map <-
 print(Plant_Location_Size_Map)
 ```
 
+In North Carolina, natural gas power plants are absent from the atlantic coast area as depicted in Figure 3. For the most part, natural gas power plants are instead located slightly inland (though spread across counties).
+Solar power plants are evenly throughout the state of North Carolina, depicted, except in Western North Carolina along the Appalachian range. In this mountainous region, hydro power plants are more common than solar power plants.
+
+While the number of solar power plants is large, Figure 4 showcases that each solar plant contains a relatively small electricity generation capacity. The natural gas and coal power plants, though lower in number, producer a larger share of electric power in the state.
+
 ```{r EJ Analyses}
 #map which counties are classified as disadvantaged
 
@@ -220,6 +226,15 @@ disadvantaged_plant_map <-
 print(disadvantaged_plant_map)
 
 ```
+
+
+Figure 5 maps county disadvantage status and power plant location. A few disadvantaged counties have a concentration of power plants in the Southern area of the state. However, the Raleigh metropolitan area is not classified as disadvantaged, but also has a notable concentration of power plants. Therefore, further investigation is required to understand if any correlation exists between county status and power plant locations.
+
+The fuel type of the power plant also impacts front-line communities. Coal and natural gas power plants influence air quality due to the release of criteria air pollutants such as NOx. There are a handful of natural gas and oil power plants located around Robeson and Scotland county, but there are also many solar power plants in these areas. The Raleigh metropolitan area also has a couple of natural gas power plants.
+
+This project aims to explore primary fuel type of electricity generation along with environmental justice to determine if any spatial patterns or injustices exist regarding electricity generation in North Carolina.
+
+
 \newpage
 
 # Analysis
