@@ -42,13 +42,17 @@ energy_data <- energy_data[-1, ]
 colnames(energy_data)
 #Select only the relevant columns
 energy_data_selected <- energy_data %>% 
-  select('Data Year', 'Plant state abbreviation', 'Plant name', 'Utility name', 
-         'Plant county name', 'Plant latitude', 'Plant longitude', 'Number of units',
+  select('Data Year', 'Plant state abbreviation', 'Plant name',
+         'Utility name', 'Plant county name', 'Plant latitude',
+         'Plant longitude', 'Number of units',
          'Number of generators', 'Plant primary fuel category', 
          'Plant nameplate capacity (MW)', 'Plant annual net generation (MWh)',
-         'Plant annual NOx emissions (tons)', 'Plant annual SO2 emissions (tons)',
-         'Plant annual CO2 emissions (tons)', 'Plant annual CH4 emissions (lbs)',
-         'Plant annual N2O emissions (lbs)', 'Plant annual CO2 equivalent emissions (tons)')
+         'Plant annual NOx emissions (tons)',
+         'Plant annual SO2 emissions (tons)',
+         'Plant annual CO2 emissions (tons)',
+         'Plant annual CH4 emissions (lbs)',
+         'Plant annual N2O emissions (lbs)',
+         'Plant annual CO2 equivalent emissions (tons)')
 ```
 
 ##C. Filter for North Carolina, the focus of this project
@@ -90,7 +94,8 @@ counties_summarized <- NC_cejst %>%
             percent_two = mean(Percent.two.or.more.races),
             percent_white = mean(Percent.White),
             percent_hispanic = mean(Percent.Hispanic.or.Latino),
-            disadvantaged = mean(Percentage.of.tract.that.is.disadvantaged.by.area),
+            disadvantaged =
+              mean(Percentage.of.tract.that.is.disadvantaged.by.area),
             population = sum(Total.population),
             percent_poverty = mean(Percent.of.individuals.below.200..Federal.Poverty.Line..percentile.),
             PM2.5 = mean(PM2.5.in.the.air))
@@ -104,7 +109,8 @@ counties_summarized <- NC_cejst %>%
 NC_energy <- NC_energy %>% 
   rename("County.Name" = "Plant county name")
 #Join CEJST and energy data by county name
-NC_joined <- merge(NC_energy, counties_summarized, by = "County.Name", all = FALSE)
+NC_joined <- merge(NC_energy, counties_summarized,
+                   by = "County.Name", all = FALSE)
 ```
 
 ##3. Saving Processed Dataset with EJ locations and Power Plants
@@ -123,7 +129,8 @@ colnames(NC_joined)
 ```{r}
 nc_energy_total_cap <- NC_energy %>%
   group_by(`Plant primary fuel category`) %>%
-  summarise(total_capacity = sum(as.numeric(`Plant nameplate capacity (MW)`)))
+  summarise(total_capacity =
+              sum(as.numeric(`Plant nameplate capacity (MW)`)))
 
 write.csv(nc_energy_total_cap, row.names = FALSE, 
          file = "./Data/Processed/NC_Total_Capacity.csv")
