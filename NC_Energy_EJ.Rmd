@@ -328,6 +328,9 @@ print(Robeson_Plot)
 
 
 ## Question 2: Does electricity generation impact air quality through criteria air pollutant emissions in North Carolina?
+As shown in the bar chart on CO2 Equivalent Emissions, only natural gas and coal power plants release carbon emissions when generating electricity.
+
+
 
 
 ```{r}
