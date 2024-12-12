@@ -2,8 +2,9 @@
 title: "Electricity Generation and Environmental Justice Communities in North Carolina"
 author: "Fiona Price, Summer Heschong, and Asreeta Ushasri"
 date: "2024-12-12"
-output: pdf_document
-  fig_caption: true
+output:
+  pdf_document: default
+    fig_caption: true
 editor_options: null
 
 
@@ -29,6 +30,7 @@ library(viridis)
 library(readr)
 library(tigris)
 library(bookdown)
+library(knitr)
 
 # Check your working directory
 
