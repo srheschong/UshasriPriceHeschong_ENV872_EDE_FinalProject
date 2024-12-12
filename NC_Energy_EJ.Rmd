@@ -210,17 +210,23 @@ While the number of solar power plants is large, Figure 4 showcases that each so
 
 
 ```{r EJ Analyses}
-#map which counties are classified as disadvantaged
+#Map which counties are classified as disadvantaged
+#Set colors for disadvantaged vs. not
+disadvantaged_colors <- c("False" = "grey", "True" = "red")
 
 disadvantaged_map <- 
   mapview(EJ_NC_sf, zcol = 'Identified.as.disadvantaged',
-        layer.name = 'County Disadvantaged Status')
+        layer.name = 'County Disadvantaged Status',
+        col.regions = disadvantaged_colors,
+        na.color = "white")
 print(disadvantaged_map)
 
 #Map plants and disadvantaged counties together
 disadvantaged_counties_map <- 
   mapview(EJ_NC_sf, zcol = 'Identified.as.disadvantaged',
-        layer.name = 'County Disadvantaged Status') +
+        layer.name = 'County Disadvantaged Status',
+        col.regions = disadvantaged_colors,
+        na.color = "white") +
   mapview(nc_plants, cex = 2,
           layer.name = 'Power Plant Locations')
 print(disadvantaged_counties_map)
@@ -228,7 +234,9 @@ print(disadvantaged_counties_map)
 #Map plants by fuel type and disadvantaged counties
 disadvantaged_plant_map <- 
   mapview(EJ_NC_sf, zcol = 'Identified.as.disadvantaged',
-        layer.name = 'County Disadvantaged Status') +
+        layer.name = 'County Disadvantaged Status',
+        col.regions = disadvantaged_colors,
+        na.color = "white") +
   mapview(nc_plants, cex = 4, zcol = "Plant primary fuel category", 
           layer.name = 'Plant Primary Fuel Category') 
 print(disadvantaged_plant_map)
@@ -360,6 +368,7 @@ NC_Plant_CO2e_Plot <- ggplot(data = nc_energy_emissions) +
   geom_bar(aes(x = `Plant primary fuel category`,
                y = `total_CO2e`), fill = 'darkred',
            stat = "identity") +
+  default_theme +
   labs(title = "CO2 Equivalent Emissions from
        Electricity Fuel Type in North Carolina",
        x = "Plant Primary Fuel Category",
@@ -370,7 +379,9 @@ print(NC_Plant_CO2e_Plot)
 #Create map on CO2 Equivalent Emissions by Fuel Type
 
 mapview(EJ_NC_sf, zcol = 'Identified.as.disadvantaged',
-        layer.name = 'County Disadvantaged Status') +
+        layer.name = 'County Disadvantaged Status',
+        col.regions = disadvantaged_colors,
+        na.color = "white") +
   mapview(nc_plant_emissions,
         cex = "Plant annual CO2 equivalent emissions (tons)",
         zcol = "Plant primary fuel category",
@@ -384,7 +395,9 @@ colnames(nc_plant_emissions)
 #EPA defines this as a dangerous pollutant for public health
 
 mapview(EJ_NC_sf, zcol = 'Identified.as.disadvantaged',
-        layer.name = 'County Disadvantaged Status') +
+        layer.name = 'County Disadvantaged Status',
+        col.regions = disadvantaged_colors,
+        na.color = "white") +
   mapview(nc_plant_emissions,
         cex = "Plant annual NOx emissions (tons)",
         zcol = "Plant primary fuel category",
@@ -394,7 +407,9 @@ mapview(EJ_NC_sf, zcol = 'Identified.as.disadvantaged',
 #EPA defines this as a dangerous pollutant for public health
 
 mapview(EJ_NC_sf, zcol = 'Identified.as.disadvantaged',
-        layer.name = 'County Disadvantaged Status') +
+        layer.name = 'County Disadvantaged Status',
+        col.regions = disadvantaged_colors,
+        na.color = "white") +
   mapview(nc_plant_emissions,
         cex = "Plant annual SO2 emissions (tons)",
         zcol = "Plant primary fuel category",
