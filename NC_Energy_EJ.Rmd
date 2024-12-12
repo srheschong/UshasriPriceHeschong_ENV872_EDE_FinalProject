@@ -428,6 +428,9 @@ so2_emissions_map
 ## Question 3: What are the Environmental Justice implications of electricity power generation in North Carolina? 
 
 ### Question 3a: Are power plants primarily located in low-income and disadvantaged communities?
+In order to determine whether power plants are disproportionately located in disadvantaged counties a chi-squared test was conducted comparing observed and expected counts of power plants in disadvantaged vs. non-disadvantaged counties. The results showed a statistically significant difference, with disadvantaged counties hosting more power plants than would be expected by chance. This suggests a potential inequity in the distribution of power plants, raising environmental justice concerns.
+
+As mentioned earlier, fossil fuel-based power plants, particularly coal and natural gas facilities, are significant sources of criteria air pollutants, such as NOx and SO2, which can exacerbate respiratory health issues. Disadvantaged communities near these plants may experience higher exposure to air pollution, contributing to cumulative environmental stressors that affect public health. Since the first chi-squared test took into account power plants of all fuel types, another was performed only taking into consideration power plants that are the worst for public health. The results of this test also showed a statistically significant difference.
 
 ```{r are plant locations significant?, echo=FALSE}
 
@@ -463,6 +466,15 @@ chisq_test
 \newpage
 
 # Summary and Conclusions
+This project examined the distribution and capacity of power plants in NC, the impact of power plants on air pollution, and the Environmental Justice implications of these plants in NC using data from eGRID 2022, CEJST, and NC OneMap. 
+
+The analysis explored three primary research questions. First, the capacity and distribution of power plants in NC was examined. It revealed that natural gas is the largest contributor to electric capacity, while nuclear and coal plants have the highest average capacities. Solar power plants are the most numerous though they have the lowest average capacity. Additionaly, the most plants were located in Robeson County. 
+
+Next, the impact of electricity generation on air quality was examined. Natural gas and coal power plants are both significant sources of carbon emissions, fossil fuel produces NOx emissions, and coal contributes the most to SO2 emissions. Because all three of these are significantly harmful to public health it was important to examine their location and proximity to disadvantaged communities.
+
+Finally, the Environmental Justice implications of electric power generation in NC were examined. A chi-squared test revealed a statistically significant over representation of power plants in disadvantaged counties which suggests an inequitable distribution of environmental burdens. However, there were several census tracts in the CEJST data that were listed as ‘no data’ for whether they are disadvantaged or not, and this may have affected the outcome of the analysis. 
+
+This project highlights the complex interplay between energy production and environmental health and equity in North Carolina. While the state’s shift toward renewable energy like solar power is a positive trend it does not erase the existing inequities in the distribution of other types of power plants and their associated impacts. It seems that disadvantaged communities bear a disproportionate amount of environmental burdens from fossil fuel power generation indicating a need for more equitable energy policies. 
 
 
 \newpage
