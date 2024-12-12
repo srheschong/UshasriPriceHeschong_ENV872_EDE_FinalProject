@@ -2,15 +2,10 @@
 title: "Electricity Generation and Environmental Justice Communities in North Carolina"
 author: "Fiona Price, Summer Heschong, and Asreeta Ushasri"
 date: "2024-12-12"
-subtitle: "Duke University, Nicholas School of the Environment"
-output:
-  pdf_document: default
-  word_document: default
+output: pdf_document
   fig_caption: true
 editor_options: null
 
-subtitle: "Instructors: Professor Luana Lima and Professor John Fay"
-subtitle: "ENVRION872: Environmental Data Exploration"
 
 ---
 
