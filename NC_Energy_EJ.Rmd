@@ -474,6 +474,8 @@ Suh, H. H., Bahadori, T., Vallarino, J., & Spengler, J. D. (2000).
     Criteria air pollutants and toxic air pollutants. *Environmental Health                 Perspectives, 108*(suppl 4), 625–633.
     https://doi.org/10.1289/ehp.00108s4625
 
+U.S. Council on Environmental Quality. (2024). *Climate and Economic Justice                Screening Tool, 2022*. https://screeningtool.geoplatform.gov/en/
+
 U.S. Environmental Protection Agency. (2024). *Emissions and Generation Resource            Integrated Database (eGRID), 2022*. https://www.epa.gov/egrid/download-data 
 
 U.S. Environmental Protection Agency. (2024). *Emissions and Generation Resource            Integrated Database (eGRID), Technical Guide 2022*.
