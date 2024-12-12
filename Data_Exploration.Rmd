@@ -82,11 +82,14 @@ colnames(nc_plants_counties)
 
 
 ## Data Exploration
+###Energy Data 
+####Plant Primary Fuel Cateory and Capacity Plots
 
-```{r Energy Data}
+```{r Plant Primary Fuel Cateory and Capacity Plots}
 #view(nc_energy_total_cap)
 #colnames(energy_data)
 
+#Find total capacity for each fuel type
 NC_Plant_Cap_Plot <- ggplot(data = nc_energy_total_cap) +
   geom_bar(aes(x = `Plant primary fuel category`,
                y = `total_capacity`), fill = 'darkblue',
@@ -112,9 +115,9 @@ FuelType_Count_Plot <-
   scale_fill_viridis(discrete = TRUE, option = "C")
 
 print(FuelType_Count_Plot)
-
 ```
 
+####Plant Spatial Analysis Plots
 ```{r Spatial Analysis}
 #Mapping capacity of electricity generation in NC
 
@@ -173,8 +176,8 @@ Plant_Location_Size_Map <-
 print(Plant_Location_Size_Map)
 ```
 
-
-
+###Environmental Justice Data
+####Mapping of Disadvantaged Communities
 ```{r EJ Analyses}
 #map which counties are classified as disadvantaged
 

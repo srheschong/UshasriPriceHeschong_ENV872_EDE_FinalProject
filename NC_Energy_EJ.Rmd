@@ -74,9 +74,6 @@ EJ_NC_sf <- st_read("./Data/Processed/NC_Env_Justice.gpkg")
 nc_counties <- st_read(
   here("./Data/Spatial/North_Carolina_State_and_County_Boundary_Polygons.shp")) 
 
-#Check the CRS
-st_crs(nc_counties)$epsg
-
 ```
 
 
@@ -263,7 +260,7 @@ Graph X shows the number of each type of plant. Solar is by far the most common,
 The ten counties with the most power plants are, in order, Robseon, Duplin, Wayne, Nash, Cleveland and Johnston (tied at 29), and Bladen, Catawba, Halifax, and Randolph (all tied at 17). To understand the breakdown of power plants by fuel type in the county with the most plants (Robeson), this county was isolated for analysis. The primary power plant type in Robeson County was solar (41 plants, versus biomass (2) and oil (1)).
 
 
-```{r}
+```{r Question 1 Analysis}
 #Which plant fuel categories have the highest capacity?
 print(NC_Plant_Cap_Plot)
 #From this plot, it seems gas, solar, nuclear, coal have the highest capacities.
@@ -415,8 +412,6 @@ mapview(EJ_NC_sf, zcol = 'Identified.as.disadvantaged',
 #Check locations of power plants and disadvantaged counties.
 print(disadvantaged_plant_map)
 #Hard to tell from this map. Run statistical analyses. 
-
-
 ```
 
 ```{r are plant locations significant?}
