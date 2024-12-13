@@ -100,6 +100,146 @@ To understand the impact of electricity generation on environmental justice, thi
 
 Lastly, this project incorporates spatial data to understand the geographic relation between plants, as well as between plants and environmental justice (EJ) communities. The spatial data is from NC OneMap; it includes a vector polygon dataset delineating official boundaries of the North Carolina counties (in addition to the North Carolina state boundary as well). 
 
+Table: CEJST Data
+
+|Item | Value|
+|:-------------|:-------------|
+|Filename | CEJST_data.csv|
+|Date | 2022|
+|Source | U.S. Climate and Economic Justice Screening Tool|
+|Link | https://screeningtool.geoplatform.gov/en/methodology|
+|Column Names | Please see the CEJST_ColumnNames file in the Metadata folder within the Data folder. The CEJST-communities-list and CEQ-CEJST-Instructions documents describe the data collection methodology as well.|
+
+\newpage
+
+Table: EGRID Data
+
+|Item | Value|
+|:-------------|:-------------|
+|Filename | egrid2022_data.xlsx|
+|Date | 2022|
+|Source | U.S. Environmental Protection Agency|
+|Link | https://www.epa.gov/egrid/download-data|
+|Column Names | Please see the EGRID2022ColumnNames_Contents file in the Metadata folder within the Data folder. The EGRID2022_Technical_Guide describes the data collection methodology as well.|
+
+Table: NC Energy Emissions
+
+|Item | Value| Units |
+|:-------------|:-------------|:-------------|
+|Filename | NC_Energy_Emissions.csv| |
+|Source | U.S. Environmental Protection Agency| |
+|Link | https://www.epa.gov/egrid/download-data| |
+|Column Names | Description | Units |
+|"Plant primary fuel category" | This is the main source of fuel used by the power plant to generate electricity| Fuel Name |
+|"total_CO2e" | This is the CO2 equivalent emissions | tons |
+
+Table: NC Environmental Justice CSV
+
+|Item | Value|
+|:-------------|:-------------|
+|Filename | NC_Env_Justice.csv|
+|Source |  U.S. Climate and Economic Justice Screening Tool|
+|Link | https://screeningtool.geoplatform.gov/en/methodology|
+|Column Names and Descriptions | Please see the CEJST_ColumnNames file in the Metadata folder within the Data folder.|
+
+Table: NC Environmental Justice GPKG
+
+|Item | Value|
+|:-------------|:-------------|
+|Filename | NC_Env_Justice.gpkg|
+|Source |  U.S. Climate and Economic Justice Screening Tool|
+|Link | https://screeningtool.geoplatform.gov/en/methodology|
+|Column Names and Descriptions | Please see the CEJST_ColumnNames file in the Metadata folder within the Data folder.|
+
+\newpage 
+
+Table: NC Power Plants and Environmental Justice CSV
+
+|Item | Description and Units |
+|:-------------|:-------------|
+|Filename | NC_joined.csv | |
+|Source |  U.S. EPA and U.S. Climate and Economic Justice Screening Tool |
+|Link | https://www.epa.gov/egrid/download-data and https://screeningtool.geoplatform.gov/en/methodology |
+|   | |
+|Column Descriptions | Units |
+|     | |
+|County Name | |
+|Data Year | |           
+|Plant state abbreviation | |
+|Plant name | |                        
+|Utility name | |
+|Plant latitude | |
+|Plant longitude | |
+|Number of units | |
+|Number of generators | |
+|Plant primary fuel category  | |
+|Plant nameplate capacity | MW |
+|Plant annual net generation | MWh |
+|Plant annual NOx emissions | tons |
+|Plant annual SO2 emissions  | tons |
+|Plant annual CO2 emissions | tons |
+|Plant annual CH4 emissions | lbs |
+|Plant annual N2O emissions | lbs |
+|Plant annual CO2 equivalent emissions | tons |
+|Percentage of Community which Identifies as Black | % |
+|Percentage of Community which Identifies that race is not applicable | % |
+|Percentage of Community which Identifies as Asian | % |                   
+|Percentage of Community which Identifies as Hawaiian | % |
+|Percentage of Community which Identifies with Two Communities | % |
+|Percentage of Community which Identifies as White | % |
+|Percentage of Community which Identifies as Hispanic | % |
+|Counties Classified as Disadvantage | yes, no, or NA|
+|Population | |
+|Percent of Community Facing Poverty | % |
+|Levels of PM 2.5 in Air Quality | microgram/m3 |
+
+\newpage
+
+Table: NC Power Plants and Environmental Justice GPKG
+
+| Item | Value |
+|:-------------|:-------------|
+|Filename | nc_plants_EJ.gpkg|
+|Source |  U.S. EPA and U.S. Climate and Economic Justice Screening Tool|
+|Link | https://www.epa.gov/egrid/download-data and https://screeningtool.geoplatform.gov/en/methodology|
+|Column Descriptions | Binary file, utilized for shape/geometry in maps|
+
+Table: NC Power Plants
+
+|Item | Description and Units |
+|:-------------|:-------------|
+|Filename | NC_PowerPlants.csv|
+|Source |  U.S. EPA|
+|Link | https://www.epa.gov/egrid/download-data|
+|   | |
+|Column Descriptions | Units |
+|     | |
+|Data Year | |           
+|Plant state abbreviation | |
+|Plant name | |                        
+|Utility name | |
+|County Name | |
+|Plant latitude | |
+|Plant longitude | |
+|Number of units | |
+|Number of generators | |
+|Plant primary fuel category  | |
+|Plant nameplate capacity | MW |
+|Plant annual net generation | MWh |
+|Plant annual NOx emissions | tons |
+|Plant annual SO2 emissions | tons |
+|Plant annual CO2 emissions | tons |
+|Plant annual CH4 emissions | lbs |
+|Plant annual N2O emissions | lbs |
+|Plant annual CO2 equivalent emissions | tons |
+
+Table: NC Electricity Generation Capacity
+
+|Item | Value | Units |
+|:-------------|:-------------|:-------------|
+|"Plant primary fuel category" | This is the main source of fuel used by the power plant to generate electricity | |
+|"total_capacity" | This is the sum of the nameplate capacity of all the power plants under that fuel category in North Carolina. | MW |
+
 \newpage
 
 # Exploratory Analysis 
@@ -541,3 +681,8 @@ U.S. Environmental Protection Agency. (2024). Emissions and Generation Resource 
 
 U.S. Environmental Protection Agency. (2024). Emissions and Generation Resource       Integrated Database (eGRID), Technical Guide 2022.
 https://www.epa.gov/egrid/egrid-technicalguide. 
+
+
+#Repository Link
+
+https://github.com/srheschong/UshasriPriceHeschong_ENV872_EDE_FinalProject
